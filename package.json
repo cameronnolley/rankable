@@ -1,4 +1,6 @@
 {
+  "homepage" : "https://cameronnolley.github.io/rankable",
+
   "name": "rankable",
   "version": "0.1.0",
   "private": true,
@@ -36,3 +38,4 @@
     ]
   }
 }
+
