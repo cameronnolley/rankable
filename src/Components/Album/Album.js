@@ -1,8 +1,6 @@
 import React from "react";
 import "./Album.css";
 import getRandomAlbums from "../../util/getRandomAlbum";
-import getPairs from "../../util/getPairs";
-import albums from "../database";
 
 class Album extends React.Component {
   constructor(props) {
@@ -46,8 +44,6 @@ class Album extends React.Component {
 
   componentDidMount() {
     this.handleClick();
-    getPairs(albums);
-
   }
 
   render() {
