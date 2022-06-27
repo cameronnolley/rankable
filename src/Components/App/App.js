@@ -1,10 +1,11 @@
 import './App.css';
-import Album from '../Album/Album';
+import AlbumContainer from '../AlbumContainer/AlbumContainer';
+
 
 function App() {
   return (
     <div className="App">
-      <Album />
+      <AlbumContainer />
     </div>
   );
 }

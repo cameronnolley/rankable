@@ -1,24 +1,27 @@
 import React from "react";
 import "./Album.css";
-
-const album = {
-    title: "Sour",
-    artist: "Olivia Rodrigo",
-    url: "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/33/fd/32/33fd32b1-0e43-9b4a-8ed6-19643f23544e/21UMGIM26092.rgb.jpg/1200x1200bb.jpg",
-    bgColor: "675f9a",
-    textColor1: "f3f6fb",
-    textColor2: "fbeaf0",
-    textColor3: "d7d8e8",
-    textColor4: "decedf"
-}
-
-const style = { '--bg-color': '#' + album.bgColor, 
-                '--text-color-1': '#' + album.textColor1, 
-                '--text-color-2': '#' + album.textColor2, 
-                '--text-color-3': '#' + album.textColor3, 
-                '--text-color-4': '#' + album.textColor4};
+import getRandomAlbums from "../../util/getRandomAlbum";
+import getPairs from "../../util/getPairs";
+import albums from "../database";
 
 class Album extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state= {
+      title: "",
+      artist: "",
+      url: "",
+      bgColor: "",
+      textColor1: "",
+      textColor2: "",
+      textColor3: "",
+      textColor4: ""
+    }
+
+    this.handleClick = this.handleClick.bind(this)
+  }
+
   mouseDown() {
     document.getElementById("album").style.transform = "scale(0.99)";
   }
@@ -27,12 +30,39 @@ class Album extends React.Component {
     document.getElementById("album").style.transform = "scale(1)";
   }
 
+  handleClick() {
+    let album = getRandomAlbums();
+    this.setState({
+      title: album.attributes.name,
+      artist: album.attributes.artistName,
+      url: album.attributes.artwork.url,
+      bgColor: album.attributes.artwork.bgColor,
+      textColor1: album.attributes.artwork.textColor1,
+      textColor2: album.attributes.artwork.textColor2,
+      textColor3: album.attributes.artwork.textColor3,
+      textColor4: album.attributes.artwork.textColor4
+    })
+  }
+
+  componentDidMount() {
+    this.handleClick();
+    getPairs(albums);
+
+  }
+
   render() {
+    const style = { '--bg-color': '#' + this.state.bgColor, 
+                '--text-color-1': '#' + this.state.textColor1, 
+                '--text-color-2': '#' + this.state.textColor2, 
+                '--text-color-3': '#' + this.state.textColor3, 
+                '--text-color-4': '#' + this.state.textColor4,
+                '--shadow': '#' + this.state.textColor4 + '25'}
+
     return (
-      <div className="album" id="album" style={style} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} >
-        <img src={album.url} alt={album.title} />
-        <h1 className="album-title" >{album.title}</h1>
-        <h2 className="album-artist" >{album.artist}</h2>
+      <div className="album" id="album" style={style} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onClick={this.handleClick}>
+        <img src={this.state.url} alt={this.state.title} />
+        <h1 className="album-title" >{this.state.title}</h1>
+        <h2 className="album-artist" >{this.state.artist}</h2>
       </div>
     );
   }

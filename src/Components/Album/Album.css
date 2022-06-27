@@ -11,12 +11,12 @@ body {
 .album {
     width: 300px;
     height: 375px;
+    border-style: solid;
+    border-color: var(--text-color-4);
+    border-width: 1px;
     border-radius: 10px;
-    background: linear-gradient(to top right, var(--bg-color), var(--text-color-4));
-    left: 317px;
-    top: 315px;
-    position: absolute;
-    transition: all 0.5s,
+    background: linear-gradient(20deg, var(--bg-color) 35%, var(--bg-color));
+    transition: all 0.5s;
 }
 
 .album:hover {
@@ -28,6 +28,8 @@ body {
     border-radius: 5px;
     width: 270px;
     height: 270px;
+    box-shadow: 0px 0px 15px 3px var(--shadow);
+
 }
 
 .album-title {
@@ -36,8 +38,13 @@ body {
     margin-bottom: 8px;
     text-align: left;
     padding-left: 15px;
+    padding-right: 15px;
     font-weight: 600;
     color: var(--text-color-1);
+    max-width: 300px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .album-artist {

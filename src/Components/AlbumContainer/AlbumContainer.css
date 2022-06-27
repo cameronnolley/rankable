@@ -1,0 +1,9 @@
+.album-container {
+    display: grid;
+    grid-template-rows: 500px;
+    grid-template-columns: 300px 300px;
+    align-content: end;
+    justify-content: center;
+    column-gap: 100px;
+    align-items: center;
+}
