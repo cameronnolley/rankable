@@ -15,12 +15,12 @@ class AlbumContainer extends React.Component {
             album2: ''
         };
 
-        this.setAlbumPairToState = this.setAlbumPairToState.bind(this);
-
+        this.getNewAlbums = this.getNewAlbums.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount() {
-        this.setAlbumPairToState();
+        this.getNewAlbums();
     }
 
     selectAlbums(array) {
@@ -29,7 +29,7 @@ class AlbumContainer extends React.Component {
         return selectedPair;
     }
 
-    setAlbumPairToState() {
+    getNewAlbums() {
         const selectedAlbums = this.selectAlbums(albumPairs);
         console.log(selectedAlbums);
         this.setState({
@@ -38,11 +38,16 @@ class AlbumContainer extends React.Component {
         })
     }
 
+    handleClick() {
+        this.getNewAlbums();
+        console.log('click handled');
+    }
+
     render() {
         return (
             <div className='album-container'>
-                <Album className='album' id='album1' album={this.state.album1} />
-                <Album className='album' id='album2' album={this.state.album1}/>
+                <Album className='album' id='album1' album={this.state.album1} onClick={this.handleClick}/>
+                <Album className='album' id='album2' album={this.state.album2} onClick={this.handleClick}/>
             </div>
         )
     }
