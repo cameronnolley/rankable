@@ -1,0 +1,50 @@
+html {
+  font-size: 16px;
+  font-family: Helvetica;
+  background-color: #211D27;
+}
+
+body {
+
+}
+
+.album {
+    width: 300px;
+    height: 375px;
+    border-radius: 10px;
+    background: linear-gradient(to top right, var(--bg-color), var(--text-color-4));
+    left: 317px;
+    top: 315px;
+    position: absolute;
+    transition: all 0.5s,
+}
+
+.album:hover {
+    /* box-shadow: 0px 0px 15px 0px dimgray; */
+}
+
+.album img {
+    margin-top: 15px;
+    border-radius: 5px;
+    width: 270px;
+    height: 270px;
+}
+
+.album-title {
+    font-size: 1.25rem;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    text-align: left;
+    padding-left: 15px;
+    font-weight: 600;
+    color: var(--text-color-1);
+}
+
+.album-artist {
+    font-size: 1.25rem;
+    margin-top: 8px;
+    text-align: left;
+    padding-left: 15px;
+    font-weight: 400;
+    color: var(--text-color-2);
+}
