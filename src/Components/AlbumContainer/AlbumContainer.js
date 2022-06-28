@@ -32,10 +32,12 @@ class AlbumContainer extends React.Component {
 
     getNewAlbums() {
         const selectedAlbums = this.selectAlbums(this.state.albumPairs);
+        const album1Index = Math.floor(Math.random() * selectedAlbums.length);
+        const album2Index = 1 - album1Index
         this.setState({
             selectedPair: selectedAlbums,
-            album1: albums.find(album => album.id === selectedAlbums[0]),
-            album2: albums.find(album => album.id === selectedAlbums[1])
+            album1: albums.find(album => album.id === selectedAlbums[album1Index]),
+            album2: albums.find(album => album.id === selectedAlbums[album2Index])
         }, () => {
             seenPairs.push(this.state.selectedPair);
             console.log(seenPairs);
