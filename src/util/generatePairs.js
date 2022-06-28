@@ -4,7 +4,6 @@ function generatePairs(array) {
         for (let j = i + 1; j < array.length; j++)
         results.push([array[i].id, array[j].id])
     };
-    console.log(results);
     return results;
 }
 
