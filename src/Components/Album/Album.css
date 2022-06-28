@@ -11,9 +11,9 @@ body {
 .album {
     width: 300px;
     height: 375px;
-    /* border-style: solid;
-    border-color: var(--text-color-4);
-    border-width: 1px; */
+    border-style: solid;
+    border-color: var(--shadow-hover);
+    border-width: 1px;
     border-radius: 10px;
     background: linear-gradient(20deg, var(--bg-color) 35%, var(--bg-color));
     transition: all 0.5s;
