@@ -13,6 +13,7 @@
 h1 {
     color: white;
     font-size: 24px;
+    grid-column: span 2;
 }
 
 button {
@@ -24,10 +25,42 @@ button {
     font-size: 20px;
     width: 100px;
     transition: all 0.5s;
+    grid-row-start: 2;
 }
 
 button:hover {
     border-color: #AB9EFF;
     color:#AB9EFF;
     cursor:pointer;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    background: linear-gradient(0deg, #675F99 33%, #AB9EFF 100%);
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+  .loader::after {
+    content: '';  
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #211D27;
+  }
+  @keyframes rotation {
+    0% { transform: rotate(0deg) }
+    100% { transform: rotate(360deg)}
+  } 
+
+span {
+    grid-column: span 2
 }

@@ -14,7 +14,8 @@ class AlbumContainer extends React.Component {
             selectedPair: [],
             album1: '',
             album2: '',
-            availableAlbums: true
+            availableAlbums: true,
+            loading: false
         };
 
         this.getNewAlbums = this.getNewAlbums.bind(this);
@@ -48,11 +49,21 @@ class AlbumContainer extends React.Component {
     }
 
     handleClick() {
+
         if (this.state.albumPairs.length === 0) {
             this.setState({
                 availableAlbums: false
-            });
+            })
         } else {
+            this.setState({
+                loading: true
+            }, () => {
+                setTimeout(() => {
+                    this.setState({
+                        loading:false
+                    })
+                }, 600);
+            });
             this.getNewAlbums();
         }
     }
@@ -60,7 +71,17 @@ class AlbumContainer extends React.Component {
     render() {
         if (this.state.availableAlbums === false) {
             return (
-                <h1>No more albums</h1>
+                <div className='album-container' >
+                    <h1>No more albums</h1>
+                </div>
+            )
+        } else if (this.state.loading === true) {
+            return (
+                <div className="album-container">
+                    <span className='loader' ></span>
+                    <button>Skip</button>
+                    <button>Skip</button>
+                </div>
             )
         } else {
             return (
