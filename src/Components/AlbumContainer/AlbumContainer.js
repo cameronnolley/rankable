@@ -67,6 +67,8 @@ class AlbumContainer extends React.Component {
                 <div className='album-container'>
                     <Album className='album' id='album1' album={this.state.album1} onClick={this.handleClick} />
                     <Album className='album' id='album2' album={this.state.album2} onClick={this.handleClick} />
+                    <button>Skip</button>
+                    <button>Skip</button>
                 </div>
             )
         }
