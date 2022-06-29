@@ -21,6 +21,7 @@ class AlbumContainer extends React.Component {
         this.getNewAlbums = this.getNewAlbums.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.skip = this.skip.bind(this);
+        this.skipBoth = this.skipBoth.bind(this);
     }
 
     componentDidMount() {
@@ -84,6 +85,7 @@ class AlbumContainer extends React.Component {
             const filteredArray = this.state.albumPairs.filter(function(pairs) {
                 return pairs.includes(album1Id) && !pairs.includes(album2Id)
             })
+            console.log(filteredArray);
             if (filteredArray.length === 0) {
                 document.getElementById('second').setAttribute("disabled", "disabled")
                 document.getElementById('skip-error-second').style.visibility = "visible"
@@ -113,6 +115,32 @@ class AlbumContainer extends React.Component {
         }
     }
 
+    skipBoth() {
+        const album1Id = this.state.album1.id;
+        const album2Id = this.state.album2.id;
+        const filteredArray = this.state.albumPairs.filter(function(pairs) {
+            return !pairs.includes(album1Id) && !pairs.includes(album2Id)
+        });
+        console.log(filteredArray);
+        const selectedAlbums = this.selectAlbums(filteredArray);
+        const album1Index = Math.floor(Math.random() * selectedAlbums.length);
+        const album2Index = 1 - album1Index;
+        this.setState({
+            selectedPair: selectedAlbums,
+            album1: albums.find(album => album.id === selectedAlbums[album1Index]),
+            album2: albums.find(album => album.id === selectedAlbums[album2Index])
+        });
+        this.setState({
+            loading: true
+        }, () => {
+            setTimeout(() => {
+                this.setState({
+                    loading:false
+                })
+            }, 600);
+        });
+    }
+
     render() {
         if (this.state.availableAlbums === false) {
             return (
@@ -136,7 +164,7 @@ class AlbumContainer extends React.Component {
                     <div></div>
                     <Album className='album' id='album2' album={this.state.album2} onClick={this.handleClick} />
                     <button className='skip-button' id="first" onClick={this.skip} >Skip</button>
-                    <button>Skip both</button>
+                    <button onClick={this.skipBoth}>Skip both</button>
                     <button className='skip-button' id="second" onClick={this.skip} >Skip</button>
                     <p className='skip-error-message' id='skip-error-first' >No more available albums</p>
                     <div></div>

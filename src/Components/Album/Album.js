@@ -1,5 +1,6 @@
 import React from "react";
 import "./Album.css";
+import newShade from "../../util/newShade";
 
 class Album extends React.Component {
   
@@ -19,7 +20,8 @@ class Album extends React.Component {
                   '--text-color-3': '#' + this.props.album.attributes.artwork.textColor3, 
                   '--text-color-4': '#' + this.props.album.attributes.artwork.textColor4,
                   '--shadow': '#' + this.props.album.attributes.artwork.textColor4 + '25',
-                  '--shadow-hover': '#' + this.props.album.attributes.artwork.textColor4 + '50'}
+                  '--shadow-hover': '#' + this.props.album.attributes.artwork.textColor4 + '50',
+                  '--bg-gradient': '#' + newShade(this.props.album.attributes.artwork.bgColor, 8)}
 
       return (
         <div className="album" id={this.props.id} style={style} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onClick={this.props.onClick}>
