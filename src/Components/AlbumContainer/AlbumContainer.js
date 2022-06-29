@@ -32,14 +32,22 @@ class AlbumContainer extends React.Component {
         return selectedPair;
     }
 
-    getNewAlbums() {
+    async getNewAlbums() {
         const selectedAlbums = this.selectAlbums(this.state.albumPairs);
         const album1Index = Math.floor(Math.random() * selectedAlbums.length);
         const album2Index = 1 - album1Index;
-        this.setState({
+        await this.setState({
             selectedPair: selectedAlbums,
             album1: albums.find(album => album.id === selectedAlbums[album1Index]),
             album2: albums.find(album => album.id === selectedAlbums[album2Index])
+        });
+        const errorMessages = Array.from(document.getElementsByClassName('skip-error-message'))
+        const skipButtons = Array.from(document.getElementsByClassName('skip-button'))
+        errorMessages.forEach(element => {
+            element.style.visibility = 'hidden';
+        });
+        skipButtons.forEach(element => {
+            element.removeAttribute('disabled');
         });
     }
 
@@ -116,9 +124,9 @@ class AlbumContainer extends React.Component {
             return (
                 <div className="album-container">
                     <span className='loader' ></span>
-                    <button>Skip</button>
+                    <button className='skip-button' id='first' >Skip</button>
                     <button>Skip both</button>
-                    <button>Skip</button>
+                    <button className='skip-button'id='second' >Skip</button>
                 </div>
             )
         } else {
@@ -127,9 +135,9 @@ class AlbumContainer extends React.Component {
                     <Album className='album' id='album1' album={this.state.album1} onClick={this.handleClick} />
                     <div></div>
                     <Album className='album' id='album2' album={this.state.album2} onClick={this.handleClick} />
-                    <button id="first" onClick={this.skip}>Skip</button>
+                    <button className='skip-button' id="first" onClick={this.skip} >Skip</button>
                     <button>Skip both</button>
-                    <button id="second" onClick={this.skip}>Skip</button>
+                    <button className='skip-button' id="second" onClick={this.skip} >Skip</button>
                     <p className='skip-error-message' id='skip-error-first' >No more available albums</p>
                     <div></div>
                     <p className='skip-error-message' id='skip-error-second' >No more available albums</p>
