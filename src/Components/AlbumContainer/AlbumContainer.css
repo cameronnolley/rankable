@@ -28,10 +28,16 @@ button {
     padding-right: 30px;
 }
 
-button:hover {
+button:hover:enabled {
     border-color: #AB9EFF;
     cursor:pointer;
     background-color: #897ECC;
+}
+
+button:disabled {
+    border-color: darkgrey;
+    color: darkgrey;
+    cursor:default;
 }
 
 .loader {
@@ -63,4 +69,9 @@ button:hover {
 
 span {
     grid-column: span 3
+}
+
+.skip-error-message {
+    color: white;
+    visibility: hidden;
 }
