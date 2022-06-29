@@ -4,6 +4,7 @@ import './AlbumContainer.css';
 import albums from "../../database";
 import generatePairs from "../../util/generatePairs";
 import seenPairs from "../../seenPairs";
+import Skip from "../Skip/Skip";
 
 class AlbumContainer extends React.Component {
     constructor(props) {
@@ -20,6 +21,7 @@ class AlbumContainer extends React.Component {
 
         this.getNewAlbums = this.getNewAlbums.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.skip = this.skip.bind(this);
     }
 
     componentDidMount() {
@@ -39,17 +41,16 @@ class AlbumContainer extends React.Component {
             selectedPair: selectedAlbums,
             album1: albums.find(album => album.id === selectedAlbums[album1Index]),
             album2: albums.find(album => album.id === selectedAlbums[album2Index])
-        }, () => {
-            seenPairs.push(this.state.selectedPair);
-            console.log(seenPairs);
-            this.setState({
-                albumPairs: this.state.albumPairs.filter(pair => !seenPairs.includes(pair))
-            }); 
         });
     }
 
-    handleClick() {
-
+    async handleClick() {
+        seenPairs.push(this.state.selectedPair);
+        console.log(seenPairs);
+        await this.setState({
+            albumPairs: this.state.albumPairs.filter(pair => !seenPairs.includes(pair))
+        });
+        
         if (this.state.albumPairs.length === 0) {
             this.setState({
                 availableAlbums: false
@@ -65,6 +66,31 @@ class AlbumContainer extends React.Component {
                 }, 600);
             });
             this.getNewAlbums();
+        }
+    }
+
+    skip(e) {
+        const album1Id = this.state.album1.id;
+        const album2Id = this.state.album2.id;
+
+        if (e.target.id === 'second') {
+            const filteredArray = this.state.albumPairs.filter(function(pairs) {
+                return pairs.includes(album1Id) && !pairs.includes(album2Id)
+            })
+            const newAlbums = this.selectAlbums(filteredArray);
+            this.setState({
+                selectedPair: newAlbums,
+                album2: albums.find(album => album.id === newAlbums.find(albumId => albumId !== album1Id))
+            })
+        } else if (e.target.id === 'first') {
+            const filteredArray = this.state.albumPairs.filter(function(pairs) {
+                return pairs.includes(album2Id) && !pairs.includes(album1Id)
+            })
+            const newAlbums = this.selectAlbums(filteredArray);
+            this.setState({
+                selectedPair: newAlbums,
+                album1: albums.find(album => album.id === newAlbums.find(albumId => albumId !== album2Id))
+            })
         }
     }
 
@@ -90,9 +116,9 @@ class AlbumContainer extends React.Component {
                     <Album className='album' id='album1' album={this.state.album1} onClick={this.handleClick} />
                     <div></div>
                     <Album className='album' id='album2' album={this.state.album2} onClick={this.handleClick} />
-                    <button>Skip</button>
+                    <button id="first" onClick={this.skip}>Skip</button>
                     <button>Skip both</button>
-                    <button>Skip</button>
+                    <button id="second" onClick={this.skip}>Skip</button>
                 </div>
             )
         }
