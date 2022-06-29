@@ -17,7 +17,7 @@ h1 {
 
 button {
     background-color: transparent;
-    color: white;
+    color: #CFCFCF;
     height: 40px;
     border: 1px solid #897ECC;
     border-radius: 20px;
@@ -87,3 +87,22 @@ span {
 .skip-error-message:hover {
     opacity: 100%;
 }
+
+.skip-both-error {
+    width: 350px;
+    height: 80px;
+    background: rgba(76, 66, 89, 0.8);
+    border-radius: 5px;
+    justify-self: center;
+    align-self: center;
+    z-index: 1;
+    color: #CFCFCF;
+    line-height: 80px;
+    visibility: hidden;
+    transition: opacity 3s ease-in-out 5s;
+}
+
+.skip-both-error.is-visible {
+    visibility: visible;
+    opacity: 0;
+} 

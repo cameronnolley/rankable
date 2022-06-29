@@ -102,7 +102,7 @@ class AlbumContainer extends React.Component {
                 return pairs.includes(album2Id) && !pairs.includes(album1Id)
             })
             if (filteredArray.length === 0) {
-                document.getElementById('first').setAttribute("disabled", "disabled")
+                document.getElementById('first').setAttribute("disabled", "disabled");
                 document.getElementById('skip-error-first').style.visibility = "visible"
                 return
             } else {
@@ -121,24 +121,28 @@ class AlbumContainer extends React.Component {
         const filteredArray = this.state.albumPairs.filter(function(pairs) {
             return !pairs.includes(album1Id) && !pairs.includes(album2Id)
         });
-        console.log(filteredArray);
-        const selectedAlbums = this.selectAlbums(filteredArray);
-        const album1Index = Math.floor(Math.random() * selectedAlbums.length);
-        const album2Index = 1 - album1Index;
-        this.setState({
-            selectedPair: selectedAlbums,
-            album1: albums.find(album => album.id === selectedAlbums[album1Index]),
-            album2: albums.find(album => album.id === selectedAlbums[album2Index])
-        });
-        this.setState({
-            loading: true
-        }, () => {
-            setTimeout(() => {
-                this.setState({
-                    loading:false
-                })
-            }, 600);
-        });
+        if (filteredArray.length === 0) {
+            document.getElementById('skip-both').setAttribute("disabled", "disabled");
+            document.getElementById('skip-both-error').classList.add('is-visible');
+        } else {
+            const selectedAlbums = this.selectAlbums(filteredArray);
+            const album1Index = Math.floor(Math.random() * selectedAlbums.length);
+            const album2Index = 1 - album1Index;
+            this.setState({
+                selectedPair: selectedAlbums,
+                album1: albums.find(album => album.id === selectedAlbums[album1Index]),
+                album2: albums.find(album => album.id === selectedAlbums[album2Index])
+            });
+            this.setState({
+                loading: true
+            }, () => {
+                setTimeout(() => {
+                    this.setState({
+                        loading:false
+                    })
+                }, 600);
+            });
+        }
     }
 
     render() {
@@ -161,10 +165,10 @@ class AlbumContainer extends React.Component {
             return (
                 <div className='album-container'>
                     <Album className='album' id='album1' album={this.state.album1} onClick={this.handleClick} />
-                    <div></div>
+                    <p className='skip-both-error' id='skip-both-error' >No more available albums</p>
                     <Album className='album' id='album2' album={this.state.album2} onClick={this.handleClick} />
                     <button className='skip-button' id="first" onClick={this.skip} >Skip</button>
-                    <button onClick={this.skipBoth}>Skip both</button>
+                    <button id='skip-both' onClick={this.skipBoth} >Skip both</button>
                     <button className='skip-button' id="second" onClick={this.skip} >Skip</button>
                     <p className='skip-error-message' id='skip-error-first' >No more available albums</p>
                     <div></div>
