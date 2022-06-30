@@ -4,7 +4,6 @@ import './AlbumContainer.css';
 import albums from "../../database";
 import { filterPairs } from "../../util/generatePairs";
 import seenPairs from "../../seenPairs";
-import { generatePairs } from "../../util/generatePairs";
 
 class AlbumContainer extends React.Component {
     constructor(props) {
@@ -27,7 +26,7 @@ class AlbumContainer extends React.Component {
 
     async componentDidMount() {
         await this.setState({
-            albumPairs: generatePairs(this.props.albums)
+            albumPairs: this.generatePairs(this.props.albums)
         });
         this.getNewAlbums();
     }
@@ -46,6 +45,16 @@ class AlbumContainer extends React.Component {
             });
             this.getNewAlbums();
         }
+    }
+
+    generatePairs(array) {
+        let results = [];
+        for (let i = 0; i < array.length - 1; i++) {
+            for (let j = i + 1; j < array.length; j++)
+            results.push([array[i].id, array[j].id])
+        };
+        console.log(results);
+        return results;
     }
 
     selectAlbums(array) {
