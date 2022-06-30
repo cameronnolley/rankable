@@ -1,0 +1,69 @@
+.multiSelectContainer ul {
+
+}
+
+.searchWrapper {
+    min-height: 40px;
+    min-width: 160px;
+    border: 1px solid #897ECC;
+    border-radius: 20px;
+    max-width: 300px;
+    align-content: center;
+    padding-left: 7px;
+    align-items: center;
+}
+
+.searchBox::placeholder {
+    color: #CFCFCF;
+    
+}
+
+
+.optionListContainer {
+    background: none;
+}
+
+.optionContainer {
+    background-color: #362F40;
+    color: #CFCFCF;
+    font-size: 18px;
+    border: none !important;
+    margin: 4px !important;
+    border-radius: 20px !important;
+    min-height: 51.5px;
+    min-width: 160px !important;
+}
+
+.option {
+    padding: 15px !important;
+}
+
+.option:hover {
+    background-color: #897ECC !important;
+}
+
+.chip {
+    border-radius: 20px;
+    background-color: #897ECC;
+    margin-bottom: 2px;
+}
+
+.notFound {
+    text-align: center;
+    font-size: 18px;
+    line-height: 50px;
+    padding: none !important;
+}
+
+.icon_down_dir {
+    right: 15px;
+}
+
+.multiSelectContainer input {
+    min-width: 80px;
+    width: 120px;
+    color: #CFCFCF;
+    padding-left: 10px;
+    font-size: 18px;
+    height: 100%;
+}

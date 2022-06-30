@@ -6,7 +6,6 @@
     justify-content: center;
     align-items: center;
     justify-items: center;
-    margin-top: 100px
 }
 
 h1 {
@@ -69,7 +68,8 @@ button:disabled {
   } 
 
 span {
-    grid-column: span 3
+    grid-column: span 3;
+    grid-row-start: 1;
 }
 
 .skip-error-message {
@@ -106,3 +106,12 @@ span {
     visibility: visible;
     opacity: 0;
 } 
+
+.filters {
+    grid-column: span 3;
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 16px;
+}
+

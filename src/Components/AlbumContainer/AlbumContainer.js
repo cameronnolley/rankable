@@ -2,20 +2,21 @@ import React from "react";
 import Album from "../Album/Album";
 import './AlbumContainer.css';
 import albums from "../../database";
-import generatePairs from "../../util/generatePairs";
+import { filterPairs } from "../../util/generatePairs";
 import seenPairs from "../../seenPairs";
+import { generatePairs } from "../../util/generatePairs";
 
 class AlbumContainer extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            albumPairs: generatePairs(albums),
+            albumPairs: [],
             selectedPair: [],
             album1: '',
             album2: '',
             availableAlbums: true,
-            loading: false
+            loading: false,
         };
 
         this.getNewAlbums = this.getNewAlbums.bind(this);
@@ -24,8 +25,27 @@ class AlbumContainer extends React.Component {
         this.skipBoth = this.skipBoth.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        await this.setState({
+            albumPairs: generatePairs(this.props.albums)
+        });
         this.getNewAlbums();
+    }
+
+    async componentDidUpdate(prevProps) {
+        if(this.props.albums !== prevProps.albums) {
+            await this.setState({
+                albumPairs: filterPairs(this.props.albums),
+                loading: true
+            }, () => {
+                setTimeout(() => {
+                    this.setState({
+                        loading:false
+                    })
+                }, 500);
+            });
+            this.getNewAlbums();
+        }
     }
 
     selectAlbums(array) {
@@ -71,7 +91,7 @@ class AlbumContainer extends React.Component {
                     this.setState({
                         loading:false
                     })
-                }, 600);
+                }, 500);
             });
             this.getNewAlbums();
         }
@@ -85,7 +105,6 @@ class AlbumContainer extends React.Component {
             const filteredArray = this.state.albumPairs.filter(function(pairs) {
                 return pairs.includes(album1Id) && !pairs.includes(album2Id)
             })
-            console.log(filteredArray);
             if (filteredArray.length === 0) {
                 document.getElementById('second').setAttribute("disabled", "disabled")
                 document.getElementById('skip-error-second').style.visibility = "visible"
@@ -140,10 +159,11 @@ class AlbumContainer extends React.Component {
                     this.setState({
                         loading:false
                     })
-                }, 600);
+                }, 500);
             });
         }
     }
+
 
     render() {
         if (this.state.availableAlbums === false) {
@@ -157,7 +177,7 @@ class AlbumContainer extends React.Component {
                 <div className="album-container">
                     <span className='loader' ></span>
                     <button className='skip-button' id='first' >Skip</button>
-                    <button>Skip both</button>
+                    <button className='skip-both' id='skip-both' >Skip both</button>
                     <button className='skip-button'id='second' >Skip</button>
                 </div>
             )
@@ -168,12 +188,11 @@ class AlbumContainer extends React.Component {
                     <p className='skip-both-error' id='skip-both-error' >No more available albums</p>
                     <Album className='album' id='album2' album={this.state.album2} onClick={this.handleClick} />
                     <button className='skip-button' id="first" onClick={this.skip} >Skip</button>
-                    <button id='skip-both' onClick={this.skipBoth} >Skip both</button>
+                    <button className='skip-both' id='skip-both' onClick={this.skipBoth} >Skip both</button>
                     <button className='skip-button' id="second" onClick={this.skip} >Skip</button>
                     <p className='skip-error-message' id='skip-error-first' >No more available albums</p>
                     <div></div>
                     <p className='skip-error-message' id='skip-error-second' >No more available albums</p>
-
                 </div>
             )
         }

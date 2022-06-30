@@ -1,3 +1,3 @@
-const seenPairs = [];
+let seenPairs = [];
 
 export default seenPairs;

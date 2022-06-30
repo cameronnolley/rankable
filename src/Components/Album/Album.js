@@ -12,6 +12,7 @@ class Album extends React.Component {
     document.getElementById().style.transform = "scale(1)";
   } */
 
+  
   render() {
     if (this.props.album) {
       const style = { '--bg-color': '#' + this.props.album.attributes.artwork.bgColor, 
