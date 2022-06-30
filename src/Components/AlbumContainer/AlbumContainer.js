@@ -43,8 +43,13 @@ class AlbumContainer extends React.Component {
                     })
                 }, 500);
             });
+            if (this.state.albumPairs.length > 0) {
+                this.setState({
+                    availableAlbums: true
+                })
+            }
             this.getNewAlbums();
-        }
+        };
     }
 
     generatePairs(array) {
@@ -63,47 +68,56 @@ class AlbumContainer extends React.Component {
     }
 
     async getNewAlbums() {
-        const selectedAlbums = this.selectAlbums(this.state.albumPairs);
-        const album1Index = Math.floor(Math.random() * selectedAlbums.length);
-        const album2Index = 1 - album1Index;
-        await this.setState({
-            selectedPair: selectedAlbums,
-            album1: albums.find(album => album.id === selectedAlbums[album1Index]),
-            album2: albums.find(album => album.id === selectedAlbums[album2Index])
-        });
-        const errorMessages = Array.from(document.getElementsByClassName('skip-error-message'))
-        const skipButtons = Array.from(document.getElementsByClassName('skip-button'))
-        errorMessages.forEach(element => {
-            element.style.visibility = 'hidden';
-        });
-        skipButtons.forEach(element => {
-            element.removeAttribute('disabled');
-        });
-    }
-
-    async handleClick() {
-        seenPairs.push(this.state.selectedPair);
-        console.log(seenPairs);
-        await this.setState({
-            albumPairs: this.state.albumPairs.filter(pair => !seenPairs.includes(pair))
-        });
-        
         if (this.state.albumPairs.length === 0) {
             this.setState({
                 availableAlbums: false
             })
         } else {
-            this.setState({
-                loading: true
-            }, () => {
-                setTimeout(() => {
-                    this.setState({
-                        loading:false
-                    })
-                }, 500);
+            const selectedAlbums = this.selectAlbums(this.state.albumPairs);
+            console.log(selectedAlbums);
+            const album1Index = Math.floor(Math.random() * selectedAlbums.length);
+            const album2Index = 1 - album1Index;
+            await this.setState({
+                selectedPair: selectedAlbums,
+                album1: albums.find(album => album.id === selectedAlbums[album1Index]),
+                album2: albums.find(album => album.id === selectedAlbums[album2Index])
             });
-            this.getNewAlbums();
+            const errorMessages = Array.from(document.getElementsByClassName('skip-error-message'))
+            const skipButtons = Array.from(document.getElementsByClassName('skip-button'))
+            errorMessages.forEach(element => {
+                element.style.visibility = 'hidden';
+            });
+            skipButtons.forEach(element => {
+                element.removeAttribute('disabled');
+            });
         }
+    }
+
+    async handleClick() {
+        await seenPairs.push(this.state.selectedPair);
+        console.log(seenPairs);
+        await this.setState({
+            albumPairs: this.state.albumPairs.filter(pair => !seenPairs.includes(pair))
+        });
+        // console.log(this.state.albumPairs.map(pair => seenPairs.includes(pair)));
+        
+        /* if (this.state.albumPairs.length === 0) {
+            this.setState({
+                availableAlbums: false
+            })
+        } */ 
+        
+        this.setState({
+            loading: true
+        }, () => {
+            setTimeout(() => {
+                this.setState({
+                    loading:false
+                })
+            }, 500);
+        });
+        this.getNewAlbums();
+        
     }
 
     skip(e) {
@@ -178,7 +192,13 @@ class AlbumContainer extends React.Component {
         if (this.state.availableAlbums === false) {
             return (
                 <div className='album-container' >
-                    <h1>No more albums</h1>
+                    <h1>No avalable pairs of albums. Change filter options and try again.</h1>
+                    <button className='skip-button' id="first" onClick={this.skip} disabled>Skip</button>
+                    <button className='skip-both' id='skip-both' onClick={this.skipBoth} disabled>Skip both</button>
+                    <button className='skip-button' id="second" onClick={this.skip} disabled>Skip</button>
+                    <p className='skip-error-message' id='skip-error-first' >No more available albums</p>
+                    <div></div>
+                    <p className='skip-error-message' id='skip-error-second' >No more available albums</p>
                 </div>
             )
         } else if (this.state.loading === true) {

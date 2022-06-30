@@ -13,12 +13,14 @@ class App extends React.Component {
       availableAlbums: albums
     }
 
+    this.filterArtistAdd = this.filterArtistAdd.bind(this);
     this.filterArtist = this.filterArtist.bind(this);
 
   }
 
 
-  filterArtist(selectedList) {
+  filterArtistAdd(selectedList) {
+    console.log(selectedList);
     let artistFilter =[];
     for (let i = 0; i < selectedList.length; i++) {
         artistFilter.push(selectedList[i].name)
@@ -31,11 +33,32 @@ class App extends React.Component {
     })
   }
 
+  filterArtist(selectedList) {
+    if (selectedList.length === 0) {
+      this.setState({
+        availableAlbums: albums
+      })
+    } else {
+      console.log(selectedList);
+      let artistFilter =[];
+      for (let i = 0; i < selectedList.length; i++) {
+          artistFilter.push(selectedList[i].name)
+      }
+      console.log(artistFilter);
+      const filteredAlbums = albums.filter(album => artistFilter.includes(album.attributes.artistName));
+      console.log(filteredAlbums);
+      this.setState({
+          availableAlbums: filteredAlbums
+
+      })
+    }
+  }
+
   render() {
     return (
       <div className="App">
         <div className='filters'>
-          <ArtistFilter id='artist-filter' onSelect={this.filterArtist} />
+          <ArtistFilter id='artist-filter' onSelect={this.filterArtist} onRemove={this.filterArtist} />
         </div>
         <AlbumContainer albums={this.state.availableAlbums}/>
       </div>

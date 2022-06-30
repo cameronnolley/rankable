@@ -18,17 +18,17 @@ function arrayEquals(a, b) {
 
 export const filterPairs = (array) => {
     const pairs = generatePairs(array);
-    let lastTry = [];
+    let votedPairs = [];
     for (let i = 0; i < pairs.length; i++) {
         for (let j = 0; j < seenPairs.length; j++) {
             if (arrayEquals(pairs[i], seenPairs[j])) {
-                lastTry.push(pairs[i]);
+                votedPairs.push(pairs[i]);
             }
         }
     }
     console.log('last try');
-    console.log(lastTry);
-    const finalTry = pairs.filter(pair => !lastTry.includes(pair))
+    console.log(votedPairs);
+    const finalTry = pairs.filter(pair => !votedPairs.includes(pair))
     console.log(finalTry);
     return finalTry;
     

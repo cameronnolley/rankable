@@ -18,6 +18,7 @@ class ArtistFilter extends React.Component {
     }
 
     onRemove(selectedList, removedItem) {
+        
     }
 
     render() {
@@ -26,12 +27,13 @@ class ArtistFilter extends React.Component {
             options={this.state.options} // Options to display in the dropdown
             selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
             onSelect={this.props.onSelect} // Function will trigger on select event
-            onRemove={this.onRemove} // Function will trigger on remove event
+            onRemove={this.props.onRemove} // Function will trigger on remove event
             displayValue="name" // Property name to display in the dropdown options
             avoidHighlightFirstOption='true'
             placeholder={'Artists'}
             closeIcon={'cancel'}
             hidePlaceholder={'true'}
+            closeOnSelect={'true'}
             // showArrow={'true'}
             />
 
