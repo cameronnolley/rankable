@@ -70,7 +70,14 @@ class AlbumContainer extends React.Component {
     async getNewAlbums() {
         if (this.state.albumPairs.length === 0) {
             this.setState({
-                availableAlbums: false
+                loading: true
+            }, () => {
+                setTimeout(() => {
+                    this.setState({
+                        availableAlbums: false,
+                        loading:false
+                    })
+                }, 500);
             })
         } else {
             const selectedAlbums = this.selectAlbums(this.state.albumPairs);
