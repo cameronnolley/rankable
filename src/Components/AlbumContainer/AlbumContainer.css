@@ -32,6 +32,7 @@ button:hover:enabled {
     border-color: #AB9EFF;
     cursor:pointer;
     background-color: #897ECC;
+    color: #FFFFFF
 }
 
 button:disabled {
