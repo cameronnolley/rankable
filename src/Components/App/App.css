@@ -4,5 +4,6 @@
   justify-content: center;
   align-items: center;
   justify-items: center;
-  margin-top: 100px
+  margin-top: 100px;
+  overflow:visible;
 }

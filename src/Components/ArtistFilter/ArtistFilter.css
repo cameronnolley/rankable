@@ -5,12 +5,16 @@
 .searchWrapper {
     min-height: 40px;
     min-width: 160px;
-    border: 1px solid #897ECC;
+    /* border: 1px solid #897ECC20; */
+    border: none;
     border-radius: 20px;
     max-width: 300px;
     align-content: center;
     padding-left: 7px;
     align-items: center;
+    box-shadow: 4px 4px 7px #17141b90,
+                -4px -4px 7px #2b2633;
+    background-color: #362F40
 }
 
 .searchBox::placeholder {
@@ -21,6 +25,7 @@
 
 .optionListContainer {
     background: none;
+    
 }
 
 .optionContainer {
@@ -32,6 +37,9 @@
     border-radius: 20px !important;
     min-height: 51.5px;
     min-width: 160px !important;
+    box-shadow: 4px 4px 7px #17141b90,
+                -4px -4px 7px #2b2633,
+                
 }
 
 .option {

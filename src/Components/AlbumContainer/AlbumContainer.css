@@ -14,7 +14,7 @@ h1 {
     grid-column: span 3;
 }
 
-button {
+.skip {
     background-color: transparent;
     color: #CFCFCF;
     height: 40px;
@@ -28,14 +28,13 @@ button {
     margin-bottom: 8px;
 }
 
-button:hover:enabled {
-    border-color: #AB9EFF;
+.skip:hover:enabled {
     cursor:pointer;
-    background-color: #897ECC;
+    background-color: #362F40;
     color: #FFFFFF
 }
 
-button:disabled {
+.skip:disabled {
     border-color: darkgrey;
     color: darkgrey;
     cursor:default;
@@ -68,10 +67,7 @@ button:disabled {
     100% { transform: rotate(360deg)}
   } 
 
-span {
-    grid-column: span 3;
-    grid-row-start: 1;
-}
+
 
 .skip-error-message {
     color: white;

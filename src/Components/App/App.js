@@ -3,6 +3,7 @@ import AlbumContainer from '../AlbumContainer/AlbumContainer';
 import React from 'react';
 import ArtistFilter from '../ArtistFilter/ArtistFilter';
 import albums from '../../database';
+import { YearFilter } from '../YearFilter/YearFilter';
 
 class App extends React.Component {
   constructor(props) {
@@ -59,6 +60,7 @@ class App extends React.Component {
       <div className="App">
         <div className='filters'>
           <ArtistFilter id='artist-filter' onSelect={this.filterArtist} onRemove={this.filterArtist} />
+          <YearFilter />
         </div>
         <AlbumContainer albums={this.state.availableAlbums}/>
       </div>

@@ -1,0 +1,160 @@
+.year-filter-container {
+    height: 24px;
+    border-radius: 20px;
+    transition: all 0.5s;
+    color: #CFCFCF;
+    background-color: #362F40;
+    /* background: none; */
+    border: 1px solid #897ECC00;
+    box-shadow:  4px 4px 7px #17141b,
+                -4px -4px 7px #2b263390;
+    /* box-shadow: inset 4px 4px 7px #17141b,
+                inset -4px -4px 7px #2b2633;
+    border: none; */
+    padding-left: 7px;
+    margin-bottom: 8px;
+    align-content: center;
+    align-items: center;
+    padding: 8px;
+}   
+
+.calendar-wrapper {
+    height: auto;
+    width: 300px;
+    background-color: #362F40;
+    z-index:5;
+    border-radius: 20px;
+    box-shadow:  4px 4px 7px #17141b,
+                -4px -4px 7px #2b263390;
+    border: 1px solid #897ECC00;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.decade-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.next-prev-button {
+    width: 24px;
+    height: 24px;
+    margin-left: 24px;
+    margin-right: 24px;
+    font-size: 18px;
+    background-color: #4B4259;
+    border-radius: 5px;
+    color: #CFCFCF;
+    text-align: center;
+    border: 0;
+}
+
+.decade-wrapper h4 {
+    color: #CFCFCF;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.year {
+    background: none;
+    border: 0;
+    height:40px;
+    width: 85px;
+    justify-self: center;
+    font-size: 14px;
+    color: #CFCFCF;
+    align-items: center;
+    justify-content: center;
+}
+
+.years-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 16px;
+    width: 300px;
+    gap: 4px
+}
+
+.carousal {
+    overflow: hidden;
+    width: 300px;
+    height: auto;
+}
+
+.carousal-inner {
+    white-space: nowrap;
+    height: 100%;
+    width: 1200px;
+    display: inline-flex;
+}
+
+.inner {
+    white-space: nowrap;
+    height: 100%;
+    transition: transform 0.3s;
+}
+
+.carousal-item {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.indicators {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 24px;
+    padding-right: 24px;
+    align-items: center;
+}
+
+.decade-selector {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.hover {
+    border: 1px solid #675F9A;
+    border-radius: 20px;
+}
+
+.selected {
+    background-color: #897ECC;
+    border-radius: 20px;
+    color: #FFFFFF;
+    border: 0px;
+}
+
+.chip {
+    align-items: center;
+    display: inline-flex;
+    font-size: 13px;
+    line-height: 19px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background-color: #897ECC;
+    margin-bottom: 2px;
+    color: #FFFFFF;
+    align-self: center;
+}
+
+.year-filter-container .chip {
+    margin-top: -2px;
+}
+
+.placeholder {
+    font-size: 18px;
+    font-weight: 400;
+    color: #CFCFCF;
+    height: 100%;
+    vertical-align: middle;
+    position: relative;
+    align-self: center;
+    margin-left: 9px;
+}

@@ -223,9 +223,9 @@ class AlbumContainer extends React.Component {
                     <Album className='album' id='album1' album={this.state.album1} onClick={this.handleClick} />
                     <p className='skip-both-error' id='skip-both-error' >No more available albums</p>
                     <Album className='album' id='album2' album={this.state.album2} onClick={this.handleClick} />
-                    <button className='skip-button' id="first" onClick={this.skip} >Skip</button>
-                    <button className='skip-both' id='skip-both' onClick={this.skipBoth} >Skip both</button>
-                    <button className='skip-button' id="second" onClick={this.skip} >Skip</button>
+                    <button className='skip skip-button' id="first" onClick={this.skip} >Skip</button>
+                    <button className='skip skip-both' id='skip-both' onClick={this.skipBoth} >Skip both</button>
+                    <button className='skip skip-button' id="second" onClick={this.skip} >Skip</button>
                     <p className='skip-error-message' id='skip-error-first' >No more available albums</p>
                     <div></div>
                     <p className='skip-error-message' id='skip-error-second' >No more available albums</p>
