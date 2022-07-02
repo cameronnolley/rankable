@@ -11,31 +11,52 @@ class App extends React.Component {
 
     this.state = {
       artistFilter: [],
+      yearFilter: [],
       availableAlbums: albums
     }
 
-    this.filterArtistAdd = this.filterArtistAdd.bind(this);
     this.filterArtist = this.filterArtist.bind(this);
-
+    this.filterYear = this.filterYear.bind(this);
+    this.filterAlbums = this.filterAlbums.bind(this);
   }
 
-
-  filterArtistAdd(selectedList) {
-    console.log(selectedList);
-    let artistFilter =[];
-    for (let i = 0; i < selectedList.length; i++) {
-        artistFilter.push(selectedList[i].name)
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.artistFilter !== prevState.artistFilter || this.state.yearFilter !== prevState.yearFilter) {
+      this.filterAlbums();
     }
-    console.log(artistFilter);
-    const filteredAlbums = albums.filter(album => artistFilter.includes(album.attributes.artistName));
-    console.log(filteredAlbums);
-    this.setState({
+  }
+
+  filterAlbums() {
+    if (this.state.artistFilter.length === 0 && this.state.yearFilter.length === 0) {
+      this.setState({
+        availableAlbums: albums
+      });
+    } else if (this.state.artistFilter.length > 0 && this.state.yearFilter.length === 0) {
+      const filteredAlbums = albums.filter(album => this.state.artistFilter.includes(album.attributes.artistName));
+      this.setState({
+          availableAlbums: filteredAlbums
+      })
+    } else if (this.state.artistFilter.length === 0 && this.state.yearFilter.length > 0) {
+      const filteredAlbums = albums.filter(album => this.state.yearFilter.some(year => album.attributes.releaseDate.includes(year)))
+      this.setState({
         availableAlbums: filteredAlbums
-    })
+      });
+    } else if (this.state.artistFilter.length > 0 && this.state.yearFilter.length > 0) {
+      const filteredAlbums = albums.filter(album => this.state.artistFilter.includes(album.attributes.artistName));
+      const doubleFilter = filteredAlbums.filter(album => this.state.yearFilter.some(year => album.attributes.releaseDate.includes(year)));
+      this.setState({
+        availableAlbums: doubleFilter
+      });
+    }
+      
   }
 
   filterArtist(selectedList) {
-    if (selectedList.length === 0) {
+    const artistFilter = selectedList.map(artist => artist.name);
+    this.setState({
+      artistFilter: artistFilter
+    });
+    /* if (selectedList.length === 0) {
       this.setState({
         availableAlbums: albums
       })
@@ -52,7 +73,13 @@ class App extends React.Component {
           availableAlbums: filteredAlbums
 
       })
-    }
+    } */
+  }
+
+  filterYear(selectedList) {
+    this.setState({
+      yearFilter: selectedList
+    });
   }
 
   render() {
@@ -60,7 +87,7 @@ class App extends React.Component {
       <div className="App">
         <div className='filters'>
           <ArtistFilter id='artist-filter' onSelect={this.filterArtist} onRemove={this.filterArtist} />
-          <YearFilter />
+          <YearFilter onChange={this.filterYear} />
         </div>
         <AlbumContainer albums={this.state.availableAlbums}/>
       </div>

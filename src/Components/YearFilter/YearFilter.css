@@ -1,5 +1,5 @@
 .year-filter-container {
-    min-width: 160px;
+    min-width: 120px;
     max-width: 300px;
     min-height: 40px;
     border-radius: 20px;
@@ -8,8 +8,8 @@
     background-color: #362F40;
     /* background: none; */
     border: 1px solid #897ECC00;
-    box-shadow:  4px 4px 7px #17141b,
-                -4px -4px 7px #2b263390;
+    box-shadow: 4px 4px 7px #17141b90,
+                -4px -4px 7px #2b2633;
     /* box-shadow: inset 4px 4px 7px #17141b,
                 inset -4px -4px 7px #2b2633;
     border: none; */
@@ -17,7 +17,13 @@
     align-content: center;
     align-items: center;
     position: relative;
+    transition: all 0.5s;
+    cursor: pointer;
 }   
+
+.year-filter-container:hover {
+    background-color: #4F476F;
+}
 
 .calendar-wrapper {
     height: auto;
@@ -42,16 +48,17 @@
 }
 
 .next-prev-button {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     margin-left: 24px;
     margin-right: 24px;
     font-size: 18px;
     background-color: #4B4259;
-    border-radius: 5px;
+    border-radius: 10px;
     color: #CFCFCF;
     text-align: center;
     border: 0;
+    cursor: pointer;
 }
 
 .decade-wrapper h4 {
@@ -71,6 +78,7 @@
     color: #CFCFCF;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .select-all {
@@ -78,12 +86,13 @@
     border: 0;
     border-radius: 20px;
     height:40px;
-    width: 85px;
+    width: 100px;
     justify-self: center;
     font-size: 14px;
     color: #CFCFCF;
     align-items: center;
     justify-content: center; 
+    cursor: pointer;
 }
 
 .years-wrapper {
@@ -143,7 +152,7 @@
     background-color: #897ECC;
     border-radius: 20px;
     color: #FFFFFF;
-    border: 0px;
+    border: 1px solid #AB9DFF;
 }
 
 .chip-year {
@@ -178,7 +187,7 @@
     font-weight: 600;
 }
 
-:disabled {
+.year:disabled {
     color: #CFCFCF50;
     background: none;
     border: none;

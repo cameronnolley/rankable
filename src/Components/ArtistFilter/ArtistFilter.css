@@ -4,7 +4,7 @@
 
 .searchWrapper {
     min-height: 40px;
-    min-width: 160px;
+    min-width: 108px;
     /* border: 1px solid #897ECC20; */
     border: none;
     border-radius: 20px;
@@ -14,7 +14,13 @@
     align-items: center;
     box-shadow: 4px 4px 7px #17141b90,
                 -4px -4px 7px #2b2633;
-    background-color: #362F40
+    background-color: #362F40;
+    transition: all 0.5s;
+    margin-bottom: 8px;
+}
+
+.searchWrapper:hover {
+    background-color: #4F476F;
 }
 
 .searchBox::placeholder {
@@ -31,14 +37,13 @@
 .optionContainer {
     background-color: #362F40;
     color: #CFCFCF;
-    font-size: 18px;
+    font-size: 14px;
     border: none !important;
-    margin: 4px !important;
     border-radius: 20px !important;
     min-height: 51.5px;
     min-width: 160px !important;
-    box-shadow: 4px 4px 7px #17141b90,
-                -4px -4px 7px #2b2633,
+    box-shadow:  4px 4px 7px #17141b,
+                -4px -4px 7px #2b263390;
                 
 }
 
@@ -70,7 +75,7 @@
 
 .multiSelectContainer input {
     min-width: 80px;
-    width: 120px;
+    width: 108px;
     color: #CFCFCF;
     padding-left: 10px;
     font-size: 18px;

@@ -200,9 +200,9 @@ class AlbumContainer extends React.Component {
             return (
                 <div className='album-container' >
                     <h1>No avalable pairs of albums. Change filter options and try again.</h1>
-                    <button className='skip-button' id="first" onClick={this.skip} disabled>Skip</button>
-                    <button className='skip-both' id='skip-both' onClick={this.skipBoth} disabled>Skip both</button>
-                    <button className='skip-button' id="second" onClick={this.skip} disabled>Skip</button>
+                    <button className='skip skip-button' id="first" onClick={this.skip} disabled>Skip</button>
+                    <button className='skip skip-both' id='skip-both' onClick={this.skipBoth} disabled>Skip both</button>
+                    <button className='skip skip-button' id="second" onClick={this.skip} disabled>Skip</button>
                     <p className='skip-error-message' id='skip-error-first' >No more available albums</p>
                     <div></div>
                     <p className='skip-error-message' id='skip-error-second' >No more available albums</p>
