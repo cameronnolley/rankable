@@ -67,7 +67,10 @@ h1 {
     100% { transform: rotate(360deg)}
   } 
 
-
+span {
+    grid-column: span 3;
+    grid-row-start: 1;
+}
 
 .skip-error-message {
     color: white;

@@ -1,5 +1,7 @@
 .year-filter-container {
-    height: 24px;
+    min-width: 160px;
+    max-width: 300px;
+    min-height: 40px;
     border-radius: 20px;
     transition: all 0.5s;
     color: #CFCFCF;
@@ -11,24 +13,25 @@
     /* box-shadow: inset 4px 4px 7px #17141b,
                 inset -4px -4px 7px #2b2633;
     border: none; */
-    padding-left: 7px;
     margin-bottom: 8px;
     align-content: center;
     align-items: center;
-    padding: 8px;
+    position: relative;
 }   
 
 .calendar-wrapper {
     height: auto;
     width: 300px;
     background-color: #362F40;
-    z-index:5;
+    z-index: 2;
     border-radius: 20px;
     box-shadow:  4px 4px 7px #17141b,
                 -4px -4px 7px #2b263390;
     border: 1px solid #897ECC00;
     padding-top: 40px;
     padding-bottom: 40px;
+    display: block;
+    position: absolute;
 }
 
 .decade-wrapper {
@@ -60,13 +63,27 @@
 .year {
     background: none;
     border: 0;
+    border-radius: 20px;
+    height:40px;
+    width: 80px;
+    justify-self: center;
+    font-size: 14px;
+    color: #CFCFCF;
+    align-items: center;
+    justify-content: center;
+}
+
+.select-all {
+    background: none;
+    border: 0;
+    border-radius: 20px;
     height:40px;
     width: 85px;
     justify-self: center;
     font-size: 14px;
     color: #CFCFCF;
     align-items: center;
-    justify-content: center;
+    justify-content: center; 
 }
 
 .years-wrapper {
@@ -75,7 +92,7 @@
     justify-content: center;
     padding-top: 16px;
     width: 300px;
-    gap: 4px
+    gap: 8px
 }
 
 .carousal {
@@ -129,23 +146,19 @@
     border: 0px;
 }
 
-.chip {
+.chip-year {
     align-items: center;
     display: inline-flex;
     font-size: 13px;
     line-height: 19px;
-    margin-bottom: 5px;
     margin-right: 5px;
     padding: 4px 10px;
     border-radius: 20px;
     background-color: #897ECC;
-    margin-bottom: 2px;
     color: #FFFFFF;
     align-self: center;
-}
-
-.year-filter-container .chip {
-    margin-top: -2px;
+    margin-top: 7px;
+    margin-bottom: 0px;
 }
 
 .placeholder {
@@ -157,4 +170,27 @@
     position: relative;
     align-self: center;
     margin-left: 9px;
+    margin-top: 8px;
+}
+
+#decade {
+    color: #CFCFCF;
+    font-weight: 600;
+}
+
+:disabled {
+    color: #CFCFCF50;
+    background: none;
+    border: none;
+}
+
+.chip-wrapper {
+    padding-left: 8px;
+    gap: 8px;
+    padding-bottom: 6px;
+    padding-right: 2px;
+}
+
+.display {
+    display: none;
 }

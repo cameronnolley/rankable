@@ -212,9 +212,9 @@ class AlbumContainer extends React.Component {
             return (
                 <div className="album-container">
                     <span className='loader' ></span>
-                    <button className='skip-button' id='first' >Skip</button>
-                    <button className='skip-both' id='skip-both' >Skip both</button>
-                    <button className='skip-button'id='second' >Skip</button>
+                    <button className='skip skip-button' id='first' >Skip</button>
+                    <button className='skip skip-both' id='skip-both' >Skip both</button>
+                    <button className='skip skip-button'id='second' >Skip</button>
                 </div>
             )
         } else {
