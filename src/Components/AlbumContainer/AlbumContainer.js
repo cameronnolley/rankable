@@ -137,6 +137,7 @@ class AlbumContainer extends React.Component {
             })
             if (filteredArray.length === 0) {
                 document.getElementById('second').setAttribute("disabled", "disabled")
+                document.getElementById('first').setAttribute("disabled", "disabled")
                 document.getElementById('skip-error-second').style.visibility = "visible"
                 return
             } else {
@@ -152,6 +153,7 @@ class AlbumContainer extends React.Component {
             })
             if (filteredArray.length === 0) {
                 document.getElementById('first').setAttribute("disabled", "disabled");
+                document.getElementById('second').setAttribute("disabled", "disabled");
                 document.getElementById('skip-error-first').style.visibility = "visible"
                 return
             } else {

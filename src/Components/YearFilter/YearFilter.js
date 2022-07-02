@@ -43,14 +43,14 @@ const Carousal = ({children}) => {
                     updateIndex(activeIndex - 1);
                 }}
                 >
-                    &lt;
+                    &lsaquo;
                 </button>
                 <span id='decade' >{getDecade(activeIndex)}</span>
                 <button className='next-prev-button' onClick={() => {
                     updateIndex(activeIndex + 1);
                 }}
                 >
-                    &gt;
+                    ›
                 </button>
             </div>
             <div className="inner" style={{ transform: `translateX(-${activeIndex * 100}%)` }}>

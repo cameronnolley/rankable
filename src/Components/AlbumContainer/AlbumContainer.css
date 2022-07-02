@@ -82,6 +82,7 @@ span {
     line-height: 60px;
     opacity: 80%;
     transition: all 0.5s;
+    text-align: center;
 }
 
 .skip-error-message:hover {
@@ -99,7 +100,8 @@ span {
     color: #CFCFCF;
     line-height: 80px;
     visibility: hidden;
-    transition: opacity 3s ease-in-out 5s;
+    transition: opacity 2s ease-in-out 0s;
+    text-align: center;
 }
 
 .skip-both-error.is-visible {
