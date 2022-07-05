@@ -4,6 +4,10 @@ import './AlbumContainer.css';
 import albums from "../../database";
 import { filterPairs } from "../../util/generatePairs";
 import seenPairs from "../../seenPairs";
+import { results } from "../../results";
+import { idIndex } from "../../idIndex.js";
+
+const m4th = require('m4th');
 
 class AlbumContainer extends React.Component {
     constructor(props) {
@@ -58,7 +62,6 @@ class AlbumContainer extends React.Component {
             for (let j = i + 1; j < array.length; j++)
             results.push([array[i].id, array[j].id])
         };
-        console.log(results);
         return results;
     }
 
@@ -81,7 +84,6 @@ class AlbumContainer extends React.Component {
             })
         } else {
             const selectedAlbums = this.selectAlbums(this.state.albumPairs);
-            console.log(selectedAlbums);
             const album1Index = Math.floor(Math.random() * selectedAlbums.length);
             const album2Index = 1 - album1Index;
             await this.setState({
@@ -100,20 +102,85 @@ class AlbumContainer extends React.Component {
         }
     }
 
-    async handleClick() {
+    pushResults(e) {
+        let album1Id = this.state.album1.id;
+        let album2Id = this.state.album2.id;
+        let result = {};
+        if (e.currentTarget.id === 'album1') {
+            result[album1Id] = 1;
+            result[album2Id] = -1;
+            results.push(result);
+        }
+        if (e.currentTarget.id === 'album2') {
+            result[album1Id] = -1;
+            result[album2Id] = 1;
+            results.push(result);
+        }
+        if (idIndex.findIndex(x => x === album1Id) === -1) {
+            idIndex.push(album1Id);
+        }
+        if (idIndex.findIndex(x => x === album2Id) === -1) {
+            idIndex.push(album2Id);
+        }
+    }
+
+    solveRanking() {
+        let ids = [];
+        for (let i = 0; i < results.length; i++) {
+            ids.push(Object.keys(results[i]))
+        };
+        let flatIds = ids.flat();
+        /* let uniqueIds = new Set(flatIds).size;
+        console.log(uniqueIds); */
+        console.log(idIndex.length);
+        let matrix = m4th.matrix(idIndex.length);
+        matrix = matrix.map(function(element){
+            return 0;
+          });
+        for (let i = 0; i < idIndex.length; i++) {
+            matrix.set(i, i, flatIds.filter(id => id === idIndex[i]).length + 2);
+            for (let j = i+1; j < idIndex.length; j++) {
+                let gameCount = matrix.get(i, j) || 0;
+                for (let k = 0; k < results.length; k++) {
+                    if (idIndex[i] in results[k] && idIndex[j] in results[k]) {
+                        matrix.set(i, j, gameCount-1);
+                        matrix.set(j, i, gameCount-1);
+                    }
+                }
+            }
+        }
+        console.log(matrix);
+        let ratings = [];
+        for (let i = 0; i < idIndex.length; i++) {
+            let albumWL = [];
+            for (let j = 0; j < results.length; j++) {
+                if (idIndex[i] in results[j]) {
+                    albumWL.push(results[j][idIndex[i]])
+                }
+            };
+            let albumRating = 1 + 0.5 * (albumWL.reduce((previousValue, currentValue) => previousValue + currentValue,
+            0));
+            ratings.push(albumRating);
+        }
+        let y = m4th.matrix(idIndex.length, ratings);
+        const solution = m4th.lu(matrix).solve(y);
+        const rankings = [];
+        for (let i = 0; i < idIndex.length; i++) {
+            rankings.push({
+                albumId: idIndex[i],
+                rating: solution.array[i]
+            })
+        };
+        return rankings;
+    }
+
+    async handleClick(e) {
+        await this.pushResults(e);
+        console.log(this.solveRanking());
         await seenPairs.push(this.state.selectedPair);
-        console.log(seenPairs);
         await this.setState({
             albumPairs: this.state.albumPairs.filter(pair => !seenPairs.includes(pair))
         });
-        // console.log(this.state.albumPairs.map(pair => seenPairs.includes(pair)));
-        
-        /* if (this.state.albumPairs.length === 0) {
-            this.setState({
-                availableAlbums: false
-            })
-        } */ 
-        
         this.setState({
             loading: true
         }, () => {
@@ -124,6 +191,9 @@ class AlbumContainer extends React.Component {
             }, 500);
         });
         this.getNewAlbums();
+        console.log(results);
+        console.log(idIndex);
+        console.log();
         
     }
 

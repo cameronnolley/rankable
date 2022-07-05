@@ -6,7 +6,6 @@ export const generatePairs = (array) => {
         for (let j = i + 1; j < array.length; j++)
         results.push([array[i].id, array[j].id])
     };
-    console.log(results);
     return results;
 }
 function arrayEquals(a, b) {
@@ -26,10 +25,7 @@ export const filterPairs = (array) => {
             }
         }
     }
-    console.log('last try');
-    console.log(votedPairs);
     const finalTry = pairs.filter(pair => !votedPairs.includes(pair))
-    console.log(finalTry);
     return finalTry;
     
 }

@@ -93,7 +93,6 @@ export const YearFilter = (props) => {
 
     function yearHover(e) {
         e.target.classList.add("hover");
-        console.log(e.target.innerHTML);
     }
 
     function yearHoverLeave(e) {
@@ -180,7 +179,6 @@ export const YearFilter = (props) => {
             document.getElementById('select-all-twenties').classList.add("selected");
             document.getElementById('select-all-twenties').innerHTML = 'Remove All'
         }
-        console.log(chipArray);
         if (selectedList.length === 0) {
             return <div className='placeholder' onClick={toggleCalendar} >Years</div>
         } else {
@@ -221,7 +219,6 @@ export const YearFilter = (props) => {
                 document.getElementById('select-all-twenties').classList.remove("selected");
             }
         }
-        console.log('close clicked', item);
 		
     }
 
@@ -231,10 +228,8 @@ export const YearFilter = (props) => {
 
     function handleLabelClick(event) {
         if (event.target !== event.currentTarget) {
-            console.log('huh')
         } else {
             toggleCalendar();
-            console.log('parent clicked')
         }
     }
 
