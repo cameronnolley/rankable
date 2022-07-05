@@ -1,8 +1,8 @@
 .searchWrapper {
     min-height: 40px;
     min-width: 108px;
-    border: none;
-    border-radius: 20px;
+    border: none !important;
+    border-radius: 20px !important;
     max-width: 300px;
     align-content: center;
     padding-left: 7px;
@@ -25,7 +25,7 @@
 
 
 .optionListContainer {
-    background: none;
+    background: none !important;
     
 }
 
