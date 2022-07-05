@@ -130,8 +130,6 @@ class AlbumContainer extends React.Component {
             ids.push(Object.keys(results[i]))
         };
         let flatIds = ids.flat();
-        /* let uniqueIds = new Set(flatIds).size;
-        console.log(uniqueIds); */
         console.log(idIndex.length);
         let matrix = m4th.matrix(idIndex.length);
         matrix = matrix.map(function(element){
