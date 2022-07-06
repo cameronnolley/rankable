@@ -4,6 +4,21 @@ import React from 'react';
 import ArtistFilter from '../ArtistFilter/ArtistFilter';
 import albums from '../../database';
 import { YearFilter } from '../YearFilter/YearFilter';
+import * as Realm from "realm-web";
+import { useEffect } from "react";
+
+function getAlbums() {
+    useEffect(async () => {
+        const app = new Realm.App({ id: "rankabl-bwhkm" });
+        const credentials = Realm.Credentials.anonymous();
+        try {
+        const user = await app.logIn(credentials);
+        const allAlbums = await user.functions.getAllAlbums();
+        } catch(err) {
+        console.error("Failed to log in", err);
+        }
+    })
+}
 
 class App extends React.Component {
   constructor(props) {
