@@ -2,7 +2,6 @@ import './App.css';
 import AlbumContainer from '../AlbumContainer/AlbumContainer';
 import React, { useState, useEffect } from 'react';
 import ArtistFilter from '../ArtistFilter/ArtistFilter';
-import albums from '../../database';
 import { YearFilter } from '../YearFilter/YearFilter';
 import * as Realm from "realm-web";
 
@@ -10,7 +9,8 @@ const App = () => {
 
   let [artistFilter, setArtistFilter] = useState([]);
   let [yearFilter, setYearFilter] = useState([]);
-  let [availableAlbums, setAvailableAlbums] = useState(albums);
+  let [allAlbums, setAllAlbums] = useState([]);
+  let [availableAlbums, setAvailableAlbums] = useState([]);
 
   useEffect(() => {
     fetchAlbums();
@@ -25,8 +25,10 @@ const App = () => {
     const credentials = Realm.Credentials.anonymous();
     try {
       const user = await app.logIn(credentials);
-      const allAlbums = await user.functions.getAllAlbums();
-      console.log(allAlbums);
+      const albums = await user.functions.getAllAlbums();
+      setAllAlbums(albums);
+      setAvailableAlbums(albums);
+      console.log(albums);
     } catch(err) {
       console.error("Failed to log in", err);
     }
@@ -34,15 +36,15 @@ const App = () => {
 
   const filterAlbums = () => {
     if (artistFilter.length === 0 && yearFilter.length === 0) {
-      setAvailableAlbums(albums);
+      setAvailableAlbums(allAlbums);
     } else if (artistFilter.length > 0 && yearFilter.length === 0) {
-      const filteredAlbums = albums.filter(album => artistFilter.includes(album.attributes.artistName));
+      const filteredAlbums = allAlbums.filter(album => artistFilter.includes(album.attributes.artistName));
       setAvailableAlbums(filteredAlbums);
     } else if (artistFilter.length === 0 && yearFilter.length > 0) {
-      const filteredAlbums = albums.filter(album => yearFilter.some(year => album.attributes.releaseDate.includes(year)))
+      const filteredAlbums = allAlbums.filter(album => yearFilter.some(year => album.attributes.releaseDate.includes(year)))
       setAvailableAlbums(filteredAlbums);
     } else if (artistFilter.length > 0 && yearFilter.length > 0) {
-      const filteredAlbums = albums.filter(album => artistFilter.includes(album.attributes.artistName));
+      const filteredAlbums = allAlbums.filter(album => artistFilter.includes(album.attributes.artistName));
       const doubleFilter = filteredAlbums.filter(album => yearFilter.some(year => album.attributes.releaseDate.includes(year)));
       setAvailableAlbums(doubleFilter);
     }
