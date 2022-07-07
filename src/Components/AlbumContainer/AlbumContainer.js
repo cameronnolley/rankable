@@ -6,6 +6,8 @@ import { filterPairs, generatePairs } from "../../util/generatePairs";
 import seenPairs from "../../seenPairs";
 import { results } from "../../results";
 import { idIndex } from "../../idIndex.js";
+import * as Realm from "realm-web";
+import axios from "axios";
 
 const m4th = require('m4th');
 
@@ -58,17 +60,6 @@ class AlbumContainer extends React.Component {
         };
     }
 
-    /* 
-    generatePairs(array) {
-        let results = [];
-        for (let i = 0; i < array.length - 1; i++) {
-            for (let j = i + 1; j < array.length; j++)
-            results.push([array[i].id, array[j].id])
-        };
-        return results;
-    }
-    */
-
     selectAlbums(array) {
         const selectedPair = array[Math.floor(Math.random() * array.length)];
         return selectedPair;
@@ -84,7 +75,7 @@ class AlbumContainer extends React.Component {
                         availableAlbums: false,
                         loading:false
                     })
-                }, 500);
+                }, 100);
             })
         } else {
             const selectedAlbums = this.selectAlbums(this.state.albumPairs);
@@ -110,15 +101,43 @@ class AlbumContainer extends React.Component {
         let album1Id = this.state.album1.id;
         let album2Id = this.state.album2.id;
         let result = {};
+        let mongoResult = {};
         if (e.currentTarget.id === 'album1') {
             result[album1Id] = 1;
             result[album2Id] = -1;
+            mongoResult = {
+                album1: {
+                    id: album1Id,
+                    result: 1
+                },
+                album2: {
+                    id: album2Id,
+                    result: -1
+                }
+            }
             results.push(result);
+            console.log(result);
+            axios({
+                url: 'https://data.mongodb-api.com/app/rankabl-bwhkm/endpoint/results/save',
+                method: 'POST',
+                data: mongoResult
+            })
         }
         if (e.currentTarget.id === 'album2') {
             result[album1Id] = -1;
             result[album2Id] = 1;
+            mongoResult = {
+                album1: {
+                    id: album1Id,
+                    result: -1
+                },
+                album2: {
+                    id: album2Id,
+                    result: 1
+                }
+            }
             results.push(result);
+            console.log(result);
         }
         if (idIndex.findIndex(x => x === album1Id) === -1) {
             idIndex.push(album1Id);
@@ -128,12 +147,15 @@ class AlbumContainer extends React.Component {
         }
     }
 
+
     solveRanking() {
         let ids = [];
         for (let i = 0; i < results.length; i++) {
             ids.push(Object.keys(results[i]))
         };
         let flatIds = ids.flat();
+        console.log(flatIds);
+        console.log(idIndex);
         console.log(idIndex.length);
         let matrix = m4th.matrix(idIndex.length);
         matrix = matrix.map(function(element){

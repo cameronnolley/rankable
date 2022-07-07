@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import ArtistFilter from '../ArtistFilter/ArtistFilter';
 import { YearFilter } from '../YearFilter/YearFilter';
 import * as Realm from "realm-web";
+import axios from 'axios';
 
 const App = () => {
 
@@ -20,18 +21,21 @@ const App = () => {
       filterAlbums();
   }, [artistFilter, yearFilter]);
 
-  async function fetchAlbums() {
-    const app = new Realm.App({ id: "rankabl-bwhkm" });
-    const credentials = Realm.Credentials.anonymous();
-    try {
-      const user = await app.logIn(credentials);
-      const albums = await user.functions.getAllAlbums();
-      setAllAlbums(albums);
-      setAvailableAlbums(albums);
-      console.log(albums);
-    } catch(err) {
-      console.error("Failed to log in", err);
-    }
+  const fetchAlbums = () => {
+    axios.get('https://data.mongodb-api.com/app/rankabl-bwhkm/endpoint/albums', {
+      params: {
+        "verification_method": "SECRET_AS_QUERY_PARAM",
+        "secret": "temperature"
+      }
+    })
+    .then(response => {
+      console.log(response.data);
+      setAllAlbums(response.data);
+      setAvailableAlbums(response.data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
   }
 
   const filterAlbums = () => {
