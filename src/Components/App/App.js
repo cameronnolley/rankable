@@ -12,6 +12,7 @@ const App = () => {
   let [yearFilter, setYearFilter] = useState([]);
   let [allAlbums, setAllAlbums] = useState([]);
   let [availableAlbums, setAvailableAlbums] = useState([]);
+  let [loadedAlbums, setLoadedAlbums] = useState(false);
 
   useEffect(() => {
     fetchAlbums();
@@ -20,6 +21,12 @@ const App = () => {
   useEffect(() => {
       filterAlbums();
   }, [artistFilter, yearFilter]);
+
+  useEffect(() => {
+    if (allAlbums.length > 0) {
+      setLoadedAlbums(true);
+    }
+  }, [allAlbums])
 
   const fetchAlbums = () => {
     axios.get('https://data.mongodb-api.com/app/rankabl-bwhkm/endpoint/albums', {
@@ -70,7 +77,7 @@ const App = () => {
         <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} />
         <YearFilter onChange={filterYear} />
       </div>
-      <AlbumContainer albums={availableAlbums}/>
+      <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums}/>
     </div>
   );
 }

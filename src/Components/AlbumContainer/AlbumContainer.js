@@ -292,7 +292,7 @@ class AlbumContainer extends React.Component {
 
 
     render() {
-        const loadedAlbums = this.props.albums;
+        const albumsLoaded = this.props.albumsLoaded;
         /* if (this.state.availableAlbums === false) {
             return (
                 <div className='album-container' >
@@ -332,7 +332,7 @@ class AlbumContainer extends React.Component {
 
         return (
             <div className='album-container'>
-                {loadedAlbums.length > 0
+                {albumsLoaded
                 ? <div class='albums'>
                     <Album className='album' id='album1' album={this.state.album1} onClick={this.handleClick} />
                     <Album className='album' id='album2' album={this.state.album2} onClick={this.handleClick} />
