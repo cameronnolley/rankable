@@ -117,3 +117,14 @@ span {
     gap: 16px;
 }
 
+#album2 {
+    grid-column-start: 3;
+}
+
+.albums {
+    grid-column: span 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
