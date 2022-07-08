@@ -3,7 +3,6 @@ import AlbumContainer from '../AlbumContainer/AlbumContainer';
 import React, { useState, useEffect } from 'react';
 import ArtistFilter from '../ArtistFilter/ArtistFilter';
 import { YearFilter } from '../YearFilter/YearFilter';
-import * as Realm from "realm-web";
 import axios from 'axios';
 
 const App = () => {
@@ -13,6 +12,7 @@ const App = () => {
   let [allAlbums, setAllAlbums] = useState([]);
   let [availableAlbums, setAvailableAlbums] = useState([]);
   let [loadedAlbums, setLoadedAlbums] = useState(false);
+  let [filtersEnabled, setFiltersEnabled] = useState(false);
 
   useEffect(() => {
     fetchAlbums();
@@ -20,6 +20,11 @@ const App = () => {
 
   useEffect(() => {
       filterAlbums();
+      if (artistFilter.length > 0 || yearFilter.length > 0) {
+        setFiltersEnabled(true);
+      } else {
+        setFiltersEnabled(false);
+      }
   }, [artistFilter, yearFilter]);
 
   useEffect(() => {
@@ -44,6 +49,8 @@ const App = () => {
       console.log(err);
     });
   }
+
+  
 
   const filterAlbums = () => {
     if (artistFilter.length === 0 && yearFilter.length === 0) {
@@ -77,7 +84,7 @@ const App = () => {
         <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} />
         <YearFilter onChange={filterYear} />
       </div>
-      <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums}/>
+      <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums} filters={filtersEnabled} />
     </div>
   );
 }

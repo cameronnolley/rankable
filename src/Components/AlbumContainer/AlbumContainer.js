@@ -6,7 +6,6 @@ import { filterPairs, generatePairs } from "../../util/generatePairs";
 import seenPairs from "../../seenPairs";
 import { results } from "../../results";
 import { idIndex } from "../../idIndex.js";
-import * as Realm from "realm-web";
 import axios from "axios";
 
 const m4th = require('m4th');
@@ -115,7 +114,7 @@ class AlbumContainer extends React.Component {
                     result: -1
                 }
             }
-            results.push(result);
+            results.push(mongoResult);
             console.log(result);
             axios({
                 url: 'https://data.mongodb-api.com/app/rankabl-bwhkm/endpoint/results/save',
@@ -136,7 +135,7 @@ class AlbumContainer extends React.Component {
                     result: 1
                 }
             }
-            results.push(result);
+            results.push(mongoResult);
             console.log(result);
         }
         if (idIndex.findIndex(x => x === album1Id) === -1) {
@@ -149,9 +148,17 @@ class AlbumContainer extends React.Component {
 
 
     solveRanking() {
+        let formattedResults = [];
+        results.forEach(result => {
+            let newResult = {};
+            newResult[result.album1.id] = result.album1.result;
+            newResult[result.album2.id] = result.album2.result;
+            formattedResults.push(newResult);
+        });
+        console.log(formattedResults);
         let ids = [];
-        for (let i = 0; i < results.length; i++) {
-            ids.push(Object.keys(results[i]))
+        for (let i = 0; i < formattedResults.length; i++) {
+            ids.push(Object.keys(formattedResults[i]))
         };
         let flatIds = ids.flat();
         console.log(flatIds);
@@ -165,8 +172,8 @@ class AlbumContainer extends React.Component {
             matrix.set(i, i, flatIds.filter(id => id === idIndex[i]).length + 2);
             for (let j = i+1; j < idIndex.length; j++) {
                 let gameCount = matrix.get(i, j) || 0;
-                for (let k = 0; k < results.length; k++) {
-                    if (idIndex[i] in results[k] && idIndex[j] in results[k]) {
+                for (let k = 0; k < formattedResults.length; k++) {
+                    if (idIndex[i] in formattedResults[k] && idIndex[j] in formattedResults[k]) {
                         matrix.set(i, j, gameCount-1);
                         matrix.set(j, i, gameCount-1);
                     }
@@ -177,9 +184,9 @@ class AlbumContainer extends React.Component {
         let ratings = [];
         for (let i = 0; i < idIndex.length; i++) {
             let albumWL = [];
-            for (let j = 0; j < results.length; j++) {
-                if (idIndex[i] in results[j]) {
-                    albumWL.push(results[j][idIndex[i]])
+            for (let j = 0; j < formattedResults.length; j++) {
+                if (idIndex[i] in formattedResults[j]) {
+                    albumWL.push(formattedResults[j][idIndex[i]])
                 }
             };
             let albumRating = 1 + 0.5 * (albumWL.reduce((previousValue, currentValue) => previousValue + currentValue,
@@ -293,52 +300,28 @@ class AlbumContainer extends React.Component {
 
     render() {
         const albumsLoaded = this.props.albumsLoaded;
-        /* if (this.state.availableAlbums === false) {
-            return (
-                <div className='album-container' >
-                    <h1>No avalable pairs of albums. Change filter options and try again.</h1>
-                    <button className='skip skip-button' id="first" onClick={this.skip} disabled>Skip</button>
-                    <button className='skip skip-both' id='skip-both' onClick={this.skipBoth} disabled>Skip both</button>
-                    <button className='skip skip-button' id="second" onClick={this.skip} disabled>Skip</button>
-                    <p className='skip-error-message' id='skip-error-first' >No more available albums</p>
-                    <div></div>
-                    <p className='skip-error-message' id='skip-error-second' >No more available albums</p>
-                </div>
-            )
-        } else if (this.state.loading === true) {
-            return (
-                <div className="album-container">
-                    <span className='loader' ></span>
-                    <button className='skip skip-button' id='first' >Skip</button>
-                    <button className='skip skip-both' id='skip-both' >Skip both</button>
-                    <button className='skip skip-button'id='second' >Skip</button>
-                </div>
-            )
-        } else { 
-            return (
-                <div className='album-container'>
+        const filters = this.props.filters;
+        let view;
+        if (!albumsLoaded) {
+            view = <span className='loader' ></span>
+        } else if (this.state.loading) {
+            view = <span className='loader' ></span>
+        } else if (this.state.albumPairs.length === 0) {
+            if (filters) {
+                view = <h1>No available pairs of albums. Widen filters and try again.</h1>
+            } else {
+                view = <h1>No available pairs of albums.</h1>
+            }
+        } else {
+            view = <div className='albums'>
                     <Album className='album' id='album1' album={this.state.album1} onClick={this.handleClick} />
-                    <p className='skip-both-error' id='skip-both-error' >No more available albums</p>
                     <Album className='album' id='album2' album={this.state.album2} onClick={this.handleClick} />
-                    <button className='skip skip-button' id="first" onClick={this.skip} >Skip</button>
-                    <button className='skip skip-both' id='skip-both' onClick={this.skipBoth} >Skip both</button>
-                    <button className='skip skip-button' id="second" onClick={this.skip} >Skip</button>
-                    <p className='skip-error-message' id='skip-error-first' >No more available albums</p>
-                    <div></div>
-                    <p className='skip-error-message' id='skip-error-second' >No more available albums</p>
-                </div>
-            )
-        } */
+                   </div>
+        }
 
         return (
             <div className='album-container'>
-                {albumsLoaded
-                ? <div class='albums'>
-                    <Album className='album' id='album1' album={this.state.album1} onClick={this.handleClick} />
-                    <Album className='album' id='album2' album={this.state.album2} onClick={this.handleClick} />
-                  </div>
-                : <span className='loader' ></span>
-                }
+                {view}
                 <button className='skip skip-button' id="first" onClick={this.skip} >Skip</button>
                 <button className='skip skip-both' id='skip-both' onClick={this.skipBoth} >Skip both</button>
                 <button className='skip skip-button' id="second" onClick={this.skip} >Skip</button>
