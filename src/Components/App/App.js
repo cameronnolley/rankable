@@ -18,6 +18,7 @@ const App = () => {
   let [filtersEnabled, setFiltersEnabled] = useState(false);
   let [userId, setUserId] = useState('');
   let [userData, setUserData] = useState({ _id: '', userId: '', results: [], seenPairs: [] });
+  let [loadedUserData, setLoadedUserData] = useState(false);
 
   useEffect(() => {
     getUserId();
@@ -77,7 +78,10 @@ const App = () => {
       }).then (response => {
         if (response.data !== null) {
         setUserData(response.data);
+        setLoadedUserData(true);
         console.log(userData);
+        } else {
+          setLoadedUserData(true);
         }
       })
     }
@@ -115,7 +119,7 @@ const App = () => {
         <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} />
         <YearFilter onChange={filterYear} />
       </div>
-      <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums} filters={filtersEnabled} userId={userId} seenPairs={userData.seenPairs}/>
+      <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums} filters={filtersEnabled} userId={userId} seenPairs={userData.seenPairs} loadedUserData={loadedUserData}/>
     </div>
   );
 }

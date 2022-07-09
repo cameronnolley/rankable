@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Album from "../Album/Album";
 import './AlbumContainer.css';
 import albums from "../../database";
-import { filterPairs, generatePairs } from "../../util/generatePairs";
+import { generatePairs } from "../../util/generatePairs";
 import seenPairs from "../../seenPairs";
 import { results } from "../../results";
 import { idIndex } from "../../idIndex.js";
@@ -11,122 +11,130 @@ import { arrayEquals } from "../../util/generatePairs";
 
 const m4th = require('m4th');
 
-class AlbumContainer extends React.Component {
-    constructor(props) {
-        super(props);
+const AlbumContainer = (props) => {
+    
+    let [albumPairs, setAlbumPairs] = useState([]);
+    let [selectedPair, setSelectedPair] = useState([]);
+    let [album1, setAlbum1] = useState([]);
+    let [album2, setAlbum2] = useState([]);
+    let [availableAlbums, setAvailableAlbums] = useState(true);
+    let [loading, setLoading] = useState(false);
+    let [seenPairs, setSeenPairs] = useState([]);
+    let [needNewPair, setNeedNewPair] = useState(false);
 
-        this.state = {
-            albumPairs: [],
-            selectedPair: [],
-            album1: '',
-            album2: '',
-            availableAlbums: true,
-            loading: false,
-            seenPairs: []
-        };
+    useEffect(() => {
+        setLoading(true);
+    }, []);
 
-        this.getNewAlbums = this.getNewAlbums.bind(this);
-        this.handleClick = this.handleClick.bind(this);
-        this.skip = this.skip.bind(this);
-        this.skipBoth = this.skipBoth.bind(this);
-        this.filterAvailablePairs = this.filterAvailablePairs.bind(this);
-    }
-
-    async componentDidMount() {
-        if (this.props.albums) {
-            await this.setState({
-                albumPairs: generatePairs(this.props.albums)
+    useEffect(() => {
+        if (albumPairs.length === 0  && props.albumsLoaded && props.loadedUserData) {
+            console.log('Ready to generate pairs');
+            firstLoad()
+            .then(() => {
+                if (seenPairs.length === 0) {
+                    setNeedNewPair(true);
+                }
             });
-           this.getNewAlbums();
         }
+    }, [props.albumsLoaded, props.loadedUserData]);
+
+    useEffect(() => {
+        if (seenPairs.length > 0) {
+            seenPairsFilter()
+            .then(() => {
+                if (albumPairs.length > 0) {
+                    console.log('getting new pair');
+                    setNeedNewPair(true);
+                };
+            });
+        };
+    }, [seenPairs]);
+
+    useEffect(() => {
+        if (needNewPair && albumPairs.length > 0) {
+            getNewAlbums(albumPairs)
+            .then(() => {
+                setNeedNewPair(false);
+                setLoading(false);
+            });
+        }
+    }, [needNewPair]);
+
+    useEffect(() => {
+        if (props.albumsLoaded) {
+            filterPairs(props.albums)
+            .then(() => {
+            setLoading(true);
+            setNeedNewPair(true);
+        });
+        }
+    }, [props.albums]);
+
+    const firstLoad = async () => {
+        await setAlbumPairs(generatePairs(props.albums));
+        await setSeenPairs(props.seenPairs);
     }
 
-    async componentDidUpdate(prevProps) {
-        if(this.props.albums !== prevProps.albums) {
-            await this.setState({
-                albumPairs: filterPairs(this.props.albums),
-                loading: true
-            }, () => {
-                setTimeout(() => {
-                    this.setState({
-                        loading:false
-                    })
-                }, 500);
-            });
-            if (this.state.albumPairs.length > 0) {
-                this.setState({
-                    availableAlbums: true
-                })
+    const seenPairsFilter = async () => {
+        let seenPairsFilter = [];
+        await filterAvailablePairs(seenPairsFilter, albumPairs);
+        await setAlbumPairs(albumPairs.filter(pair => !seenPairsFilter.includes(pair)));
+        console.log('Filtered pairs by seen pairs');
+    }
+
+    const filterPairs = async (array) => {
+        const pairs = generatePairs(array);
+        let votedPairs = [];
+        for (let i = 0; i < pairs.length; i++) {
+            for (let j = 0; j < seenPairs.length; j++) {
+                if (arrayEquals(pairs[i], seenPairs[j])) {
+                    votedPairs.push(pairs[i]);
+                }
             }
-            this.getNewAlbums();
-        };
-        if(this.props.seenPairs !== prevProps.seenPairs && this.props.seenPairs.length > 0 && this.state.seenPairs.length === 0 && this.state.albumPairs.length > 0) {
-            await this.setState({
-                seenPairs: this.props.seenPairs
-            });
-            console.log('seenPairs set');
-            console.log(this.state.seenPairs);
-            console.log(this.state.albumPairs);
-            let seenPairsFilter = [];
-            await this.filterAvailablePairs(seenPairsFilter);
-            console.log(seenPairsFilter);
-            this.setState({
-                albumPairs: this.state.albumPairs.filter(pair => !seenPairsFilter.includes(pair))
-            });
-            console.log('availablePairs filtered');
         }
+        const finalTry = pairs.filter(pair => !votedPairs.includes(pair))
+        console.log(finalTry);
+        setAlbumPairs(finalTry)  
     }
 
-    selectAlbums(array) {
+    const selectAlbums = (array) => {
         const selectedPair = array[Math.floor(Math.random() * array.length)];
         return selectedPair;
     }
 
-    filterAvailablePairs(seenPairsFilter) {
-        for (let i = 0; i < this.state.albumPairs.length; i++) {
-            for (let j = 0; j < this.state.seenPairs.length; j++) {
-                if (arrayEquals(this.state.albumPairs[i], this.state.seenPairs[j])) {
-                    seenPairsFilter.push(this.state.albumPairs[i]);
+    const filterAvailablePairs = (seenPairsFilter, albumPairs) =>{
+        for (let i = 0; i < albumPairs.length; i++) {
+            for (let j = 0; j < seenPairs.length; j++) {
+                if (arrayEquals(albumPairs[i], seenPairs[j])) {
+                    seenPairsFilter.push(albumPairs[i]);
                 }
             }
         }
     }
 
-    async getNewAlbums() {
-        if (this.state.albumPairs.length === 0) {
-            this.setState({
-                loading: true
-            }, () => {
-                setTimeout(() => {
-                    this.setState({
-                        availableAlbums: false,
-                        loading:false
-                    })
-                }, 100);
-            })
-        } else {
-            const selectedAlbums = this.selectAlbums(this.state.albumPairs);
-            const album1Index = Math.floor(Math.random() * selectedAlbums.length);
-            const album2Index = 1 - album1Index;
-            await this.setState({
-                selectedPair: selectedAlbums,
-                album1: albums.find(album => album.id === selectedAlbums[album1Index]),
-                album2: albums.find(album => album.id === selectedAlbums[album2Index])
-            });
-            const errorMessages = Array.from(document.getElementsByClassName('skip-error-message'))
-            const skipButtons = Array.from(document.getElementsByClassName('skip-button'))
-            errorMessages.forEach(element => {
-                element.style.visibility = 'hidden';
-            });
-            skipButtons.forEach(element => {
-                element.removeAttribute('disabled');
-            });
-        }
+    const getNewAlbums= async (albumArray) => {
+        const selectedAlbums = selectAlbums(albumArray);
+        console.log(selectedAlbums);
+        const album1Index = Math.floor(Math.random() * selectedAlbums.length);
+        const album2Index = 1 - album1Index;
+        await setSelectedPair(selectedAlbums);
+        await setAlbum1(albums.find(album => album.id === selectedAlbums[album1Index]));
+        await setAlbum2(albums.find(album => album.id === selectedAlbums[album2Index]));
+        const errorMessages = Array.from(document.getElementsByClassName('skip-error-message'))
+        const skipButtons = Array.from(document.getElementsByClassName('skip-button'))
+        errorMessages.forEach(element => {
+            element.style.visibility = 'hidden';
+        });
+        skipButtons.forEach(element => {
+            element.removeAttribute('disabled');
+        });
+        setLoading(false);
+    
     }
 
-    pushResults(e) {
-        let album1Id = this.state.album1.id;
-        let album2Id = this.state.album2.id;
+    const pushResults = (e) => {
+        let album1Id = album1.id;
+        let album2Id = album2.id;
         let result = {};
         let mongoResult = {};
         if (e.currentTarget.id === 'album1') {
@@ -144,24 +152,21 @@ class AlbumContainer extends React.Component {
             }
             results.push(mongoResult);
             console.log(result);
-            this.setState({
-                loading: true
-            })
+            setLoading(true);
             axios({
                 url: 'https://data.mongodb-api.com/app/rankabl-bwhkm/endpoint/results/save',
                 method: 'POST',
                 params: {
-                    userId: this.props.userId,
+                    userId: props.userId,
                 },
                 data: {
                     result: mongoResult,
-                    seenPair: this.state.selectedPair
+                    seenPair: selectedPair
                 }
             }).then(res => {
+                setSeenPairs(res.data.userResult.seenPairs);
                 console.log(res.data.userResult.seenPairs);
-                this.setState({
-                    loading: false
-                })
+                setLoading(false);
             }).catch(err => {
                 console.log(err);
             });
@@ -191,7 +196,7 @@ class AlbumContainer extends React.Component {
     }
 
 
-    solveRanking() {
+    const solveRanking = () => {
         let formattedResults = [];
         results.forEach(result => {
             let newResult = {};
@@ -249,38 +254,17 @@ class AlbumContainer extends React.Component {
         return rankings;
     }
 
-    async handleClick(e) {
-        await this.pushResults(e);
-        console.log(this.solveRanking());
-        // await seenPairs.push(this.state.selectedPair);
-        await this.setState({
-            seenPairs: [...this.state.seenPairs, this.state.selectedPair]
-        })
-        await this.setState({
-            albumPairs: this.state.albumPairs.filter(pair => !this.state.seenPairs.includes(pair))
-        });
-        /* this.setState({
-            loading: true
-        }, () => {
-            setTimeout(() => {
-                this.setState({
-                    loading:false
-                })
-            }, 5);
-        }); */
-        this.getNewAlbums();
-        console.log(results);
-        console.log(idIndex);
-        console.log();
-        
+    const handleClick = async (e) => {
+        await pushResults(e);
+        console.log(solveRanking());
     }
 
-    skip(e) {
-        const album1Id = this.state.album1.id;
-        const album2Id = this.state.album2.id;
+    const skip = (e) => {
+        const album1Id = album1.id;
+        const album2Id = album2.id;
 
         if (e.target.id === 'second') {
-            const filteredArray = this.state.albumPairs.filter(function(pairs) {
+            const filteredArray = albumPairs.filter(function(pairs) {
                 return pairs.includes(album1Id) && !pairs.includes(album2Id)
             })
             if (filteredArray.length === 0) {
@@ -289,14 +273,12 @@ class AlbumContainer extends React.Component {
                 document.getElementById('skip-error-second').style.visibility = "visible"
                 return
             } else {
-                const newAlbums = this.selectAlbums(filteredArray);
-                this.setState({
-                    selectedPair: newAlbums,
-                    album2: albums.find(album => album.id === newAlbums.find(albumId => albumId !== album1Id))
-                })
+                const newAlbums = selectAlbums(filteredArray);
+                setSelectedPair(newAlbums);
+                setAlbum2(albums.find(album => album.id === newAlbums.find(albumId => albumId !== album1Id)));
             }
         } else if (e.target.id === 'first') {
-            const filteredArray = this.state.albumPairs.filter(function(pairs) {
+            const filteredArray = albumPairs.filter(function(pairs) {
                 return pairs.includes(album2Id) && !pairs.includes(album1Id)
             })
             if (filteredArray.length === 0) {
@@ -305,79 +287,64 @@ class AlbumContainer extends React.Component {
                 document.getElementById('skip-error-first').style.visibility = "visible"
                 return
             } else {
-                const newAlbums = this.selectAlbums(filteredArray);
-                this.setState({
-                    selectedPair: newAlbums,
-                    album1: albums.find(album => album.id === newAlbums.find(albumId => albumId !== album2Id))
-                })
+                const newAlbums = selectAlbums(filteredArray);
+                setSelectedPair(newAlbums);
+                setAlbum1(albums.find(album => album.id === newAlbums.find(albumId => albumId !== album2Id)));
             }
         }
     }
 
-    skipBoth() {
-        const album1Id = this.state.album1.id;
-        const album2Id = this.state.album2.id;
-        const filteredArray = this.state.albumPairs.filter(function(pairs) {
+    const skipBoth = () => {
+        const album1Id = album1.id;
+        const album2Id = album2.id;
+        const filteredArray = albumPairs.filter(function(pairs) {
             return !pairs.includes(album1Id) && !pairs.includes(album2Id)
         });
         if (filteredArray.length === 0) {
             document.getElementById('skip-both').setAttribute("disabled", "disabled");
             document.getElementById('skip-both-error').classList.add('is-visible');
         } else {
-            const selectedAlbums = this.selectAlbums(filteredArray);
+            const selectedAlbums = selectAlbums(filteredArray);
             const album1Index = Math.floor(Math.random() * selectedAlbums.length);
             const album2Index = 1 - album1Index;
-            this.setState({
-                selectedPair: selectedAlbums,
-                album1: albums.find(album => album.id === selectedAlbums[album1Index]),
-                album2: albums.find(album => album.id === selectedAlbums[album2Index])
-            });
-            this.setState({
-                loading: true
-            }, () => {
-                setTimeout(() => {
-                    this.setState({
-                        loading:false
-                    })
-                }, 500);
-            });
+            setSelectedPair(selectedAlbums);
+            setAlbum1(albums.find(album => album.id === selectedAlbums[album1Index]));
+            setAlbum2(albums.find(album => album.id === selectedAlbums[album2Index]));
         }
     }
 
 
-    render() {
-        const albumsLoaded = this.props.albumsLoaded;
-        const filters = this.props.filters;
-        let view;
-        if (!albumsLoaded) {
-            view = <span className='loader' ></span>
-        } else if (this.state.loading) {
-            view = <span className='loader' ></span>
-        } else if (this.state.albumPairs.length === 0) {
-            if (filters) {
-                view = <h1>No available pairs of albums. Widen filters and try again.</h1>
-            } else {
-                view = <h1>No available pairs of albums.</h1>
-            }
+    
+    const albumsLoaded = props.albumsLoaded;
+    const filters = props.filters;
+    let view;
+    if (loading) {
+        view = <span className='loader' ></span>
+    } else if (albumPairs.length === 0) {
+        if (filters) {
+            view = <h1>No available pairs of albums. Widen filters and try again.</h1>
         } else {
-            view = <div className='albums'>
-                    <Album className='album' id='album1' album={this.state.album1} onClick={this.handleClick} />
-                    <Album className='album' id='album2' album={this.state.album2} onClick={this.handleClick} />
-                   </div>
+            view = <h1>No available pairs of albums.</h1>
         }
-
-        return (
-            <div className='album-container'>
-                {view}
-                <button className='skip skip-button' id="first" onClick={this.skip} >Skip</button>
-                <button className='skip skip-both' id='skip-both' onClick={this.skipBoth} >Skip both</button>
-                <button className='skip skip-button' id="second" onClick={this.skip} >Skip</button>
-                <p className='skip-error-message' id='skip-error-first' >No more available albums</p>
-                <div></div>
-                <p className='skip-error-message' id='skip-error-second' >No more available albums</p>
-            </div>
-        )
+    } else {
+        view = <div className='albums'>
+                <Album className='album' id='album1' album={album1} onClick={handleClick} />
+                <Album className='album' id='album2' album={album2} onClick={handleClick} />
+                </div>
     }
+
+    return (
+        <div className='album-container'>
+            {view}
+            <button className='skip skip-button' id="first" onClick={skip} >Skip</button>
+            <button className='skip skip-both' id='skip-both' onClick={skipBoth} >Skip both</button>
+            <button className='skip skip-button' id="second" onClick={skip} >Skip</button>
+            <p className='skip-error-message' id='skip-error-first' >No more available albums</p>
+            <div></div>
+            <p className='skip-error-message' id='skip-error-second' >No more available albums</p>
+        </div>
+    )
+
 }
 
 export default AlbumContainer;

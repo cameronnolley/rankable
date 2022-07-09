@@ -15,18 +15,4 @@ export function arrayEquals(a, b) {
       a.every((val, index) => val === b[index]);
   }
 
-export const filterPairs = (array) => {
-    const pairs = generatePairs(array);
-    let votedPairs = [];
-    for (let i = 0; i < pairs.length; i++) {
-        for (let j = 0; j < seenPairs.length; j++) {
-            if (arrayEquals(pairs[i], seenPairs[j])) {
-                votedPairs.push(pairs[i]);
-            }
-        }
-    }
-    const finalTry = pairs.filter(pair => !votedPairs.includes(pair))
-    return finalTry;
-    
-}
 
