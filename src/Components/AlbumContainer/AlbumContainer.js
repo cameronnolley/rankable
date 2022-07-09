@@ -7,6 +7,7 @@ import seenPairs from "../../seenPairs";
 import { results } from "../../results";
 import { idIndex } from "../../idIndex.js";
 import axios from "axios";
+import { arrayEquals } from "../../util/generatePairs";
 
 const m4th = require('m4th');
 
@@ -28,6 +29,7 @@ class AlbumContainer extends React.Component {
         this.handleClick = this.handleClick.bind(this);
         this.skip = this.skip.bind(this);
         this.skipBoth = this.skipBoth.bind(this);
+        this.filterAvailablePairs = this.filterAvailablePairs.bind(this);
     }
 
     async componentDidMount() {
@@ -58,16 +60,36 @@ class AlbumContainer extends React.Component {
             }
             this.getNewAlbums();
         };
-        if(this.props.seenPairs !== prevProps.seenPairs) {
-            this.setState({
+        if(this.props.seenPairs !== prevProps.seenPairs && this.props.seenPairs.length > 0 && this.state.seenPairs.length === 0 && this.state.albumPairs.length > 0) {
+            await this.setState({
                 seenPairs: this.props.seenPairs
-            })
+            });
+            console.log('seenPairs set');
+            console.log(this.state.seenPairs);
+            console.log(this.state.albumPairs);
+            let seenPairsFilter = [];
+            await this.filterAvailablePairs(seenPairsFilter);
+            console.log(seenPairsFilter);
+            this.setState({
+                albumPairs: this.state.albumPairs.filter(pair => !seenPairsFilter.includes(pair))
+            });
+            console.log('availablePairs filtered');
         }
     }
 
     selectAlbums(array) {
         const selectedPair = array[Math.floor(Math.random() * array.length)];
         return selectedPair;
+    }
+
+    filterAvailablePairs(seenPairsFilter) {
+        for (let i = 0; i < this.state.albumPairs.length; i++) {
+            for (let j = 0; j < this.state.seenPairs.length; j++) {
+                if (arrayEquals(this.state.albumPairs[i], this.state.seenPairs[j])) {
+                    seenPairsFilter.push(this.state.albumPairs[i]);
+                }
+            }
+        }
     }
 
     async getNewAlbums() {

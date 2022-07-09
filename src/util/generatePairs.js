@@ -8,7 +8,7 @@ export const generatePairs = (array) => {
     };
     return results;
 }
-function arrayEquals(a, b) {
+export function arrayEquals(a, b) {
     return Array.isArray(a) &&
       Array.isArray(b) &&
       a.length === b.length &&
