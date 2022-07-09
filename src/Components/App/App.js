@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import ArtistFilter from '../ArtistFilter/ArtistFilter';
 import { YearFilter } from '../YearFilter/YearFilter';
 import axios from 'axios';
+import jsCookie from 'js-cookie';
+import uuid from 'uuid';
+import { get } from 'mongoose';
 
 const App = () => {
 
@@ -13,10 +16,17 @@ const App = () => {
   let [availableAlbums, setAvailableAlbums] = useState([]);
   let [loadedAlbums, setLoadedAlbums] = useState(false);
   let [filtersEnabled, setFiltersEnabled] = useState(false);
+  let [userId, setUserId] = useState('');
+  let [userData, setUserData] = useState({ _id: '', userId: '', results: [], seenPairs: [] });
 
   useEffect(() => {
+    getUserId();
     fetchAlbums();
   }, []) 
+
+  useEffect(() => {
+    getUserData();
+    }, [userId]);
 
   useEffect(() => {
       filterAlbums();
@@ -50,7 +60,28 @@ const App = () => {
     });
   }
 
-  
+  const getUserId = () => {
+    if (!jsCookie.get('user')) {
+      jsCookie.set('user', uuid.v4(), { expires: 10000 });
+    } else {
+      setUserId(jsCookie.get('user'));
+    }
+  }
+
+  const getUserData = () => {
+    if (userId !== '') {
+      axios.get('https://data.mongodb-api.com/app/rankabl-bwhkm/endpoint/getuser', {
+        params: {
+          userId: userId
+        }
+      }).then (response => {
+        if (response.data !== null) {
+        setUserData(response.data);
+        console.log(userData);
+        }
+      })
+    }
+  }
 
   const filterAlbums = () => {
     if (artistFilter.length === 0 && yearFilter.length === 0) {
@@ -84,7 +115,7 @@ const App = () => {
         <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} />
         <YearFilter onChange={filterYear} />
       </div>
-      <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums} filters={filtersEnabled} />
+      <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums} filters={filtersEnabled} userId={userId} seenPairs={userData.seenPairs}/>
     </div>
   );
 }

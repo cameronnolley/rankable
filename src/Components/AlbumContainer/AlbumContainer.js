@@ -21,6 +21,7 @@ class AlbumContainer extends React.Component {
             album2: '',
             availableAlbums: true,
             loading: false,
+            seenPairs: []
         };
 
         this.getNewAlbums = this.getNewAlbums.bind(this);
@@ -57,6 +58,11 @@ class AlbumContainer extends React.Component {
             }
             this.getNewAlbums();
         };
+        if(this.props.seenPairs !== prevProps.seenPairs) {
+            this.setState({
+                seenPairs: this.props.seenPairs
+            })
+        }
     }
 
     selectAlbums(array) {
@@ -116,11 +122,27 @@ class AlbumContainer extends React.Component {
             }
             results.push(mongoResult);
             console.log(result);
+            this.setState({
+                loading: true
+            })
             axios({
                 url: 'https://data.mongodb-api.com/app/rankabl-bwhkm/endpoint/results/save',
                 method: 'POST',
-                data: mongoResult
-            })
+                params: {
+                    userId: this.props.userId,
+                },
+                data: {
+                    result: mongoResult,
+                    seenPair: this.state.selectedPair
+                }
+            }).then(res => {
+                console.log(res.data.userResult.seenPairs);
+                this.setState({
+                    loading: false
+                })
+            }).catch(err => {
+                console.log(err);
+            });
         }
         if (e.currentTarget.id === 'album2') {
             result[album1Id] = -1;
@@ -208,19 +230,22 @@ class AlbumContainer extends React.Component {
     async handleClick(e) {
         await this.pushResults(e);
         console.log(this.solveRanking());
-        await seenPairs.push(this.state.selectedPair);
+        // await seenPairs.push(this.state.selectedPair);
         await this.setState({
-            albumPairs: this.state.albumPairs.filter(pair => !seenPairs.includes(pair))
+            seenPairs: [...this.state.seenPairs, this.state.selectedPair]
+        })
+        await this.setState({
+            albumPairs: this.state.albumPairs.filter(pair => !this.state.seenPairs.includes(pair))
         });
-        this.setState({
+        /* this.setState({
             loading: true
         }, () => {
             setTimeout(() => {
                 this.setState({
                     loading:false
                 })
-            }, 500);
-        });
+            }, 5);
+        }); */
         this.getNewAlbums();
         console.log(results);
         console.log(idIndex);
