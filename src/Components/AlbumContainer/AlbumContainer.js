@@ -64,7 +64,6 @@ const AlbumContainer = (props) => {
         if (props.albumsLoaded) {
             filterPairs(props.albums)
             .then(() => {
-            setLoading(true);
             setNeedNewPair(true);
         });
         }
