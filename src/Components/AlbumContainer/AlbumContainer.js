@@ -17,7 +17,6 @@ const AlbumContainer = (props) => {
     let [selectedPair, setSelectedPair] = useState([]);
     let [album1, setAlbum1] = useState([]);
     let [album2, setAlbum2] = useState([]);
-    let [availableAlbums, setAvailableAlbums] = useState(true);
     let [loading, setLoading] = useState(false);
     let [seenPairs, setSeenPairs] = useState([]);
     let [needNewPair, setNeedNewPair] = useState(false);
@@ -28,27 +27,26 @@ const AlbumContainer = (props) => {
 
     useEffect(() => {
         if (albumPairs.length === 0  && props.albumsLoaded && props.loadedUserData) {
-            console.log('Ready to generate pairs');
-            firstLoad()
-            .then(() => {
-                if (seenPairs.length === 0) {
-                    setNeedNewPair(true);
-                }
-            });
+            setSeenPairs(props.seenPairs)
         }
     }, [props.albumsLoaded, props.loadedUserData]);
 
     useEffect(() => {
-        if (seenPairs.length > 0) {
-            seenPairsFilter()
-            .then(() => {
-                if (albumPairs.length > 0) {
-                    console.log('getting new pair');
-                    setNeedNewPair(true);
-                };
-            });
+        if (props.loadedUserData && props.albums) {
+            const filteredPairs = filterPairs(props.albums)
+            console.log(filteredPairs);
+            setAlbumPairs(filteredPairs)
         };
     }, [seenPairs]);
+
+    useEffect(() => {
+        if (albumPairs.length > 0) {
+            setNeedNewPair(true);
+        } else if (props.albumsLoaded && props.loadedUserData) {
+            setTimeout(() => {setLoading(false)}, 300);
+            console.log(' no more albums ')
+        }
+    }, [albumPairs]);
 
     useEffect(() => {
         if (needNewPair && albumPairs.length > 0) {
@@ -62,17 +60,11 @@ const AlbumContainer = (props) => {
 
     useEffect(() => {
         if (props.albumsLoaded) {
-            filterPairs(props.albums)
-            .then(() => {
-            setNeedNewPair(true);
-        });
+            console.log('albums changed');
+            setLoading(true);
+            setTimeout(() => {setAlbumPairs(filterPairs(props.albums))}, 300);
         }
     }, [props.albums]);
-
-    const firstLoad = async () => {
-        await setAlbumPairs(generatePairs(props.albums));
-        await setSeenPairs(props.seenPairs);
-    }
 
     const seenPairsFilter = async () => {
         let seenPairsFilter = [];
@@ -81,8 +73,10 @@ const AlbumContainer = (props) => {
         console.log('Filtered pairs by seen pairs');
     }
 
-    const filterPairs = async (array) => {
+    const filterPairs = (array) => {
         const pairs = generatePairs(array);
+        console.log(pairs);
+        console.log(seenPairs);
         let votedPairs = [];
         for (let i = 0; i < pairs.length; i++) {
             for (let j = 0; j < seenPairs.length; j++) {
@@ -93,7 +87,7 @@ const AlbumContainer = (props) => {
         }
         const finalTry = pairs.filter(pair => !votedPairs.includes(pair))
         console.log(finalTry);
-        setAlbumPairs(finalTry)  
+        return finalTry;  
     }
 
     const selectAlbums = (array) => {
@@ -126,9 +120,7 @@ const AlbumContainer = (props) => {
         });
         skipButtons.forEach(element => {
             element.removeAttribute('disabled');
-        });
-        setLoading(false);
-    
+        }); 
     }
 
     const pushResults = (e) => {
@@ -165,7 +157,6 @@ const AlbumContainer = (props) => {
             }).then(res => {
                 setSeenPairs(res.data.userResult.seenPairs);
                 console.log(res.data.userResult.seenPairs);
-                setLoading(false);
             }).catch(err => {
                 console.log(err);
             });
@@ -312,9 +303,6 @@ const AlbumContainer = (props) => {
         }
     }
 
-
-    
-    const albumsLoaded = props.albumsLoaded;
     const filters = props.filters;
     let view;
     if (loading) {
