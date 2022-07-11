@@ -171,7 +171,7 @@
 }
 
 .placeholder {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
     color: #CFCFCF;
     height: 100%;
@@ -179,7 +179,7 @@
     position: relative;
     align-self: center;
     margin-left: 9px;
-    margin-top: 8px;
+    margin-top: 10px;
 }
 
 #decade {

@@ -40,11 +40,16 @@
     min-width: 160px !important;
     box-shadow:  4px 4px 7px #17141b,
                 -4px -4px 7px #2b263390;
+    padding-top: 8px;
                 
 }
 
 .option {
-    padding: 15px !important;
+    padding-left: 15px !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+    padding-right: 15px !important;
+
 }
 
 #artist-filter .option:hover {
@@ -75,6 +80,12 @@
     width: 108px;
     color: #CFCFCF;
     padding-left: 10px;
-    font-size: 18px;
+    font-size: 16px;
     height: 100%;
+    margin-top: 4px;
+}
+
+.multiSelectContainer ul {
+    padding-top: 8px;
+    padding-bottom: 8px;
 }

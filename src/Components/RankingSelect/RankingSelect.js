@@ -23,6 +23,7 @@ const RankingSelect = (props) => {
             hidePlaceholder="true"
             placeholder=""
             showArrow="true"
+            onSelect={props.onSelect}
         />
     )
 }

@@ -3,10 +3,61 @@ body {
 }
 
 .filters-rankings {
-    margin-left: 80px;
-    margin-right: 40px;
+    margin-left: 48px;
+    margin-right: 48px;
     display: flex;
     flex-direction: row;
     margin-bottom: 40px;
     gap: 24px;
+}
+
+#table-container .loader {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    background: linear-gradient(0deg, #675F99 33%, #AB9EFF 100%);
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    align-self: center;
+    justify-self: center;
+    left: 50%;
+    margin-top: 100px;
+}
+
+#table-container .loader::after {
+    content: '';  
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #211D27;
+    }
+    @keyframes rotation {
+    0% { transform: rotate(0deg) }
+    100% { transform: rotate(360deg)}
+} 
+
+.share {
+    height: 40px;
+    width: 120px;
+    background-color: #786EB2;
+    color: #FFFFFF;
+    border-radius: 20px;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    justify-self: end;
+    margin-left: auto;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.share:hover {
+
 }

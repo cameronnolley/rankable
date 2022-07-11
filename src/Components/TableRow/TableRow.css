@@ -1,10 +1,24 @@
+html i {
+    font-style: italic;
+}
+
 .table-row {
+    margin-left: 48px;
+    margin-right: 48px;
+    border-top: #CFCFCF20 1px solid;
     height: 120px;
-    margin-left: 40px;
-    margin-right: 40px;
+    overflow: hidden;
+    transition: all 0.3s ease-in;
+}
+
+.row-default {
     display: flex;
     flex-direction: row;
-    border-top: #CFCFCF20 1px solid;
+    height: 120px;
+}
+
+.table-row:hover {
+    background-color: #FFFFFF05;
 }
 
 #rank-cell {
@@ -100,3 +114,124 @@
     font-size: 14px;
 }
 
+#more-cell {
+    color: #cfcfcf;
+    padding: 16px;
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    margin-left: auto;
+}
+
+#more {
+    background: none;
+    visibility: hidden;
+    color: #cfcfcf;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: scale .2s ease-in-out;
+}
+
+.table-row:hover #more {
+    visibility: visible;
+}
+
+#more:hover {
+    transform: scale(1.1);
+}
+
+.row-expanded {
+    height: 288px;
+    background: linear-gradient(20deg, var(--bg-color) 15%, var(--bg-gradient));
+    padding: 36px;
+    display: flex;
+    gap: 40px;
+}
+
+.album-stats {
+    width: 400px;
+}
+
+.album-description {
+    width: 314px;
+    font-size: 12px;
+    color: var(--text-color-1);
+    overflow: scroll;
+    text-align: justify;
+}
+
+.album-description i {
+    font-style: italic;
+}
+
+.artist-info {
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.artist-artwork {
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
+}
+
+.artist-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-color-2);
+    text-align: center;
+}
+
+.other-album {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.other-album-rank {
+    width: 40px;
+    height: 20px;
+    border-radius: 10px;
+    border: var(--text-color-4) 1px solid;
+    color: var(--text-color-1);
+    font-size: 12px;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.other-album-image {
+    width: 60px;
+    height: 60px;
+}
+
+.other-album-name {
+    color: var(--text-color-1);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.other-albums {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: scroll;
+}
+
+.artist-stats {
+    font-size: 12px;
+    color: var(--text-color-1);
+}
+
+vl {
+    border-left: 1px solid var(--text-color-4);
+    height: 100%;
+    margin-left: 8px;
+    margin-right: 8px;
+}

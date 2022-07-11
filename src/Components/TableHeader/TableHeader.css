@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-left: 40px;
-    margin-right: 40px;
+    margin-left: 48px;
+    margin-right: 48px;
     color: #B5B5B5;
     font-size: 12px;
     font-weight: 600;
@@ -30,6 +30,7 @@
 }
 
 #type-label {
-    width: 120px;
+    width: 160px;
     padding-left: 16px;
+    padding-right: 16px;
 }
