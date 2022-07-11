@@ -1,0 +1,12 @@
+body {
+    margin-top: 200px;
+}
+
+.filters-rankings {
+    margin-left: 80px;
+    margin-right: 40px;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 40px;
+    gap: 24px;
+}

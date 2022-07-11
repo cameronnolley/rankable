@@ -1,0 +1,44 @@
+#ranking-select .closeIcon {
+    visibility: hidden;
+
+}
+
+#ranking-select .searchWrapper{
+    border: 1px solid #897ECC !important;
+    border-radius: 20px;
+    background-color: none !important;
+    height: 40px;
+    max-width: 128px;
+    min-width: 128px;
+    padding-left: 7px;
+}
+
+.searchWrapper:hover {
+    background-color: #362F40;
+}
+
+#ranking-select .chip {
+    color: #CFCFCF;
+    font-size: 18px;
+    background: none;
+
+}
+
+.selected {
+    border-radius: none;
+    background-color: #897ECC !important;
+}
+
+.option {
+    font-size: 18px;
+    color: #CFCFCF;
+}
+
+.multiSelectContainer li:hover {
+    color: #CFCFCF;
+    background-color: #897ECC50;
+}
+
+
+
+

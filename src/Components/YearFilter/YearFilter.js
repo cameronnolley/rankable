@@ -102,17 +102,17 @@ export const YearFilter = (props) => {
 
     function selectYear(e) {
         
-        if (e.target.classList.contains("selected")) {
+        if (e.target.classList.contains("year-selected")) {
             onRemoveSelectedItem(e.target.innerHTML)
             if (e.target.classList.contains('aughts')) {
-                document.getElementById('select-all-aughts').classList.remove('selected');
+                document.getElementById('select-all-aughts').classList.remove('year-selected');
             } else if (e.target.classList.contains('teens')) {
-                document.getElementById('select-all-teens').classList.remove('selected');
+                document.getElementById('select-all-teens').classList.remove('year-selected');
             } else if (e.target.classList.contains('twenties')) {
-                document.getElementById('select-all-twenties').classList.remove('selected');
+                document.getElementById('select-all-twenties').classList.remove('year-selected');
             }
         } else {
-            e.target.classList.toggle("selected");
+            e.target.classList.toggle("year-selected");
             let newList = [...selectedList, e.target.innerHTML];
             setSelectedList(newList.sort());
         }
@@ -120,33 +120,33 @@ export const YearFilter = (props) => {
 
     function selectDecade(e) {
         if (e.target.classList.contains('aughts')) {
-            if (!e.target.classList.contains('selected')) {
+            if (!e.target.classList.contains('year-selected')) {
                 let pushedArray = aughts.filter(year => !selectedList.includes(year));
                 setSelectedList([...selectedList, ...pushedArray]);
-                Array.from(document.querySelectorAll('.aughts')).forEach((el) => el.classList.add('selected')); 
+                Array.from(document.querySelectorAll('.aughts')).forEach((el) => el.classList.add('year-selected')); 
             } else {
                 setSelectedList(selectedList.filter(year => !aughts.includes(year)))
-                Array.from(document.querySelectorAll('.aughts')).forEach((el) => el.classList.remove('selected'));
+                Array.from(document.querySelectorAll('.aughts')).forEach((el) => el.classList.remove('year-selected'));
                 document.getElementById('select-all-aughts').innerHTML = 'Select All';
             }
         } else if (e.target.classList.contains('teens')) {
-            if (!e.target.classList.contains('selected')) {
+            if (!e.target.classList.contains('year-selected')) {
                 let pushedArray = teens.filter(year => !selectedList.includes(year));
                 setSelectedList([...selectedList, ...pushedArray]);
-                Array.from(document.querySelectorAll('.teens')).forEach((el) => el.classList.add('selected')); 
+                Array.from(document.querySelectorAll('.teens')).forEach((el) => el.classList.add('year-selected')); 
             } else {
                 setSelectedList(selectedList.filter(year => !teens.includes(year)))
-                Array.from(document.querySelectorAll('.teens')).forEach((el) => el.classList.remove('selected'));
+                Array.from(document.querySelectorAll('.teens')).forEach((el) => el.classList.remove('year-selected'));
                 document.getElementById('select-all-teens').innerHTML = 'Select All';
             }
         } else if (e.target.classList.contains('twenties')) {
-            if (!e.target.classList.contains('selected')) {
+            if (!e.target.classList.contains('year-selected')) {
                 let pushedArray = twenties.filter(year => !selectedList.includes(year));
                 setSelectedList([...selectedList, ...pushedArray]);
-                Array.from(document.querySelectorAll('.twenties')).forEach((el) => el.classList.add('selected')); 
+                Array.from(document.querySelectorAll('.twenties')).forEach((el) => el.classList.add('year-selected')); 
             } else {
                 setSelectedList(selectedList.filter(year => !twenties.includes(year)))
-                Array.from(document.querySelectorAll('.twenties')).forEach((el) => el.classList.remove('selected'));
+                Array.from(document.querySelectorAll('.twenties')).forEach((el) => el.classList.remove('year-selected'));
                 document.getElementById('select-all-twenties').innerHTML = 'Select All';
             }
         }
@@ -162,21 +162,21 @@ export const YearFilter = (props) => {
             chipArray = chipArray.filter(year=> !aughts.includes(year));
             chipArray.push("2000's")
             chipArray.sort()
-            document.getElementById('select-all-aughts').classList.add("selected");
+            document.getElementById('select-all-aughts').classList.add("year-selected");
             document.getElementById('select-all-aughts').innerHTML = 'Remove All'
         }
         if (teens.every(year => chipArray.includes(year))) {
             chipArray = chipArray.filter(year=> !teens.includes(year));
             chipArray.push("2010's")
             chipArray.sort();
-            document.getElementById('select-all-teens').classList.add("selected");
+            document.getElementById('select-all-teens').classList.add("year-selected");
             document.getElementById('select-all-teens').innerHTML = 'Remove All'
         }
         if (twenties.every(year => chipArray.includes(year))) {
             chipArray = chipArray.filter(year=> !twenties.includes(year));
             chipArray.push("2020's")
             chipArray.sort();
-            document.getElementById('select-all-twenties').classList.add("selected");
+            document.getElementById('select-all-twenties').classList.add("year-selected");
             document.getElementById('select-all-twenties').innerHTML = 'Remove All'
         }
         if (selectedList.length === 0) {
@@ -199,25 +199,25 @@ export const YearFilter = (props) => {
     function onRemoveSelectedItem(item) {
         if (item === "2000's") {
             setSelectedList(selectedList.filter(year => !aughts.includes(year)))
-            Array.from(document.querySelectorAll('.aughts')).forEach((el) => el.classList.remove('selected'));
+            Array.from(document.querySelectorAll('.aughts')).forEach((el) => el.classList.remove('year-selected'));
             document.getElementById('select-all-aughts').innerHTML = 'Select All';
         } else if (item === "2010's") {
             setSelectedList(selectedList.filter(year => !teens.includes(year)))
-            Array.from(document.querySelectorAll('.teens')).forEach((el) => el.classList.remove('selected'));
+            Array.from(document.querySelectorAll('.teens')).forEach((el) => el.classList.remove('year-selected'));
             document.getElementById('select-all-teens').innerHTML = 'Select All';
         } else if (item === "2020's") {
             setSelectedList(selectedList.filter(year => !twenties.includes(year)))
-            Array.from(document.querySelectorAll('.twenties')).forEach((el) => el.classList.remove('selected'));
+            Array.from(document.querySelectorAll('.twenties')).forEach((el) => el.classList.remove('year-selected'));
             document.getElementById('select-all-twenties').innerHTML = 'Select All';
         } else {
             setSelectedList(selectedList.filter(year => year !== item));
-            document.getElementById(item).classList.remove("selected");
+            document.getElementById(item).classList.remove("year-selected");
             if (document.getElementById(item).classList.contains('aughts')) {
-                document.getElementById('select-all-aughts').classList.remove("selected");
+                document.getElementById('select-all-aughts').classList.remove("year-selected");
             } else if (document.getElementById(item).classList.contains('teens')) {
-                document.getElementById('select-all-teens').classList.remove("selected");
+                document.getElementById('select-all-teens').classList.remove("year-selected");
             } else if (document.getElementById(item).classList.contains('twenties')) {
-                document.getElementById('select-all-twenties').classList.remove("selected");
+                document.getElementById('select-all-twenties').classList.remove("year-selected");
             }
         }
 		

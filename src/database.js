@@ -127,7 +127,7 @@ const albums = [
     },
     {
         "id": "1440841363",
-        "type": "albums",
+        "type": "Studio album",
         "href": "/v1/catalog/us/albums/1440841363",
         "attributes": {
             "artwork": {
@@ -169,7 +169,7 @@ const albums = [
     },
     {
         "id": "1440829462",
-        "type": "albums",
+        "type": "Studio album",
         "href": "/v1/catalog/us/albums/1440829462",
         "attributes": {
             "artwork": {
@@ -215,7 +215,7 @@ const albums = [
     },
     {
         "id": "1621803882",
-        "type": "albums",
+        "type": "Studio album",
         "href": "/v1/catalog/us/albums/1621803882",
         "attributes": {
             "artwork": {

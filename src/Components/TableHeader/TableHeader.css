@@ -1,0 +1,35 @@
+.table-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 40px;
+    margin-right: 40px;
+    color: #B5B5B5;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+#rank-label {
+    width: 160px;
+    display: flex;
+    justify-content: center;
+}
+
+#album-label {
+    flex-direction: row;
+    width: 480px;
+    align-items: center;
+    padding: 12px;
+}
+
+#release-label {
+    width: 200px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+#type-label {
+    width: 120px;
+    padding-left: 16px;
+}

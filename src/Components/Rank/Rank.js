@@ -1,4 +1,4 @@
-import './App.css';
+import './Rank.css';
 import AlbumContainer from '../AlbumContainer/AlbumContainer';
 import React, { useState, useEffect } from 'react';
 import ArtistFilter from '../ArtistFilter/ArtistFilter';
@@ -6,7 +6,6 @@ import { YearFilter } from '../YearFilter/YearFilter';
 import axios from 'axios';
 import jsCookie from 'js-cookie';
 import uuid from 'uuid';
-import { get } from 'mongoose';
 
 const App = () => {
 
@@ -116,7 +115,7 @@ const App = () => {
   return (
     <div className="App">
       <div className='filters'>
-        <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} />
+        <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} albums={allAlbums}/>
         <YearFilter onChange={filterYear} />
       </div>
       <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums} filters={filtersEnabled} userId={userId} seenPairs={userData.seenPairs} loadedUserData={loadedUserData}/>

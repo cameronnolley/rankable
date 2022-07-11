@@ -9,9 +9,18 @@ class ArtistFilter extends React.Component {
         super(props);
 
         this.state = {
-            options: getArtists(albums)
+            options: []
         };
     }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.albums !== this.props.albums) {
+            this.setState({
+                options: getArtists(this.props.albums)
+            });
+        }
+    }
+
 
     onSelect(selectedList, selectedItem) {
         // this.props.onSelect(selectedList, selectedItem);
@@ -23,7 +32,7 @@ class ArtistFilter extends React.Component {
 
     render() {
         return (
-            <Multiselect
+            <Multiselect id='artist-filter'
             options={this.state.options} // Options to display in the dropdown
             selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
             onSelect={this.props.onSelect} // Function will trigger on select event

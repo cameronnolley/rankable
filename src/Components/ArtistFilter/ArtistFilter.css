@@ -1,21 +1,22 @@
-.searchWrapper {
+#artist-filter .searchWrapper {
     min-height: 40px !important;
     min-width: 108px;
-    border: none !important;
+    /* border: none !important; */
+    border: 1px solid #897ECC;
     border-radius: 20px !important;
     max-width: 300px;
     align-content: center;
     padding-left: 7px !important;
     align-items: center;
-    box-shadow: 4px 4px 7px #17141b90,
-                -4px -4px 7px #2b2633;
-    background-color: #362F40 !important;
+    /* box-shadow: 4px 4px 7px #17141b90,
+                -4px -4px 7px #2b2633; 
+    background-color: #362F40 !important; */
     transition: all 0.5s;
     margin-bottom: 8px;
 }
 
 .searchWrapper:hover {
-    background-color: #4F476F;
+    background-color: #362F40;
 }
 
 .searchBox::placeholder {
@@ -46,11 +47,12 @@
     padding: 15px !important;
 }
 
-.option:hover {
-    background-color: #897ECC !important;
+#artist-filter .option:hover {
+    background-color: #897ECC50 !important;
+    color: #CFCFCF !important;
 }
 
-.chip {
+#artist-filter .chip {
     border-radius: 20px !important;
     background-color: #897ECC !important;
     margin-bottom: 2px !important;

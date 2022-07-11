@@ -34,7 +34,6 @@ const AlbumContainer = (props) => {
     useEffect(() => {
         if (props.loadedUserData && props.albums) {
             const filteredPairs = filterPairs(props.albums)
-            console.log(filteredPairs);
             setAlbumPairs(filteredPairs)
         };
     }, [seenPairs]);
@@ -75,8 +74,6 @@ const AlbumContainer = (props) => {
 
     const filterPairs = (array) => {
         const pairs = generatePairs(array);
-        console.log(pairs);
-        console.log(seenPairs);
         let votedPairs = [];
         for (let i = 0; i < pairs.length; i++) {
             for (let j = 0; j < seenPairs.length; j++) {
@@ -86,7 +83,6 @@ const AlbumContainer = (props) => {
             }
         }
         const finalTry = pairs.filter(pair => !votedPairs.includes(pair))
-        console.log(finalTry);
         return finalTry;  
     }
 
@@ -107,7 +103,6 @@ const AlbumContainer = (props) => {
 
     const getNewAlbums= async (albumArray) => {
         const selectedAlbums = selectAlbums(albumArray);
-        console.log(selectedAlbums);
         const album1Index = Math.floor(Math.random() * selectedAlbums.length);
         const album2Index = 1 - album1Index;
         await setSelectedPair(selectedAlbums);
@@ -199,20 +194,23 @@ const AlbumContainer = (props) => {
         for (let i = 0; i < formattedResults.length; i++) {
             ids.push(Object.keys(formattedResults[i]))
         };
+        console.log(ids);
         let flatIds = ids.flat();
         console.log(flatIds);
+        let uniqueIds = [...new Set(flatIds)];
+        console.log(uniqueIds);
         console.log(idIndex);
         console.log(idIndex.length);
-        let matrix = m4th.matrix(idIndex.length);
+        let matrix = m4th.matrix(uniqueIds.length);
         matrix = matrix.map(function(element){
             return 0;
           });
-        for (let i = 0; i < idIndex.length; i++) {
-            matrix.set(i, i, flatIds.filter(id => id === idIndex[i]).length + 2);
-            for (let j = i+1; j < idIndex.length; j++) {
+        for (let i = 0; i < uniqueIds.length; i++) {
+            matrix.set(i, i, flatIds.filter(id => id === uniqueIds[i]).length + 2);
+            for (let j = i+1; j < uniqueIds.length; j++) {
                 let gameCount = matrix.get(i, j) || 0;
                 for (let k = 0; k < formattedResults.length; k++) {
-                    if (idIndex[i] in formattedResults[k] && idIndex[j] in formattedResults[k]) {
+                    if (uniqueIds[i] in formattedResults[k] && uniqueIds[j] in formattedResults[k]) {
                         matrix.set(i, j, gameCount-1);
                         matrix.set(j, i, gameCount-1);
                     }
@@ -221,23 +219,23 @@ const AlbumContainer = (props) => {
         }
         console.log(matrix);
         let ratings = [];
-        for (let i = 0; i < idIndex.length; i++) {
+        for (let i = 0; i < uniqueIds.length; i++) {
             let albumWL = [];
             for (let j = 0; j < formattedResults.length; j++) {
-                if (idIndex[i] in formattedResults[j]) {
-                    albumWL.push(formattedResults[j][idIndex[i]])
+                if (uniqueIds[i] in formattedResults[j]) {
+                    albumWL.push(formattedResults[j][uniqueIds[i]])
                 }
             };
             let albumRating = 1 + 0.5 * (albumWL.reduce((previousValue, currentValue) => previousValue + currentValue,
             0));
             ratings.push(albumRating);
         }
-        let y = m4th.matrix(idIndex.length, ratings);
+        let y = m4th.matrix(uniqueIds.length, ratings);
         const solution = m4th.lu(matrix).solve(y);
         const rankings = [];
-        for (let i = 0; i < idIndex.length; i++) {
+        for (let i = 0; i < uniqueIds.length; i++) {
             rankings.push({
-                albumId: idIndex[i],
+                albumId: uniqueIds[i],
                 rating: solution.array[i]
             })
         };

@@ -1,0 +1,102 @@
+.table-row {
+    height: 120px;
+    margin-left: 40px;
+    margin-right: 40px;
+    display: flex;
+    flex-direction: row;
+    border-top: #CFCFCF20 1px solid;
+}
+
+#rank-cell {
+    width: 160px;
+}
+
+#album-cell {
+    flex-direction: row;
+    width: 480px;
+    align-items: center;
+    padding: 12px;  
+}
+
+.album-info {
+    display: flex;
+    height: 96px;
+    
+}
+
+.albumArtwork {
+    width: 96px;
+    height: 96px;
+}
+
+.album-name-artist {
+    display: flex;
+    padding: 16px;
+    text-align: left;
+    align-items: center;
+    
+}
+
+.album-name-table {
+    margin-block-start: 4px;
+    margin-block-end: 4px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #CFCFCF;
+}
+
+.album-artist-table {
+    margin-block-start: 4px;
+    margin-block-end: 4px;
+    font-size: 14px;
+    color: #B5B5B5;
+}
+
+.album-text {
+    align-self: center;
+}
+
+.rank-container {
+    height: 24px;
+    width: 48px;
+    border: #897ECC95 1px solid;
+    border-radius: 12px;
+    color: #cfcfcf;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#rank-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#rank-cell p {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    text-align: center;
+}
+
+#release-cell {
+    color: #cfcfcf;
+    padding: 16px;
+    width: 200px;
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    font-size: 14px;
+}
+
+#type-cell {
+    color: #cfcfcf;
+    padding: 16px;
+    width: 160px;
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    font-size: 14px;
+}
+
