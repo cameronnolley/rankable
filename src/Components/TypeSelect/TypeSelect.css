@@ -1,0 +1,66 @@
+#type-select .searchWrapper{
+    border: 1px solid #897ECC !important;
+    border-radius: 20px;
+    background-color: none !important;
+    height: 40px;
+    max-width: 168px;
+    min-width: 128px;
+    padding-left: 7px;
+    transition: all 0.5s ease-out; 
+    display: flex;
+    align-items: center;
+}
+
+.searchWrapper:hover {
+    background-color: #362F40;
+}
+
+#type-select .chip {
+    color: #FFFFFF;
+    background: none;
+    margin-bottom: 0px;
+    border-radius: 20px !important;
+    background-color: #897ECC;
+
+}
+
+.selected {
+    border-radius: none;
+    background-color: #897ECC90 !important;
+}
+
+#type-select .option {
+    font-size: 14px;
+    color: #CFCFCF;
+}
+
+.multiSelectContainer li:hover {
+    color: #CFCFCF;
+    background-color: #897ECC50;
+}
+
+#type-select .optionContainer {
+    border-radius: 20px !important;
+    max-width: 128px !important;
+    min-width: 0px !important;
+    margin-top: 4px;
+}
+
+.searchBox::placeholder {
+    color: #CFCFCF;
+    
+}
+
+#type-select .searchBox {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    margin-top: 0px;
+    padding-left: 10px;
+}
+
+#type-select .multiSelectContainer input {
+    margin-top: 0px;
+}
+
+

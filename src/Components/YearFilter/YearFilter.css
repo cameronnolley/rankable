@@ -6,13 +6,8 @@
     transition: all 0.5s;
     color: #CFCFCF;
     background-color: #362F40;
-    /* background: none; */
-    border: 1px solid #897ECC00;
-    box-shadow: 4px 4px 7px #17141b90,
-                -4px -4px 7px #2b2633;
-    /* box-shadow: inset 4px 4px 7px #17141b,
-                inset -4px -4px 7px #2b2633;
-    border: none; */
+    background: none;
+    border: 1px solid #897ECC;
     margin-bottom: 8px;
     align-content: center;
     align-items: center;

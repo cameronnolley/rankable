@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import TableRow from "../TableRow/TableRow";
 import axios from "axios";
 import TableHeader from "../TableHeader/TableHeader";
 import './Rankings.css';
 import RankingSelect from "../RankingSelect/RankingSelect";
 import ArtistFilter from "../ArtistFilter/ArtistFilter";
+import { YearFilter } from "../YearFilter/YearFilter";
 import solveRanking from "../../util/solveRanking";
 import jsCookie from "js-cookie";
 import uuid from "uuid";
+import TypeSelect from "../TypeSelect/TypeSelect";
 
 const Rankings = () => {
 
@@ -16,14 +18,20 @@ const Rankings = () => {
     let [resultsUser, setResultsUser] = useState([]);
     let [rankingGlobal, setRankingGlobal] = useState([]);
     let [rankingUser, setRankingUser] = useState([]);
+    let [currentRanking, setCurrentRanking] = useState([]);
     let [userId, setUserId] = useState('');
     let [selectedRanking, setSelectedRanking] = useState('global');
     let [isLoading, setIsLoading] = useState(false);
+    let [rowExpanded, setRowExpanded] = useState('');
+    let [artistFilter, setArtistFilter] = useState([]);
+    let [yearFilter, setYearFilter] = useState([]);
+    let [typeFilter, setTypeFilter] = useState([]);
 
     useEffect(() => {
         getUserId();
         fetchAlbums();
         fetchResults();
+        setIsLoading(true);
     }, []);
 
     useEffect(() => {
@@ -43,11 +51,42 @@ const Rankings = () => {
     }, [resultsUser]);
 
     useEffect(() => {
+        if (selectedRanking === 'global') {
+            setCurrentRanking(rankingGlobal);
+        }
+        if (rankingGlobal) {
+            setIsLoading(false);
+        }
+    }, [rankingGlobal]);
+
+    useEffect(() => {
         setIsLoading(true);
         setTimeout(() => {
             setIsLoading(false);
         }, 500);
+        filterRankings();
+
     }, [selectedRanking]);
+
+    useEffect(() => {
+        filterRankings(); 
+    }, [artistFilter, yearFilter, typeFilter]);
+
+    useEffect(() => {
+        if (prevRow !== '' && rowExpanded !== '') {
+            closeRow(prevRow);
+        }
+    }, [rowExpanded]);
+
+    function usePrevious(value) {
+        const ref = useRef();
+        useEffect(() => {
+          ref.current = value;
+        });
+        return ref.current;
+      }
+
+    const prevRow = usePrevious(rowExpanded);
 
     const getUserId = () => {
         if (!jsCookie.get('user')) {
@@ -102,13 +141,98 @@ const Rankings = () => {
         setSelectedRanking(selectedItem[0].value);
     };
 
+    const getTypeOptions = () => {
+        let options = [];
+        albums.forEach(album => {
+            if (!options.some(type => type.label === album.type)) {
+                options.push({
+                    label: album.type,
+                    value: album.type
+                });
+            }
 
-    const renderTable = (ranking) => {
+        });
+        console.log(options);
+        return options;
+    }
+
+    const isExpanded = (id) => {
+        setRowExpanded(id);
+    };
+
+    const filterArtist = (selectedList) => {
+        const artistFilter = selectedList.map(artist => artist.name);
+        setArtistFilter(artistFilter);
+    }
+
+    const filterYear = (selectedList) => {
+        setYearFilter(selectedList);
+    }
+
+    const filterType = (selectedList) => {
+        setTypeFilter(selectedList);
+    }
+
+    const filterRankings = () => {
+        if (artistFilter.length === 0 && yearFilter.length === 0 && typeFilter.length === 0) {
+            if (selectedRanking === 'global') {
+                setCurrentRanking(rankingGlobal);
+            } else if (selectedRanking === 'personal') {
+                setCurrentRanking(rankingUser);
+            }
+        } else {
+            let filteredIds = albums.map(album => album.id);
+            console.log(filteredIds);
+            if (artistFilter.length > 0) {
+                albums.forEach(album => {
+                    if (Array.isArray(album.attributes.artistName)) {
+                        if (album.attributes.artistName.some(artist => artistFilter.includes(artist)) === false) {
+                            filteredIds.splice(filteredIds.findIndex(id => id === album.id), 1);
+                        }
+                    } else { 
+                        if ((artistFilter.some(artist => artist === album.attributes.artistName)) === false) {
+                            filteredIds.splice(filteredIds.findIndex(id => id === album.id), 1);
+                        }
+                    }
+                });
+            }
+            if (yearFilter.length > 0) {
+                let yearIds = albums.filter(album => yearFilter.some(year => album.attributes.releaseDate.includes(year))).map(album => album.id);
+                filteredIds = filteredIds.filter(id => yearIds.includes(id));
+            }
+            if (typeFilter.length > 0) {
+                let typeIds = albums.filter(album => typeFilter[0].value === album.type).map(album => album.id);
+                filteredIds = filteredIds.filter(id => typeIds.includes(id));
+            }
+            let filteredRanking = [];
+            selectedRanking === 'global' ? filteredRanking = rankingGlobal.filter(album => filteredIds.includes(album.albumId)) : filteredRanking = rankingUser.filter(album => filteredIds.includes(album.albumId));
+            setCurrentRanking(filteredRanking);
+        }
+    };
+
+    const closeRow = (id) => {
+        document.getElementById(`table-row-${id}`).style.height = '120px';
+        document.getElementById(`more ${id}`).innerHTML = 'More';
+        document.getElementById(`more ${id}`).style.visibility = '';
+    }
+
+    const renderTable = () => {
         if (isLoading) {
             return <span className='loader' ></span>
         } else {
-            return ranking.map((result, index) => (
-                <TableRow key={index} album={albums.find(album => album.id === result.albumId)} rank={index + 1} albums={albums} ranking={rankingGlobal}/>
+            return currentRanking.map((result, index) => (
+                <TableRow 
+                    key={index} 
+                    album={albums.find(album => album.id === result.albumId)} 
+                    rank={index + 1} 
+                    albums={albums} 
+                    rankingGlobal={rankingGlobal} 
+                    rankingUser={rankingUser}
+                    resultsGlobal={resultsGlobal} 
+                    resultsUser={resultsUser}
+                    selectedRanking={selectedRanking}
+                    isExpanded={isExpanded}
+                />
             ));
         }
     }
@@ -117,12 +241,18 @@ const Rankings = () => {
         <div>
             <div className='filters-rankings'>
                 <RankingSelect onSelect={changeRanking}/>
-                <ArtistFilter />
+                <ArtistFilter albums={albums} onSelect={filterArtist} onRemove={filterArtist} />
+                <YearFilter onChange={filterYear} />
+                <TypeSelect options={getTypeOptions()} onSelect={filterType} onRemove={filterType} />
                 <button className='share'>Share</button>
+                
             </div>
             <TableHeader />
             <div className='table-container' id='table-container'>
-                {selectedRanking === 'personal' ? renderTable(rankingUser) : renderTable(rankingGlobal)}
+                {renderTable()}
+            </div>
+            <div className='embed'>
+                
             </div>
         </div>
     );

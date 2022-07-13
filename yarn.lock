@@ -9339,6 +9339,11 @@ react-is@^18.0.0:
   resolved "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
+react-music-embed@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-music-embed/-/react-music-embed-1.0.1.tgz#c774ef9b5ca7caa3edb6b654d76ea9896ad17bec"
+  integrity sha512-j6fWYt0dP+WIyp+EQlUSJjlWYC1vaKId3TYRSj6WFYJUUNPe9VgEpteYgSJpkPCFxkE/z+M358I8Nd1K8xBI/A==
+
 react-router-dom@^6.3.0:
   version "6.3.0"
   resolved "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.3.0.tgz"

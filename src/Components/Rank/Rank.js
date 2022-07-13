@@ -89,18 +89,28 @@ const App = () => {
   const filterAlbums = () => {
     if (artistFilter.length === 0 && yearFilter.length === 0) {
       setAvailableAlbums(allAlbums);
-    } else if (artistFilter.length > 0 && yearFilter.length === 0) {
-      const filteredAlbums = allAlbums.filter(album => artistFilter.includes(album.attributes.artistName));
-      setAvailableAlbums(filteredAlbums);
-    } else if (artistFilter.length === 0 && yearFilter.length > 0) {
-      const filteredAlbums = allAlbums.filter(album => yearFilter.some(year => album.attributes.releaseDate.includes(year)))
-      setAvailableAlbums(filteredAlbums);
-    } else if (artistFilter.length > 0 && yearFilter.length > 0) {
-      const filteredAlbums = allAlbums.filter(album => artistFilter.includes(album.attributes.artistName));
-      const doubleFilter = filteredAlbums.filter(album => yearFilter.some(year => album.attributes.releaseDate.includes(year)));
-      setAvailableAlbums(doubleFilter);
+    } else {
+      let filteredAlbums = [];
+      if (artistFilter.length > 0) {
+        allAlbums.forEach(album => {
+            if (Array.isArray(album.attributes.artistName)) {
+              if (album.attributes.artistName.some(artist => artistFilter.includes(artist))) {
+                filteredAlbums.push(album);
+              } 
+            } else {
+              if (artistFilter.includes(album.attributes.artistName)) {
+                  filteredAlbums.push(album);
+              }
+            }
+          });
+      }
+      console.log(filteredAlbums);
+      if (yearFilter.length > 0) {
+        filteredAlbums = filteredAlbums.filter(album => yearFilter.some(year => album.attributes.releaseDate.includes(year)))
+      }
+      console.log(filteredAlbums);
+      setAvailableAlbums(filteredAlbums);   
     }
-      
   }
 
   const filterArtist = (selectedList) => {

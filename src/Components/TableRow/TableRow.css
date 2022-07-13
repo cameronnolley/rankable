@@ -92,6 +92,7 @@ html i {
     padding: 0;
     font-size: 14px;
     text-align: center;
+    font-weight: 600;
 }
 
 #release-cell {
@@ -125,7 +126,7 @@ html i {
     margin-left: auto;
 }
 
-#more {
+.more {
     background: none;
     visibility: hidden;
     color: #cfcfcf;
@@ -135,7 +136,7 @@ html i {
     transition: scale .2s ease-in-out;
 }
 
-.table-row:hover #more {
+.table-row:hover .more {
     visibility: visible;
 }
 
@@ -148,23 +149,128 @@ html i {
     background: linear-gradient(20deg, var(--bg-color) 15%, var(--bg-gradient));
     padding: 36px;
     display: flex;
-    gap: 40px;
+    justify-content: space-between;
 }
 
-.album-stats {
-    width: 400px;
+.album-info-expanded {
+    width: 300px;
+    overflow: scroll;
 }
 
-.album-description {
-    width: 314px;
+.album-facts {
+    width: 320px;
+    display: grid;
+    grid-template-columns: 120px 160px;
+    grid-template-rows: auto;
     font-size: 12px;
     color: var(--text-color-1);
+    min-height: 0px;
+    align-content: start;
+    align-items: start;
+    line-height: 14px;
+}
+
+.album-facts p {
+    margin-block-end: 4px;
+    margin-block-start: 8px;
+}
+
+.label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-color-3);
+}
+
+.fact-values {
+    width: 200px;
+}
+
+#editorial-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-color-3);
+    margin-block-end: 4px;
+}
+
+.editorial-notes {
+    line-height: 1.5em;
+    color: var(--text-color-1);
+    font-size: 12px;
     overflow: scroll;
     text-align: justify;
 }
 
-.album-description i {
-    font-style: italic;
+.editorial-notes-standard {
+    margin-block-start: 4px;
+}
+
+.recent-results {
+    width: 314px;
+    font-size: 12px;
+    color: var(--text-color-1);
+    text-align: justify;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.recent-result {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+}
+
+.recent-results-albums {
+    width: 300px;
+    overflow: scroll;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.recent-results-albums::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 6px;
+    height: 0px;
+}
+
+.recent-results-albums::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: var(--shadow-hover);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+.recent-results-albums::-webkit-scrollbar-corner {
+    background: rgba(0,0,0,0);
+  }
+
+.recent-result-outcome {
+    width: 48px;
+    height: 20px;
+    border-radius: 20px;
+    border: var(--text-color-2) 1px solid;
+    color: var(--text-color-1);
+    font-size: 12px;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-width: 48px;
+    font-weight: 600;
+}
+
+.recent-result-image {
+    width: 60px;
+    height: 60px;
+}
+
+.recent-result-name {
+    color: var(--text-color-1);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
 }
 
 .artist-info {
@@ -172,7 +278,9 @@ html i {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
+
 .artist-artwork {
     width: 120px;
     height: 120px;
@@ -186,23 +294,57 @@ html i {
     text-align: center;
 }
 
+.other-albums-container {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.other-albums {
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    width: 300px;
+    margin-top: 16px;
+}
+
+.other-albums::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 6px;
+    height: 0px;
+}
+
+.other-albums::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: var(--shadow-hover);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+.other-albums::-webkit-scrollbar-corner {
+    background: rgba(0,0,0,0);
+  }
+
 .other-album {
     display: flex;
     align-items: center;
     gap: 16px;
+    margin-right: 16px;
+    margin-bottom: 16px;
 }
 
 .other-album-rank {
     width: 40px;
     height: 20px;
     border-radius: 10px;
-    border: var(--text-color-4) 1px solid;
+    border: var(--text-color-2) 1px solid;
     color: var(--text-color-1);
     font-size: 12px;
     text-align: center;
     align-items: center;
     display: flex;
     justify-content: center;
+    min-width: 40px;
+    font-weight: 600;
 }
 
 .other-album-image {
@@ -215,23 +357,18 @@ html i {
     font-size: 12px;
     font-weight: 600;
     text-align: left;
-}
-
-.other-albums {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    overflow: scroll;
+    max-width: 136px;
 }
 
 .artist-stats {
     font-size: 12px;
     color: var(--text-color-1);
+    display: flex;
+    gap: 8px;
+    width: 160px;
 }
 
 vl {
-    border-left: 1px solid var(--text-color-4);
+    border-left: 1px solid var(--shadow-hover);
     height: 100%;
-    margin-left: 8px;
-    margin-right: 8px;
 }

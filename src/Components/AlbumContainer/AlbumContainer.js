@@ -106,8 +106,8 @@ const AlbumContainer = (props) => {
         const album1Index = Math.floor(Math.random() * selectedAlbums.length);
         const album2Index = 1 - album1Index;
         await setSelectedPair(selectedAlbums);
-        await setAlbum1(albums.find(album => album.id === selectedAlbums[album1Index]));
-        await setAlbum2(albums.find(album => album.id === selectedAlbums[album2Index]));
+        await setAlbum1(props.albums.find(album => album.id === selectedAlbums[album1Index]));
+        await setAlbum2(props.albums.find(album => album.id === selectedAlbums[album2Index]));
         const errorMessages = Array.from(document.getElementsByClassName('skip-error-message'))
         const skipButtons = Array.from(document.getElementsByClassName('skip-button'))
         errorMessages.forEach(element => {

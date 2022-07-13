@@ -7,7 +7,6 @@ const TableHeader = () => {
             <div className="table-label" id="rank-label">RANK</div>
             <div className="table-label" id="album-label">ALBUM</div>
             <div className="table-label" id="release-label">RELEASE DATE</div>
-            <div className="table-label" id="type-label">PROJECT TYPE</div>
         </div>
     );
 }

@@ -12,6 +12,13 @@ class Album extends React.Component {
     document.getElementById().style.transform = "scale(1)";
   } */
 
+  getArtistName() {
+    if (Array.isArray(this.props.album.attributes.artistName)) {
+      return this.props.album.attributes.artistName.join(' & ');
+    } else {
+      return this.props.album.attributes.artistName;
+    }
+  }
   
   render() {
     if (this.props.album) {
@@ -28,7 +35,7 @@ class Album extends React.Component {
         <div className="album" id={this.props.id} style={style} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onClick={this.props.onClick}>
           <img src={this.props.album.attributes.artwork.url} alt={this.props.album.attributes.name} />
           <h1 className="album-title" >{this.props.album.attributes.name}</h1>
-          <h2 className="album-artist" >{this.props.album.attributes.artistName}</h2>
+          <h2 className="album-artist" >{this.getArtistName()}</h2>
         </div>
       );
     } 
