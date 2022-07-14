@@ -26,8 +26,10 @@ const App = () => {
   }, []) 
 
   useEffect(() => {
-    getUserData();
-    }, [userId]);
+    if (userId !== '') {
+      getUserData();
+    }
+  }, [userId]);
 
   useEffect(() => {
       filterAlbums();
@@ -76,6 +78,7 @@ const App = () => {
   const getUserId = () => {
     if (!jsCookie.get('user')) {
       jsCookie.set('user', uuid.v4(), { expires: 10000 });
+      setUserId(jsCookie.get('user'));
     } else {
       setUserId(jsCookie.get('user'));
     }
@@ -154,8 +157,8 @@ const App = () => {
   return (
     <div className="App">
       <div className='filters'>
-        <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} albums={allAlbums} queryParams={artistFilter} />
-        <YearFilter onChange={filterYear} />
+        <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} albums={allAlbums} queryParams={artistFilter} yearFilter={yearFilter}/>
+        <YearFilter onChange={filterYear} albums={allAlbums} artistFilter={artistFilter} />
       </div>
       <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums} filters={filtersEnabled} userId={userId} seenPairs={userData.seenPairs} loadedUserData={loadedUserData}/>
     </div>

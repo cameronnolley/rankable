@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "gh-pages": "^4.0.0",
+    "jquery": "^3.6.0",
     "m4th": "^0.1.0",
     "moment": "^2.29.4",
     "multiselect-react-dropdown": "^2.0.25",

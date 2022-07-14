@@ -186,6 +186,14 @@
     color: #CFCFCF50;
     background: none;
     border: none;
+    cursor:auto;
+}
+
+.select-all:disabled {
+    color: #CFCFCF50;
+    background: none;
+    border: none;
+    cursor: auto;
 }
 
 .chip-wrapper {

@@ -197,20 +197,6 @@ const Rankings = () => {
         setSelectedRanking(selectedItem[0].value);
     };
 
-    const getTypeOptions = () => {
-        let options = [];
-        albums.forEach(album => {
-            if (!options.some(type => type.label === album.type)) {
-                options.push({
-                    label: album.type,
-                    value: album.type.toLowerCase()
-                });
-            }
-
-        });
-        return options;
-    }
-
     const isExpanded = (id) => {
         setRowExpanded(id);
     };
@@ -299,9 +285,9 @@ const Rankings = () => {
         <div>
             <div className='filters-rankings'>
                 <RankingSelect onSelect={changeRanking} queryParams={selectedRanking}/>
-                <ArtistFilter albums={albums} onSelect={filterArtist} onRemove={filterArtist} queryParams={artistFilter} />
-                <YearFilter onChange={filterYear} queryParams={yearFilter}/>
-                <TypeSelect options={getTypeOptions()} onSelect={filterType} onRemove={filterType} queryParams={typeFilter} />
+                <ArtistFilter albums={albums} onSelect={filterArtist} onRemove={filterArtist} queryParams={artistFilter} yearFilter={yearFilter} typeFilter={typeFilter} />
+                <YearFilter onChange={filterYear} queryParams={yearFilter} albums={albums} artistFilter={artistFilter} typeFilter={typeFilter} />
+                <TypeSelect onSelect={filterType} onRemove={filterType} queryParams={typeFilter} albums={albums} artistFilter={artistFilter} yearFilter={yearFilter} />
                 <button className='share'>Share</button>
                 
             </div>

@@ -4,7 +4,7 @@
     background-color: none !important;
     height: 40px;
     max-width: 168px;
-    min-width: 128px;
+    min-width: 137px;
     padding-left: 7px;
     transition: all 0.5s ease-out; 
     display: flex;
@@ -41,7 +41,7 @@
 
 #type-select .optionContainer {
     border-radius: 20px !important;
-    max-width: 128px !important;
+    max-width: 168px !important;
     min-width: 0px !important;
     margin-top: 4px;
 }

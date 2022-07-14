@@ -63,13 +63,6 @@ const AlbumContainer = (props) => {
         }
     }, [props.albums]);
 
-    const seenPairsFilter = async () => {
-        let seenPairsFilter = [];
-        await filterAvailablePairs(seenPairsFilter, albumPairs);
-        await setAlbumPairs(albumPairs.filter(pair => !seenPairsFilter.includes(pair)));
-        console.log('Filtered pairs by seen pairs');
-    }
-
     const filterPairs = (array) => {
         const pairs = generatePairs(array);
         let votedPairs = [];

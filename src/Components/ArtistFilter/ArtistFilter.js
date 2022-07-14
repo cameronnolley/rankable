@@ -17,6 +17,28 @@ const ArtistFilter = (props) => {
         }
     }, [options])
 
+    useEffect( () => {
+        setOptions(getArtists(filterArtists()));
+    }, [props.yearFilter, props.typeFilter])
+
+    const filterArtists = () => {
+        let filteredAlbums = props.albums.map(album => album);
+
+        if (props.yearFilter.length > 0) {
+            filteredAlbums = filteredAlbums.filter(album => props.yearFilter.some(year => album.attributes.releaseDate.includes(year)));
+        }
+
+        if (props.typeFilter && props.typeFilter.length > 0) {
+            let typeAlbums = props.albums.filter(album => props.typeFilter.includes(album.type));
+            filteredAlbums = filteredAlbums.filter(album => typeAlbums.includes(album));
+            console.log(filteredAlbums);
+        }
+
+        return filteredAlbums
+    }
+
+
+
     return (
         <Multiselect id='artist-filter'
         options={options} // Options to display in the dropdown
