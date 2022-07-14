@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Album from "../Album/Album";
 import './AlbumContainer.css';
-import albums from "../../database";
 import { generatePairs } from "../../util/generatePairs";
-import seenPairs from "../../seenPairs";
 import { results } from "../../results";
 import { idIndex } from "../../idIndex.js";
 import axios from "axios";
@@ -75,13 +73,16 @@ const AlbumContainer = (props) => {
     const filterPairs = (array) => {
         const pairs = generatePairs(array);
         let votedPairs = [];
-        for (let i = 0; i < pairs.length; i++) {
-            for (let j = 0; j < seenPairs.length; j++) {
-                if (arrayEquals(pairs[i], seenPairs[j])) {
-                    votedPairs.push(pairs[i]);
+        for (let i = 0; i < seenPairs.length; i++) {
+            for (let j = 0; j < pairs.length; j++) {
+                if (seenPairs[i].includes(pairs[j][0]) && seenPairs[i].includes(pairs[j][1])) {
+                    votedPairs.push(pairs[j]);
                 }
             }
         }
+        console.log(pairs);
+        console.log(votedPairs);
+        console.log(seenPairs);
         const finalTry = pairs.filter(pair => !votedPairs.includes(pair))
         return finalTry;  
     }
@@ -122,11 +123,10 @@ const AlbumContainer = (props) => {
         let album1Id = album1.id;
         let album2Id = album2.id;
         let result = {};
-        let mongoResult = {};
         if (e.currentTarget.id === 'album1') {
             result[album1Id] = 1;
             result[album2Id] = -1;
-            mongoResult = {
+            result = {
                 album1: {
                     id: album1Id,
                     result: 1
@@ -136,8 +136,6 @@ const AlbumContainer = (props) => {
                     result: -1
                 }
             }
-            results.push(mongoResult);
-            console.log(result);
             setLoading(true);
             axios({
                 url: 'https://data.mongodb-api.com/app/rankabl-bwhkm/endpoint/results/save',
@@ -146,7 +144,7 @@ const AlbumContainer = (props) => {
                     userId: props.userId,
                 },
                 data: {
-                    result: mongoResult,
+                    result: result,
                     seenPair: selectedPair
                 }
             }).then(res => {
@@ -159,7 +157,7 @@ const AlbumContainer = (props) => {
         if (e.currentTarget.id === 'album2') {
             result[album1Id] = -1;
             result[album2Id] = 1;
-            mongoResult = {
+            result = {
                 album1: {
                     id: album1Id,
                     result: -1
@@ -169,14 +167,23 @@ const AlbumContainer = (props) => {
                     result: 1
                 }
             }
-            results.push(mongoResult);
-            console.log(result);
-        }
-        if (idIndex.findIndex(x => x === album1Id) === -1) {
-            idIndex.push(album1Id);
-        }
-        if (idIndex.findIndex(x => x === album2Id) === -1) {
-            idIndex.push(album2Id);
+            setLoading(true);
+            axios({
+                url: 'https://data.mongodb-api.com/app/rankabl-bwhkm/endpoint/results/save',
+                method: 'POST',
+                params: {
+                    userId: props.userId,
+                },
+                data: {
+                    result: result,
+                    seenPair: selectedPair
+                }
+            }).then(res => {
+                setSeenPairs(res.data.userResult.seenPairs);
+                console.log(res.data.userResult.seenPairs);
+            }).catch(err => {
+                console.log(err);
+            });
         }
     }
 
@@ -244,7 +251,6 @@ const AlbumContainer = (props) => {
 
     const handleClick = async (e) => {
         await pushResults(e);
-        console.log(solveRanking());
     }
 
     const skip = (e) => {
@@ -263,7 +269,7 @@ const AlbumContainer = (props) => {
             } else {
                 const newAlbums = selectAlbums(filteredArray);
                 setSelectedPair(newAlbums);
-                setAlbum2(albums.find(album => album.id === newAlbums.find(albumId => albumId !== album1Id)));
+                setAlbum2(props.albums.find(album => album.id === newAlbums.find(albumId => albumId !== album1Id)));
             }
         } else if (e.target.id === 'first') {
             const filteredArray = albumPairs.filter(function(pairs) {
@@ -277,7 +283,7 @@ const AlbumContainer = (props) => {
             } else {
                 const newAlbums = selectAlbums(filteredArray);
                 setSelectedPair(newAlbums);
-                setAlbum1(albums.find(album => album.id === newAlbums.find(albumId => albumId !== album2Id)));
+                setAlbum1(props.albums.find(album => album.id === newAlbums.find(albumId => albumId !== album2Id)));
             }
         }
     }
@@ -296,8 +302,8 @@ const AlbumContainer = (props) => {
             const album1Index = Math.floor(Math.random() * selectedAlbums.length);
             const album2Index = 1 - album1Index;
             setSelectedPair(selectedAlbums);
-            setAlbum1(albums.find(album => album.id === selectedAlbums[album1Index]));
-            setAlbum2(albums.find(album => album.id === selectedAlbums[album2Index]));
+            setAlbum1(props.albums.find(album => album.id === selectedAlbums[album1Index]));
+            setAlbum2(props.albums.find(album => album.id === selectedAlbums[album2Index]));
         }
     }
 

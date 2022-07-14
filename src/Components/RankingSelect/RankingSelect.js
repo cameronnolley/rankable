@@ -1,17 +1,25 @@
 import Multiselect from "multiselect-react-dropdown";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import './RankingSelect.css';
 
 const RankingSelect = (props) => {
+    let [selectedValues, setSelectedValues] = useState([{ label: "Global", value: "global" }]);
 
     const options = [
         { label: "Global", value: "global" },
         { label: "Personal", value: "personal" }
     ];
 
-    const selectedValue = [
-        { label: "Global", value: "global" }
-    ]
+    useEffect(() => {
+        if (props.queryParams === 'personal') {
+            setSelectedValues([{ label: "Personal", value: "personal" }]);
+        } else {
+            setSelectedValues([{ label: "Global", value: "global" }]);
+        }
+    }, [props.queryParams])
+
+
+
 
     return (
         <Multiselect id='ranking-select'
@@ -19,7 +27,7 @@ const RankingSelect = (props) => {
             displayValue="label"
             avoidHighlightFirstOption="true"
             singleSelect="true"
-            selectedValues={selectedValue}
+            selectedValues={selectedValues}
             hidePlaceholder="true"
             placeholder=""
             showArrow="true"

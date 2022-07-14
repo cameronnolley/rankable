@@ -22,6 +22,7 @@ const App = () => {
   useEffect(() => {
     getUserId();
     fetchAlbums();
+    setArtistFilter(splitArtistParams());
   }, []) 
 
   useEffect(() => {
@@ -35,13 +36,26 @@ const App = () => {
       } else {
         setFiltersEnabled(false);
       }
+      if (artistFilter.length === 0) {
+        searchParams.delete('artist');
+        var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+        window.history.pushState(null, '', newRelativePathQuery);
+      }
+      if (yearFilter.length === 0) {
+        searchParams.delete('years');
+        var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+        window.history.pushState(null, '', newRelativePathQuery);
+    }
   }, [artistFilter, yearFilter]);
 
   useEffect(() => {
     if (allAlbums.length > 0) {
       setLoadedAlbums(true);
+      filterAlbums();
     }
   }, [allAlbums])
+
+  let searchParams = new URLSearchParams(window.location.search);
 
   const fetchAlbums = () => {
     axios.get('https://data.mongodb-api.com/app/rankabl-bwhkm/endpoint/albums', {
@@ -51,7 +65,6 @@ const App = () => {
       }
     })
     .then(response => {
-      console.log(response.data);
       setAllAlbums(response.data);
       setAvailableAlbums(response.data);
     })
@@ -86,27 +99,43 @@ const App = () => {
     }
   }
 
+  const splitArtistParams = () => {
+    let artistParams = searchParams.get('artist');
+    if (artistParams !== null) {
+        let artistArray = artistParams.split(',');
+        return artistArray;
+    } else {
+        return [];
+    }
+  }
+
   const filterAlbums = () => {
     if (artistFilter.length === 0 && yearFilter.length === 0) {
       setAvailableAlbums(allAlbums);
     } else {
-      let filteredAlbums = [];
+      let filteredAlbums = allAlbums.map(album => album);
+      console.log(filteredAlbums);
       if (artistFilter.length > 0) {
         allAlbums.forEach(album => {
             if (Array.isArray(album.attributes.artistName)) {
-              if (album.attributes.artistName.some(artist => artistFilter.includes(artist))) {
-                filteredAlbums.push(album);
+              if (album.attributes.artistName.some(artist => artistFilter.includes(artist)) === false) {
+                filteredAlbums.splice(filteredAlbums.findIndex(filterAlbum => filterAlbum === album), 1);
               } 
             } else {
-              if (artistFilter.includes(album.attributes.artistName)) {
-                  filteredAlbums.push(album);
+              if ((artistFilter.some(artist => artist === album.attributes.artistName)) === false) {
+                filteredAlbums.splice(filteredAlbums.findIndex(filterAlbum => filterAlbum === album), 1);
               }
             }
           });
+          searchParams.set('artist', artistFilter);
+          var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+          window.history.pushState(null, '', newRelativePathQuery);
       }
-      console.log(filteredAlbums);
       if (yearFilter.length > 0) {
-        filteredAlbums = filteredAlbums.filter(album => yearFilter.some(year => album.attributes.releaseDate.includes(year)))
+        filteredAlbums = filteredAlbums.filter(album => yearFilter.some(year => album.attributes.releaseDate.includes(year)));
+        searchParams.set('years', yearFilter);
+        var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+        window.history.pushState(null, '', newRelativePathQuery);
       }
       console.log(filteredAlbums);
       setAvailableAlbums(filteredAlbums);   
@@ -125,7 +154,7 @@ const App = () => {
   return (
     <div className="App">
       <div className='filters'>
-        <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} albums={allAlbums}/>
+        <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} albums={allAlbums} queryParams={artistFilter} />
         <YearFilter onChange={filterYear} />
       </div>
       <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums} filters={filtersEnabled} userId={userId} seenPairs={userData.seenPairs} loadedUserData={loadedUserData}/>

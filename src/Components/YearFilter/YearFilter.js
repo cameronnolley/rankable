@@ -88,8 +88,23 @@ export const YearFilter = (props) => {
 
     useEffect(() => {
         props.onChange(selectedList);
-    }, [selectedList])
+    }, [selectedList]);
+
+    useEffect(() => {
+        setSelectedList(splitYearParams);
+    }, [])
+
+    let searchParams = new URLSearchParams(window.location.search);
     
+    const splitYearParams = () => {
+        let yearParams = searchParams.get('years');
+        if (yearParams !== null) {
+            let yearArray = yearParams.split(',');
+            return yearArray;
+        } else {
+            return [];
+        }
+    }
 
     function yearHover(e) {
         e.target.classList.add("hover");

@@ -1,54 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Multiselect from "multiselect-react-dropdown";
 import './ArtistFilter.css'
 import getArtists from "../../util/getArtists";
-import albums from "../../database";
 
-class ArtistFilter extends React.Component {
-    constructor(props) {
-        super(props);
+const ArtistFilter = (props) => {
+    let [options, setOptions] = useState([]);
+    let [selectedValues, setSelectedValues] = useState([]);
 
-        this.state = {
-            options: []
-        };
-    }
+    useEffect(() => {
+        setOptions(getArtists(props.albums));
+    }, [props.albums]);
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.albums !== this.props.albums) {
-            this.setState({
-                options: getArtists(this.props.albums)
-            });
+    useEffect(() => {
+        if (options.length > 0) {
+            setSelectedValues(props.queryParams.map(artist => options.find(option => option.name === artist)));
         }
-    }
+    }, [options])
 
+    return (
+        <Multiselect id='artist-filter'
+        options={options} // Options to display in the dropdown
+        selectedValues={selectedValues} // Preselected value to persist in dropdown
+        onSelect={props.onSelect} // Function will trigger on select event
+        onRemove={props.onRemove} // Function will trigger on remove event
+        displayValue="name" // Property name to display in the dropdown options
+        avoidHighlightFirstOption='true'
+        placeholder={'Artists'}
+        closeIcon={'cancel'}
+        hidePlaceholder={'true'}
+        closeOnSelect={'true'}
+        // showArrow={'true'}
+        />     
+    )
 
-    onSelect(selectedList, selectedItem) {
-        // this.props.onSelect(selectedList, selectedItem);
-    }
-
-    onRemove(selectedList, removedItem) {
-        
-    }
-
-    render() {
-        return (
-            <Multiselect id='artist-filter'
-            options={this.state.options} // Options to display in the dropdown
-            selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
-            onSelect={this.props.onSelect} // Function will trigger on select event
-            onRemove={this.props.onRemove} // Function will trigger on remove event
-            displayValue="name" // Property name to display in the dropdown options
-            avoidHighlightFirstOption='true'
-            placeholder={'Artists'}
-            closeIcon={'cancel'}
-            hidePlaceholder={'true'}
-            closeOnSelect={'true'}
-            // showArrow={'true'}
-            />
-
-            
-        )
-    }
 }
 
 export default ArtistFilter;

@@ -32,6 +32,11 @@ const Rankings = () => {
         fetchAlbums();
         fetchResults();
         setIsLoading(true);
+        setArtistFilter(splitArtistParams());
+        setTypeFilter(searchParams.getAll('type'));
+        if(searchParams.get('ranking') !== null) {
+            setSelectedRanking(searchParams.get('ranking'));
+        };
     }, []);
 
     useEffect(() => {
@@ -60,17 +65,47 @@ const Rankings = () => {
     }, [rankingGlobal]);
 
     useEffect(() => {
-        setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 500);
         filterRankings();
+        searchParams.set('ranking', selectedRanking);
+        var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+        window.history.pushState(null, '', newRelativePathQuery);
 
     }, [selectedRanking]);
 
     useEffect(() => {
         filterRankings(); 
+        if (artistFilter.length === 0) {
+            searchParams.delete('artist');
+            var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+            window.history.pushState(null, '', newRelativePathQuery);
+        }
+        if (artistFilter.length > 0) {
+            searchParams.set('artist', artistFilter);
+            var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+            window.history.pushState(null, '', newRelativePathQuery);
+        }
+        if (yearFilter.length === 0) {
+            searchParams.delete('years');
+            var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+            window.history.pushState(null, '', newRelativePathQuery);
+        }
+        if (typeFilter.length === 0) {
+            searchParams.delete('type');
+            var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+            window.history.pushState(null, '', newRelativePathQuery);
+        }
+        if (typeFilter.length > 0) {
+            searchParams.set('type', typeFilter[0]);
+            var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+            window.history.pushState(null, '', newRelativePathQuery);
+        }   
     }, [artistFilter, yearFilter, typeFilter]);
+
+    useEffect(() => {
+        if (rankingGlobal) {
+            filterRankings();
+        }
+    }, [rankingGlobal, albums]);
 
     useEffect(() => {
         if (prevRow !== '' && rowExpanded !== '') {
@@ -87,6 +122,8 @@ const Rankings = () => {
       }
 
     const prevRow = usePrevious(rowExpanded);
+
+    let searchParams = new URLSearchParams(window.location.search);
 
     const getUserId = () => {
         if (!jsCookie.get('user')) {
@@ -131,11 +168,30 @@ const Rankings = () => {
           }).then (response => {
             if (response.data !== null) {
             setResultsUser(response.data.results);
-            console.log(resultsUser);
             }
           })
         }
       }
+
+    const splitArtistParams = () => {
+        let artistParams = searchParams.get('artist');
+        if (artistParams !== null) {
+            let artistArray = artistParams.split(',');
+            return artistArray;
+        } else {
+            return [];
+        }
+    }
+
+    const splitYearParams = () => {
+        let yearParams = searchParams.get('years');
+        if (yearParams !== null) {
+            let yearArray = yearParams.split(',');
+            return yearArray;
+        } else {
+            return [];
+        }
+    }
 
     const changeRanking = (selectedItem) => {
         setSelectedRanking(selectedItem[0].value);
@@ -147,12 +203,11 @@ const Rankings = () => {
             if (!options.some(type => type.label === album.type)) {
                 options.push({
                     label: album.type,
-                    value: album.type
+                    value: album.type.toLowerCase()
                 });
             }
 
         });
-        console.log(options);
         return options;
     }
 
@@ -170,7 +225,8 @@ const Rankings = () => {
     }
 
     const filterType = (selectedList) => {
-        setTypeFilter(selectedList);
+        const typeFilter = selectedList.map(type => type.label);
+        setTypeFilter(typeFilter);
     }
 
     const filterRankings = () => {
@@ -182,7 +238,6 @@ const Rankings = () => {
             }
         } else {
             let filteredIds = albums.map(album => album.id);
-            console.log(filteredIds);
             if (artistFilter.length > 0) {
                 albums.forEach(album => {
                     if (Array.isArray(album.attributes.artistName)) {
@@ -199,9 +254,12 @@ const Rankings = () => {
             if (yearFilter.length > 0) {
                 let yearIds = albums.filter(album => yearFilter.some(year => album.attributes.releaseDate.includes(year))).map(album => album.id);
                 filteredIds = filteredIds.filter(id => yearIds.includes(id));
+                searchParams.set('years', yearFilter);
+                var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+                window.history.pushState(null, '', newRelativePathQuery);
             }
             if (typeFilter.length > 0) {
-                let typeIds = albums.filter(album => typeFilter[0].value === album.type).map(album => album.id);
+                let typeIds = albums.filter(album => typeFilter.includes(album.type)).map(album => album.id);
                 filteredIds = filteredIds.filter(id => typeIds.includes(id));
             }
             let filteredRanking = [];
@@ -240,10 +298,10 @@ const Rankings = () => {
     return (
         <div>
             <div className='filters-rankings'>
-                <RankingSelect onSelect={changeRanking}/>
-                <ArtistFilter albums={albums} onSelect={filterArtist} onRemove={filterArtist} />
-                <YearFilter onChange={filterYear} />
-                <TypeSelect options={getTypeOptions()} onSelect={filterType} onRemove={filterType} />
+                <RankingSelect onSelect={changeRanking} queryParams={selectedRanking}/>
+                <ArtistFilter albums={albums} onSelect={filterArtist} onRemove={filterArtist} queryParams={artistFilter} />
+                <YearFilter onChange={filterYear} queryParams={yearFilter}/>
+                <TypeSelect options={getTypeOptions()} onSelect={filterType} onRemove={filterType} queryParams={typeFilter} />
                 <button className='share'>Share</button>
                 
             </div>
