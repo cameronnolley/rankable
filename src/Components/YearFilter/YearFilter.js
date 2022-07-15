@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import './YearFilter.css';
 import $ from 'jquery';
-
+import { ExpandMoreRounded } from "@mui/icons-material";
+import { ThemeProvider } from "@mui/system";
+import theme from '../MuiTheme/Theme';
 
 const CarousalItem = ({children, width}) => {
     return (
@@ -202,7 +204,12 @@ export const YearFilter = (props) => {
             document.getElementById('select-all-twenties').innerHTML = 'Remove All'
         }
         if (selectedList.length === 0) {
-            return <div className='placeholder' onClick={toggleCalendar} >Years</div>
+            return <div className='placeholder' onClick={toggleCalendar} >
+                <p className='placeholder-text'>Years</p>
+                <ThemeProvider theme={theme}>
+                    <ExpandMoreRounded color="primary" baseClassName="icon" id="year-filter-icon"/>
+                </ThemeProvider>
+                </div>
         } else {
             return chipArray.map((value, index) => (
                 <span className='chip-year' key={index}>

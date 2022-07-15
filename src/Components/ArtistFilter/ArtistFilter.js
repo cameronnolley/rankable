@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import Multiselect from "multiselect-react-dropdown";
 import './ArtistFilter.css'
 import getArtists from "../../util/getArtists";
+import { SearchRounded } from "@mui/icons-material";
+import { ThemeProvider } from "@mui/system";
+import theme from '../MuiTheme/Theme';
 
 const ArtistFilter = (props) => {
     let [options, setOptions] = useState([]);
@@ -51,7 +54,8 @@ const ArtistFilter = (props) => {
         closeIcon={'cancel'}
         hidePlaceholder={'true'}
         closeOnSelect={'true'}
-        // showArrow={'true'}
+        customArrow={<ThemeProvider theme={theme} ><SearchRounded color="primary" fontSize="small"/></ThemeProvider>}
+        showArrow={'true'}
         />     
     )
 

@@ -1,6 +1,9 @@
 import Multiselect from "multiselect-react-dropdown";
 import React, { useEffect, useState } from "react";
 import './RankingSelect.css';
+import { ExpandMoreRounded } from "@mui/icons-material";
+import { ThemeProvider } from "@mui/system";
+import theme from '../MuiTheme/Theme';
 
 const RankingSelect = (props) => {
     let [selectedValues, setSelectedValues] = useState([{ label: "Global", value: "global" }]);
@@ -32,6 +35,7 @@ const RankingSelect = (props) => {
             placeholder=""
             showArrow="true"
             onSelect={props.onSelect}
+            customArrow={<ThemeProvider theme={theme}><ExpandMoreRounded color="primary"/></ThemeProvider>}
         />
     )
 }

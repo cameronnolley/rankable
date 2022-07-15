@@ -4,7 +4,7 @@
     background-color: none !important;
     height: 40px;
     max-width: 168px;
-    min-width: 137px;
+    min-width: 122px;
     padding-left: 7px;
     transition: all 0.5s ease-out; 
     display: flex;
@@ -57,10 +57,26 @@
     padding: 5px;
     margin-top: 0px;
     padding-left: 10px;
+    width: 90px;
 }
 
 #type-select .multiSelectContainer input {
     margin-top: 0px;
 }
 
+.icon_down_dir::before {
+    display: none;
+}
 
+.css-ci5apu-MuiSvgIcon-root {
+    color: #CFCFCF !important;
+}
+
+.icon_down_dir {
+    margin-top: 2px;
+    margin-right: 4px;
+}
+
+#type-select-input {
+    width: auto;
+}

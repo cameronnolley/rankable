@@ -10,6 +10,7 @@ import solveRanking from "../../util/solveRanking";
 import jsCookie from "js-cookie";
 import uuid from "uuid";
 import TypeSelect from "../TypeSelect/TypeSelect";
+import { ShareOutlined } from "@mui/icons-material";
 
 const Rankings = () => {
 
@@ -288,8 +289,7 @@ const Rankings = () => {
                 <ArtistFilter albums={albums} onSelect={filterArtist} onRemove={filterArtist} queryParams={artistFilter} yearFilter={yearFilter} typeFilter={typeFilter} />
                 <YearFilter onChange={filterYear} queryParams={yearFilter} albums={albums} artistFilter={artistFilter} typeFilter={typeFilter} />
                 <TypeSelect onSelect={filterType} onRemove={filterType} queryParams={typeFilter} albums={albums} artistFilter={artistFilter} yearFilter={yearFilter} />
-                <button className='share'>Share</button>
-                
+                {selectedRanking === 'personal' ? <button className='share'><p className='button-text'>Share</p><ShareOutlined fontSize={'small'} /></button> : null}
             </div>
             <TableHeader />
             <div className='table-container' id='table-container'>

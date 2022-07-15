@@ -1,6 +1,9 @@
 import Multiselect from "multiselect-react-dropdown";
 import React, { useState, useEffect } from "react";
 import './TypeSelect.css';
+import { ExpandMoreRounded } from "@mui/icons-material";
+import { ThemeProvider } from "@mui/system";
+import theme from '../MuiTheme/Theme';
 
 const TypeSelect = (props) => {
     let [selectedValues, setSelectedValues] = useState([]);
@@ -75,6 +78,7 @@ const TypeSelect = (props) => {
             onSelect={props.onSelect}
             onRemove={props.onRemove}
             closeIcon={'cancel'}
+            customArrow={<ThemeProvider theme={theme}><ExpandMoreRounded color="primary"/></ThemeProvider>}
         />
     )
 }
