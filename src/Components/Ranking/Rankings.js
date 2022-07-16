@@ -14,6 +14,7 @@ import { ShareOutlined } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import { ThemeProvider } from "@mui/system";
 import theme from '../MuiTheme/Theme';
+import Header from "../Header/Header";
 
 const Rankings = () => {
 
@@ -216,7 +217,7 @@ const Rankings = () => {
 
     const shareRanking = () => {
         console.log(rankingUser);
-        const sharedText = `My top ranked albums of all time: \n${rankingUser.map((result, index) => `${index + 1}. ${albums.find(album => album.id === result.albumId).attributes.name} ${albums.find(album => album.id === result.albumId).attributes.emoji}`).join('\n')}`;
+        const sharedText = `My top ranked albums of all time: \n${rankingUser.map((result, index) => `${index + 1}. ${albums.find(album => album.id === result.albumId).attributes.name} ${albums.find(album => album.id === result.albumId).attributes.emoji !== undefined ? albums.find(album => album.id === result.albumId).attributes.emoji : '' }`).join('\n')}`;
         navigator.clipboard.writeText(sharedText);
     }
 
@@ -307,6 +308,7 @@ const Rankings = () => {
 
     return (
         <div>
+            <Header />
             <div className='filters-rankings'>
                 <RankingSelect onSelect={changeRanking} queryParams={selectedRanking}/>
                 <ArtistFilter albums={albums} onSelect={filterArtist} onRemove={filterArtist} queryParams={artistFilter} yearFilter={yearFilter} typeFilter={typeFilter} />

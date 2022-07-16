@@ -5,13 +5,13 @@ import { stringify } from "uuid";
 
 class Album extends React.Component {
   
-  /* mouseDown() {
+  mouseDown() {
     document.getElementById().style.transform = "scale(0.99)";
-  } */
+  }
 
-  /* mouseUp() {
+  mouseUp() {
     document.getElementById().style.transform = "scale(1)";
-  } */
+  }x
 
   getArtistName() {
     if (Array.isArray(this.props.album.attributes.artistName)) {

@@ -22,8 +22,7 @@ const TableRow = (props) => {
                 '--text-color-4': '#' + props.album.attributes.artwork.textColor4,
                 '--shadow': '#' + props.album.attributes.artwork.textColor4 + '25',
                 '--shadow-hover': '#' + props.album.attributes.artwork.textColor4 + '80',
-                '--bg-gradient': '#' + newShade(props.album.attributes.artwork.bgColor, 8),
-                '--bg-image': `url(${props.album.attributes.artwork.url})`,
+                '--bg-gradient': '#' + newShade(props.album.attributes.artwork.bgColor, 4),
             });
         }
     }, [props.album]);

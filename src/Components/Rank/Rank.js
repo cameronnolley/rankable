@@ -6,6 +6,7 @@ import { YearFilter } from '../YearFilter/YearFilter';
 import axios from 'axios';
 import jsCookie from 'js-cookie';
 import uuid from 'uuid';
+import Header from '../Header/Header';
 
 const App = () => {
 
@@ -155,12 +156,15 @@ const App = () => {
   }
 
   return (
-    <div className="App">
-      <div className='filters'>
-        <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} albums={allAlbums} queryParams={artistFilter} yearFilter={yearFilter}/>
-        <YearFilter onChange={filterYear} albums={allAlbums} artistFilter={artistFilter} />
+    <div>
+    <Header />
+      <div className="App">
+        <div className='filters'>
+          <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} albums={allAlbums} queryParams={artistFilter} yearFilter={yearFilter}/>
+          <YearFilter onChange={filterYear} albums={allAlbums} artistFilter={artistFilter} />
+        </div>
+        <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums} filters={filtersEnabled} userId={userId} seenPairs={userData.seenPairs} loadedUserData={loadedUserData}/>
       </div>
-      <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums} filters={filtersEnabled} userId={userId} seenPairs={userData.seenPairs} loadedUserData={loadedUserData}/>
     </div>
   );
 }
