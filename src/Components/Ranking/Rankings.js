@@ -11,10 +11,14 @@ import jsCookie from "js-cookie";
 import uuid from "uuid";
 import TypeSelect from "../TypeSelect/TypeSelect";
 import { ShareOutlined } from "@mui/icons-material";
+import { Button } from "@mui/material";
+import { ThemeProvider } from "@mui/system";
+import theme from '../MuiTheme/Theme';
 
 const Rankings = () => {
 
     let [albums, setAlbums] = useState([]);
+    let [artists, setArtists] = useState([]);
     let [resultsGlobal, setResultsGlobal] = useState([]);
     let [resultsUser, setResultsUser] = useState([]);
     let [rankingGlobal, setRankingGlobal] = useState([]);
@@ -31,6 +35,7 @@ const Rankings = () => {
     useEffect(() => {
         getUserId();
         fetchAlbums();
+        fetchArtists();
         fetchResults();
         setIsLoading(true);
         setArtistFilter(splitArtistParams());
@@ -149,6 +154,17 @@ const Rankings = () => {
         });
       }
 
+      const fetchArtists = () => {
+        axios.get('https://data.mongodb-api.com/app/rankabl-bwhkm/endpoint/artists', {
+        })
+        .then(response => {
+          setArtists(response.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      }
+
     const fetchResults = () => {
         axios.get('https://data.mongodb-api.com/app/rankabl-bwhkm/endpoint/getResults', {
         })
@@ -197,6 +213,12 @@ const Rankings = () => {
     const changeRanking = (selectedItem) => {
         setSelectedRanking(selectedItem[0].value);
     };
+
+    const shareRanking = () => {
+        console.log(rankingUser);
+        const sharedText = `My top ranked albums of all time: \n${rankingUser.map((result, index) => `${index + 1}. ${albums.find(album => album.id === result.albumId).attributes.name} ${albums.find(album => album.id === result.albumId).attributes.emoji}`).join('\n')}`;
+        navigator.clipboard.writeText(sharedText);
+    }
 
     const isExpanded = (id) => {
         setRowExpanded(id);
@@ -271,6 +293,7 @@ const Rankings = () => {
                     album={albums.find(album => album.id === result.albumId)} 
                     rank={index + 1} 
                     albums={albums} 
+                    artists={artists}
                     rankingGlobal={rankingGlobal} 
                     rankingUser={rankingUser}
                     resultsGlobal={resultsGlobal} 
@@ -289,7 +312,15 @@ const Rankings = () => {
                 <ArtistFilter albums={albums} onSelect={filterArtist} onRemove={filterArtist} queryParams={artistFilter} yearFilter={yearFilter} typeFilter={typeFilter} />
                 <YearFilter onChange={filterYear} queryParams={yearFilter} albums={albums} artistFilter={artistFilter} typeFilter={typeFilter} />
                 <TypeSelect onSelect={filterType} onRemove={filterType} queryParams={typeFilter} albums={albums} artistFilter={artistFilter} yearFilter={yearFilter} />
-                {selectedRanking === 'personal' ? <button className='share'><p className='button-text'>Share</p><ShareOutlined fontSize={'small'} /></button> : null}
+                <div className='share' >
+                    {selectedRanking === 'personal' ? 
+                    <ThemeProvider theme={theme}>
+                        <Button variant="contained" onClick ={shareRanking} color='secondary' sx={{ borderRadius: '20px', height: '40px', padding: '0px 32px 0px 32px', textTransform: 'none', fontSize: '16px', fontFamily: 'Helvetica', color: '#FFFFFF' }} endIcon={<ShareOutlined size='small'/>} >
+                            Share
+                        </Button> 
+                    </ThemeProvider>
+                    : null}
+                </div>
             </div>
             <TableHeader />
             <div className='table-container' id='table-container'>

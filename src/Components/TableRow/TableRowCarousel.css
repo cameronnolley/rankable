@@ -1,0 +1,37 @@
+.carousel {
+    height: 288px;
+    width: 508px;
+    overflow: hidden;
+    position: relative;
+}
+
+.other-album-name {
+    white-space: normal;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: none;
+    border: 1px solid var(--text-color-2);
+    margin: 0 4px;
+    display: inline-block
+}
+
+.active {
+    background: var(--text-color-2);
+}
+
+.inner {
+    white-space: nowrap;
+    display: inline-block;
+    width: 100%;
+    transition: none;
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 0px;
+    left: 64px;
+}

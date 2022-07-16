@@ -1,6 +1,7 @@
 import React from "react";
 import "./Album.css";
 import newShade from "../../util/newShade";
+import { stringify } from "uuid";
 
 class Album extends React.Component {
   
@@ -19,6 +20,12 @@ class Album extends React.Component {
       return this.props.album.attributes.artistName;
     }
   }
+
+  replaceUrl(url) {
+    let coverArtUrl = url.replace('{w}', '600').replace('{h}', '600')
+    return coverArtUrl;
+  }
+  
   
   render() {
     if (this.props.album) {
@@ -33,7 +40,7 @@ class Album extends React.Component {
 
       return (
         <div className="album" id={this.props.id} style={style} onMouseDown={this.mouseDown} onMouseUp={this.mouseUp} onClick={this.props.onClick}>
-          <img src={this.props.album.attributes.artwork.url} alt={this.props.album.attributes.name} />
+          <img src={this.replaceUrl(this.props.album.attributes.artwork.url)} alt={this.props.album.attributes.name} />
           <h1 className="album-title" >{this.props.album.attributes.name}</h1>
           <h2 className="album-artist" >{this.getArtistName()}</h2>
         </div>

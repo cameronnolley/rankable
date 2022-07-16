@@ -39,6 +39,7 @@ const AlbumContainer = (props) => {
     useEffect(() => {
         if (albumPairs.length > 0) {
             setNeedNewPair(true);
+            console.log('new pair')
         } else if (props.albumsLoaded && props.loadedUserData) {
             setTimeout(() => {setLoading(false)}, 300);
             console.log(' no more albums ')

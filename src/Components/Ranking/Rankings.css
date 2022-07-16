@@ -45,9 +45,7 @@ body {
 
 .share {
     height: 40px;
-    width: auto;
-    background-color: #897ECC;
-    color: #FFFFFF;
+    color: #ffffff;
     border-radius: 20px;
     border: none;
     font-size: 18px;
@@ -59,11 +57,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0px 32px 0px 32px;
     gap: 8px
 }
 
 .button-text {
     margin-block-end: 0;
     margin-block-start: 0;
+}
+
+.MuiButton-root {
+    text-transform: none;
 }

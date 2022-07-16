@@ -66,11 +66,15 @@ const Carousal = ({children}) => {
 }
 
 export const YearFilter = (props) => {
-    const [selectedList, setSelectedList] = useState([]);
-    const [isOpen, setIsOpen] = useState([false]);
+    let [selectedList, setSelectedList] = useState([]);
+    let [isOpen, setIsOpen] = useState(false);
+    let [aughts, setAughts] = useState(['2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009']);
+    let [teens, setTeens] = useState(['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019']);
+    let [twenties, setTwenties] = useState(['2020', '2021', '2022']);
     
     useEffect(() => {
         document.getElementById('calendar').classList.toggle('display');
+        console.log('why');
     }, [isOpen]);
 
     let calendarRef= useRef();
@@ -166,6 +170,7 @@ export const YearFilter = (props) => {
         } else if (e.target.classList.contains('twenties')) {
             if (!e.target.classList.contains('year-selected')) {
                 let pushedArray = twenties.filter(year => !selectedList.includes(year));
+                console.log(pushedArray);
                 setSelectedList([...selectedList, ...pushedArray]);
                 Array.from(document.querySelectorAll('.twenties')).forEach((el) => el.classList.add('year-selected')); 
             } else {
@@ -176,27 +181,24 @@ export const YearFilter = (props) => {
         }
     }
 
-    const aughts = ['2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009']
-    const teens = ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019']
-    const twenties = ['2020', '2021', '2022']
     
     function renderSelectedList() { 
         let chipArray = selectedList; 
-        if (aughts.every(year => chipArray.includes(year))) {
+        if (aughts.length > 0 && aughts.every(year => chipArray.includes(year))) {
             chipArray = chipArray.filter(year=> !aughts.includes(year));
             chipArray.push("2000's")
             chipArray.sort()
             document.getElementById('select-all-aughts').classList.add("year-selected");
             document.getElementById('select-all-aughts').innerHTML = 'Remove All'
         }
-        if (teens.every(year => chipArray.includes(year))) {
+        if (teens.length > 0 && teens.every(year => chipArray.includes(year))) {
             chipArray = chipArray.filter(year=> !teens.includes(year));
             chipArray.push("2010's")
             chipArray.sort();
             document.getElementById('select-all-teens').classList.add("year-selected");
             document.getElementById('select-all-teens').innerHTML = 'Remove All'
         }
-        if (twenties.every(year => chipArray.includes(year))) {
+        if (twenties.length > 0 && twenties.every(year => chipArray.includes(year))) {
             chipArray = chipArray.filter(year=> !twenties.includes(year));
             chipArray.push("2020's")
             chipArray.sort();
@@ -243,10 +245,13 @@ export const YearFilter = (props) => {
             document.getElementById(item).classList.remove("year-selected");
             if (document.getElementById(item).classList.contains('aughts')) {
                 document.getElementById('select-all-aughts').classList.remove("year-selected");
+                document.getElementById('select-all-aughts').innerHTML = 'Select All';
             } else if (document.getElementById(item).classList.contains('teens')) {
                 document.getElementById('select-all-teens').classList.remove("year-selected");
+                document.getElementById('select-all-teens').innerHTML = 'Select All';
             } else if (document.getElementById(item).classList.contains('twenties')) {
                 document.getElementById('select-all-twenties').classList.remove("year-selected");
+                document.getElementById('select-all-twenties').innerHTML = 'Select All';
             }
         }
 		
@@ -266,6 +271,9 @@ export const YearFilter = (props) => {
     const disableYears = () => {
         let years = $('.year').map(function(_, x) {return x.id; }).get();
         let filteredAlbums = props.albums.map(album => album);
+        let aughtsDefault = ['2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009'];
+        let teensDefault = ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019'];
+        let twentiesDefault = ['2020', '2021', '2022'];
 
         if (props.artistFilter.length > 0) {
             props.albums.forEach(album => {
@@ -287,8 +295,7 @@ export const YearFilter = (props) => {
             console.log(filteredAlbums);
         }
 
-        if (aughts.every(year => document.getElementById(year).disabled)) {
-            console.log('hey man');
+        if (aughts.every(year => document.getElementById(year).disabled) || aughts.length === 0) {
             document.getElementById('select-all-aughts').disabled = 'true';
         }
 
@@ -298,6 +305,40 @@ export const YearFilter = (props) => {
         years.forEach(year => {
             uniqueYears.includes(year) ? document.getElementById(year).disabled = false : document.getElementById(year).disabled = true;
         });
+        
+        let aughtsFiltered = aughtsDefault.filter(year => uniqueYears.includes(year));
+        setAughts(aughtsFiltered);
+        let teensFiltered = teensDefault.filter(year => uniqueYears.includes(year));
+        setTeens(teensFiltered);
+        let twentiesFiltered = twentiesDefault.filter(year => uniqueYears.includes(year));
+        setTwenties(twentiesFiltered);
+
+        if (aughts.every(year => document.getElementById(year).disabled) || aughts.length === 0) {
+            document.getElementById('select-all-aughts').disabled = 'true';
+        }
+        if (teens.every(year => document.getElementById(year).disabled) || teens.length === 0) {
+            document.getElementById('select-all-teens').disabled = 'true';
+        }
+        if (twenties.every(year => document.getElementById(year).disabled) || twenties.length === 0) {
+            document.getElementById('select-all-twenties').disabled = 'true';
+        }
+
+        if (document.getElementById('select-all-aughts').classList.contains('year-selected')) {
+            let pushedArray = aughtsDefault.filter(year => uniqueYears.includes(year)).filter(year => !selectedList.includes(year));
+            console.log(pushedArray);
+            setSelectedList([...selectedList, ...pushedArray]);
+        }
+        if (document.getElementById('select-all-teens').classList.contains('year-selected')) {
+            let pushedArray = teensDefault.filter(year => uniqueYears.includes(year)).filter(year => !selectedList.includes(year));
+            console.log(pushedArray);
+            setSelectedList([...selectedList, ...pushedArray]);
+        }
+        if (document.getElementById('select-all-twenties').classList.contains('year-selected')) {
+            let pushedArray = twentiesDefault.filter(year => uniqueYears.includes(year)).filter(year => !selectedList.includes(year));
+            console.log(pushedArray);
+            setSelectedList([...selectedList, ...pushedArray]);
+        }
+
         console.log(years);
         console.log(albumYears);
         console.log(uniqueYears);
@@ -314,52 +355,52 @@ export const YearFilter = (props) => {
             </div>
             <div className='calendar-wrapper' id='calendar'>
                 <Carousal>
-                <CarousalItem>
-                    <div className='years-wrapper'>
-                        <button className='year aughts first-year' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2000'>2000</button>
-                        <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2001'>2001</button>
-                        <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2002' >2002</button>
-                        <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2003' >2003</button>
-                        <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2004' >2004</button>
-                        <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2005' >2005</button>
-                        <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2006' >2006</button>
-                        <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2007' >2007</button>
-                        <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2008' >2008</button>
-                        <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2009' >2009</button>
-                        <button className='select-all aughts' id='select-all-aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectDecade} >Select All</button>
-                    </div>
-                </CarousalItem>
-                <CarousalItem>
-                    <div className='years-wrapper'>
-                        <button className='year teens first-year' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2010'>2010</button>
-                        <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2011'>2011</button>
-                        <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2012' >2012</button>
-                        <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2013' >2013</button>
-                        <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2014' >2014</button>
-                        <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2015' >2015</button>
-                        <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2016' >2016</button>
-                        <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2017' >2017</button>
-                        <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2018' >2018</button>
-                        <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2019' >2019</button>
-                        <button className='select-all teens' id='select-all-teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectDecade} >Select All</button>
-                    </div>
-                </CarousalItem>
-                <CarousalItem>
-                    <div className='years-wrapper'>
-                        <button className='year twenties first-year' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2020'>2020</button>
-                        <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2021'>2021</button>
-                        <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2022' >2022</button>
-                        <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2023' >2023</button>
-                        <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2024' >2024</button>
-                        <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2025' >2025</button>
-                        <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2026' >2026</button>
-                        <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2027' >2027</button>
-                        <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2028' >2028</button>
-                        <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2029' >2029</button>
-                        <button className='select-all twenties' id='select-all-twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectDecade} >Select All</button>
-                    </div>
-                </CarousalItem>
-            </Carousal>                 
+                    <CarousalItem>
+                        <div className='years-wrapper'>
+                            <button className='year aughts first-year' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2000'>2000</button>
+                            <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2001'>2001</button>
+                            <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2002' >2002</button>
+                            <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2003' >2003</button>
+                            <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2004' >2004</button>
+                            <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2005' >2005</button>
+                            <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2006' >2006</button>
+                            <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2007' >2007</button>
+                            <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2008' >2008</button>
+                            <button className='year aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2009' >2009</button>
+                            <button className='select-all aughts' id='select-all-aughts' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectDecade} >Select All</button>
+                        </div>
+                    </CarousalItem>
+                    <CarousalItem>
+                        <div className='years-wrapper'>
+                            <button className='year teens first-year' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2010'>2010</button>
+                            <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2011'>2011</button>
+                            <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2012' >2012</button>
+                            <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2013' >2013</button>
+                            <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2014' >2014</button>
+                            <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2015' >2015</button>
+                            <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2016' >2016</button>
+                            <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2017' >2017</button>
+                            <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2018' >2018</button>
+                            <button className='year teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2019' >2019</button>
+                            <button className='select-all teens' id='select-all-teens' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectDecade} >Select All</button>
+                        </div>
+                    </CarousalItem>
+                    <CarousalItem>
+                        <div className='years-wrapper'>
+                            <button className='year twenties first-year' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2020'>2020</button>
+                            <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2021'>2021</button>
+                            <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2022' >2022</button>
+                            <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2023' >2023</button>
+                            <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2024' >2024</button>
+                            <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2025' >2025</button>
+                            <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2026' >2026</button>
+                            <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2027' >2027</button>
+                            <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2028' >2028</button>
+                            <button className='year twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectYear} id='2029' >2029</button>
+                            <button className='select-all twenties' id='select-all-twenties' onMouseEnter={yearHover} onMouseLeave={yearHoverLeave} onClick={selectDecade} >Select All</button>
+                        </div>
+                    </CarousalItem>
+                </Carousal>                 
             </div>           
         </div>
     )

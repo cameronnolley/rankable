@@ -73,7 +73,7 @@ html i {
 .rank-container {
     height: 24px;
     width: 48px;
-    border: #897ECC95 1px solid;
+    border: #A596FF95 1px solid;
     border-radius: 12px;
     color: #cfcfcf;
     display: flex;
@@ -158,7 +158,7 @@ html i {
 }
 
 .album-facts {
-    width: 320px;
+    width: 100%;
     display: grid;
     grid-template-columns: 120px 160px;
     grid-template-rows: auto;
@@ -292,6 +292,7 @@ html i {
     font-weight: 700;
     color: var(--text-color-2);
     text-align: center;
+    margin-block-end: .5em;
 }
 
 .other-albums-container {
@@ -358,6 +359,7 @@ html i {
     font-weight: 600;
     text-align: left;
     max-width: 136px;
+    white-space: wrap;
 }
 
 .artist-stats {
@@ -371,4 +373,16 @@ html i {
 vl {
     border-left: 1px solid var(--shadow-hover);
     height: 100%;
+}
+
+.artist {
+    display: flex;
+    gap: 48px;
+    height: 288px;
+}
+
+.slider {
+    display: flex;
+    height: 288px;
+    overflow: hidden;
 }
