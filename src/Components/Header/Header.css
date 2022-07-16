@@ -4,6 +4,10 @@
     display: flex;
     justify-content: space-between;
     padding: 16px 80px 0px 80px;
+    position: sticky;
+    top: 0;
+    background-color: #211D27;
+    z-index: 1;
 }
 
 .header-logo {
@@ -40,4 +44,14 @@ a:-webkit-any-link {
     font-family: Sora;
     font-size: 14px;
     font-weight: 600;
+    margin-block-end: 8px;
+    margin-bottom: 4px;
+}
+
+.nav-item {
+    padding-bottom: 4px;
+}
+
+.active {
+    border-bottom: #A596FF 4px solid;
 }

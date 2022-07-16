@@ -134,6 +134,9 @@ html i {
     font-size: 14px;
     cursor: pointer;
     transition: scale .2s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 2px;
 }
 
 .table-row:hover .more {

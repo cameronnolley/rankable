@@ -228,7 +228,7 @@ const AlbumContainer = (props) => {
         });
         if (filteredArray.length === 0) {
             document.getElementById('skip-both').setAttribute("disabled", "disabled");
-            document.getElementById('skip-both-error').classList.add('is-visible');
+            document.getElementById('skip-error-both').classList.add('is-visible');
         } else {
             const selectedAlbums = selectAlbums(filteredArray);
             const album1Index = Math.floor(Math.random() * selectedAlbums.length);
@@ -260,11 +260,11 @@ const AlbumContainer = (props) => {
         <div className='album-container'>
             {view}
             <button className='skip skip-button' id="first" onClick={skip} >Skip</button>
-            <button className='skip skip-both' id='skip-both' onClick={skipBoth} >Skip both</button>
+            <button className='skip skip-button skip-both' id='skip-both' onClick={skipBoth} >Skip both</button>
             <button className='skip skip-button' id="second" onClick={skip} >Skip</button>
-            <p className='skip-error-message' id='skip-error-first' >No more available albums</p>
-            <div></div>
-            <p className='skip-error-message' id='skip-error-second' >No more available albums</p>
+            <p className='skip-error-message' id='skip-error-first' >No available albums</p>
+            <p className='skip-error-both' id='skip-error-both' >No available albums</p>
+            <p className='skip-error-message' id='skip-error-second' >No available albums</p>
         </div>
     )
 

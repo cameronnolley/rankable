@@ -74,7 +74,6 @@ export const YearFilter = (props) => {
     
     useEffect(() => {
         document.getElementById('calendar').classList.toggle('display');
-        console.log('why');
     }, [isOpen]);
 
     let calendarRef= useRef();
@@ -338,11 +337,6 @@ export const YearFilter = (props) => {
             console.log(pushedArray);
             setSelectedList([...selectedList, ...pushedArray]);
         }
-
-        console.log(years);
-        console.log(albumYears);
-        console.log(uniqueYears);
-        console.log(yearsNotInData);
     }
 
 

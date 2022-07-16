@@ -19,11 +19,12 @@ const App = () => {
   let [userId, setUserId] = useState('');
   let [userData, setUserData] = useState({ _id: '', userId: '', results: [], seenPairs: [] });
   let [loadedUserData, setLoadedUserData] = useState(false);
+  let [artistParams, setArtistParams] = useState('');
 
   useEffect(() => {
     getUserId();
     fetchAlbums();
-    setArtistFilter(splitArtistParams());
+    setArtistParams(splitArtistParams());
   }, []) 
 
   useEffect(() => {
@@ -54,7 +55,7 @@ const App = () => {
   useEffect(() => {
     if (allAlbums.length > 0) {
       setLoadedAlbums(true);
-      filterAlbums();
+      setArtistFilter(artistParams);
     }
   }, [allAlbums])
 
@@ -107,6 +108,7 @@ const App = () => {
     let artistParams = searchParams.get('artist');
     if (artistParams !== null) {
         let artistArray = artistParams.split(',');
+        console.log('filter set from params');
         return artistArray;
     } else {
         return [];
@@ -157,7 +159,7 @@ const App = () => {
 
   return (
     <div>
-    <Header />
+    <Header headerParams={searchParams}/>
       <div className="App">
         <div className='filters'>
           <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} albums={allAlbums} queryParams={artistFilter} yearFilter={yearFilter}/>

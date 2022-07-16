@@ -3,6 +3,7 @@ import './TableRow.css';
 import moment from "moment";
 import newShade from "../../util/newShade";
 import { Carousel, CarouselItem } from "./TableRowCarousel.js";
+import { ExpandMoreRounded } from "@mui/icons-material";
 
 const TableRow = (props) => {
     let [style, setStyle] = useState({});
@@ -47,11 +48,13 @@ const TableRow = (props) => {
                 document.getElementById(`table-row-${props.rank}`).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 300);
             document.getElementById(`more ${props.rank}`).innerHTML = 'Less';
+            document.getElementById(`chevron ${props.rank}`).style.transform = 'rotate(180deg)';
             document.getElementById(`more ${props.rank}`).style.visibility = 'visible';
             props.isExpanded(props.rank);
         } else {
             document.getElementById(`table-row-${props.rank}`).style.height = '120px';
             document.getElementById(`more ${props.rank}`).innerHTML = 'More';
+            document.getElementById(`chevron ${props.rank}`).style.transform = 'rotate(0deg)';
             document.getElementById(`more ${props.rank}`).style.visibility = '';
             props.isExpanded('')
         }  
@@ -215,7 +218,7 @@ const TableRow = (props) => {
                         <p>{props.album && formatDate(props.album.attributes.releaseDate)}</p>
                     </div>
                     <div className="table-cell" id="more-cell">
-                        <button className='more' id={`more ${props.rank}`} onClick={expandTableRow}>More</button>
+                        <button className='more' id={`more-button-${props.rank}`} onClick={expandTableRow}><p className='button-text' id={`more ${props.rank}`}>More</p><ExpandMoreRounded size='small' id={`chevron ${props.rank}`}></ExpandMoreRounded></button>
                     </div>
                 </div>
                 <div className="row-expanded" id={`row-expanded-${props.rank}`}>

@@ -89,10 +89,10 @@ span {
     opacity: 100%;
 }
 
-.skip-both-error {
-    width: 350px;
-    height: 80px;
-    background: rgba(76, 66, 89, 0.8);
+.skip-error-both {
+    width: 250px;
+    height: 60px;
+    background: linear-gradient(267.35deg, #362F40 0%, rgba(54, 47, 64, 0.22) 102.71%);
     border-radius: 5px;
     justify-self: center;
     align-self: center;
@@ -100,11 +100,15 @@ span {
     color: #CFCFCF;
     line-height: 80px;
     visibility: hidden;
-    transition: opacity 2s ease-in-out 0s;
+    transition: opacity 2s ease-in;
+    transition-delay: 1s;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.skip-both-error.is-visible {
+.is-visible {
     visibility: visible;
     opacity: 0;
 } 

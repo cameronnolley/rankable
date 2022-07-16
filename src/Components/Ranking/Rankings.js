@@ -131,7 +131,7 @@ const Rankings = () => {
     const prevRow = usePrevious(rowExpanded);
 
     let searchParams = new URLSearchParams(window.location.search);
-
+        
     const getUserId = () => {
         if (!jsCookie.get('user')) {
           jsCookie.set('user', uuid.v4(), { expires: 10000 });
@@ -216,8 +216,15 @@ const Rankings = () => {
     };
 
     const shareRanking = () => {
-        console.log(rankingUser);
-        const sharedText = `My top ranked albums of all time: \n${rankingUser.map((result, index) => `${index + 1}. ${albums.find(album => album.id === result.albumId).attributes.name} ${albums.find(album => album.id === result.albumId).attributes.emoji !== undefined ? albums.find(album => album.id === result.albumId).attributes.emoji : '' }`).join('\n')}`;
+        let artistFilterShare = artistFilter.map(artist => artist)
+        let artistFilterLast = artistFilterShare.pop();
+        let type = '';
+        if (typeFilter.length > 0)  {
+            type = typeFilter[0].toLowerCase();
+        }
+        let yearFilterShare = yearFilter.map(year => year)
+        let yearFilterLast = yearFilterShare.pop();
+        const sharedText = `My top ranked ${artistFilter.length > 1 ? `${artistFilterShare.join(', ') + ' & ' + artistFilterLast + ' '}` : artistFilter.length > 0 ? `${artistFilter[0]} ` : ''}${typeFilter.length > 0 ? `${type}s` : `albums`} of ${document.getElementById('select-all-twenties').classList.contains('year-selected') ? `the 2020's` : document.getElementById('select-all-teens').classList.contains('year-selected') ? `the 2010's` : document.getElementById('select-all-aughts').classList.contains('year-selected') ? `the 2000's` : yearFilter.length > 1 ? `${yearFilterShare.join(', ') + ' & ' + yearFilterLast}` : yearFilter.length > 0 ? `${yearFilter[0]}` : `all time`}: \n${currentRanking.map((result, index) => `${index + 1}. ${albums.find(album => album.id === result.albumId).attributes.name} ${albums.find(album => album.id === result.albumId).attributes.emoji !== undefined ? albums.find(album => album.id === result.albumId).attributes.emoji : '' }`).join('\n')}`;
         navigator.clipboard.writeText(sharedText);
     }
 
@@ -281,6 +288,7 @@ const Rankings = () => {
     const closeRow = (id) => {
         document.getElementById(`table-row-${id}`).style.height = '120px';
         document.getElementById(`more ${id}`).innerHTML = 'More';
+        document.getElementById(`chevron ${id}`).style.transform = 'rotate(0deg)';
         document.getElementById(`more ${id}`).style.visibility = '';
     }
 
@@ -308,7 +316,7 @@ const Rankings = () => {
 
     return (
         <div>
-            <Header />
+            <Header artistFilter={artistFilter} yearFilter={yearFilter}/>
             <div className='filters-rankings'>
                 <RankingSelect onSelect={changeRanking} queryParams={selectedRanking}/>
                 <ArtistFilter albums={albums} onSelect={filterArtist} onRemove={filterArtist} queryParams={artistFilter} yearFilter={yearFilter} typeFilter={typeFilter} />
