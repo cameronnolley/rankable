@@ -246,8 +246,14 @@ const AlbumContainer = (props) => {
     } else if (albumPairs.length === 0) {
         if (filters) {
             view = <h1>No available pairs of albums. Widen filters and try again.</h1>
+            document.getElementById('first').setAttribute("disabled", "disabled");
+            document.getElementById('second').setAttribute("disabled", "disabled");
+            document.getElementById('skip-both').setAttribute("disabled", "disabled");
         } else {
             view = <h1>No available pairs of albums.</h1>
+            document.getElementById('first') && document.getElementById('first').setAttribute("disabled", "disabled");
+            document.getElementById('second') && document.getElementById('second').setAttribute("disabled", "disabled");
+            document.getElementById('skip-both') && document.getElementById('skip-both').setAttribute("disabled", "disabled");
         }
     } else {
         view = <div className='albums'>
