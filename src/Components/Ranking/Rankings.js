@@ -67,7 +67,7 @@ const Rankings = () => {
             setCurrentRanking(rankingGlobal);
         }
         if (rankingGlobal) {
-            setIsLoading(false);
+           setIsLoading(false);
         }
     }, [rankingGlobal]);
 

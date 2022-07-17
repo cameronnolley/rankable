@@ -14,7 +14,9 @@ const TableRow = (props) => {
 
     useEffect(() => {
         if (props.album) {
-            document.getElementById('editorial-notes-' + props.rank).innerHTML = props.album.attributes.editorialNotes.standard;
+            if (props.album.attributes.editorialNotes) {
+                document.getElementById('editorial-notes-' + props.rank).innerHTML = props.album.attributes.editorialNotes.standard;
+            }
             setStyle({
                 '--bg-color': '#' + props.album.attributes.artwork.bgColor, 
                 '--text-color-1': '#' + props.album.attributes.artwork.textColor1, 
@@ -76,15 +78,17 @@ const TableRow = (props) => {
         props.albums.filter(album => album.attributes.artistName === artistInput);
         const otherAlbums = sameArtist.filter(album => album.id !== props.album.id);
         let rankings = [];
+        let globalIds = props.rankingGlobal.map(ranking => ranking.albumId);
+        let userIds = props.rankingUser.map(ranking => ranking.albumId);
         if (props.selectedRanking === 'global') {
-            rankings = otherAlbums.map(album => {
+            rankings = otherAlbums.filter(album => globalIds.includes(album.id)).map(album => {
                 return {
                     album: album,
                     ranking: props.rankingGlobal.findIndex(ranking => ranking.albumId === album.id) + 1
                 }
             });
         } else {
-            rankings = otherAlbums.map(album => {
+            rankings = otherAlbums.filter(album => userIds.includes(album.id)).map(album => {
                 return {
                     album: album,
                     ranking: props.rankingUser.findIndex(ranking => ranking.albumId === album.id) + 1
@@ -109,15 +113,17 @@ const TableRow = (props) => {
             }
         });
         let rankings = [];
+        let globalIds = props.rankingGlobal.map(ranking => ranking.albumId);
+        let userIds = props.rankingUser.map(ranking => ranking.albumId);
         if (props.selectedRanking === 'global') {
-            rankings = sameArtist.map(album => {
+            rankings = sameArtist.filter(album => globalIds.includes(album.id)).map(album => {
                 return {
                     album: album,
                     ranking: props.rankingGlobal.findIndex(ranking => ranking.albumId === album.id) + 1
                 }
             });
         } else {    
-            rankings = sameArtist.map(album => {
+            rankings = sameArtist.filter(album => userIds.includes(album.id)).map(album => {
                 return {
                     album: album,
                     ranking: props.rankingUser.findIndex(ranking => ranking.albumId === album.id) + 1
@@ -125,6 +131,7 @@ const TableRow = (props) => {
             });
         }
         const sortedAlbums = rankings.sort((a, b) => a.ranking - b.ranking);
+        console.log(sortedAlbums);
         return sortedAlbums;
     }
 
@@ -231,10 +238,10 @@ const TableRow = (props) => {
                                 <p className="label">TRACKs:</p>
                                 <p>{props.album && props.album.attributes.trackCount}</p>
                         </div>
-                        <div className='editorial-notes'>
+                        {props.album.attributes.editorialNotes && <div className='editorial-notes'>
                             <p id='editorial-label'>EDITORIAL NOTES:</p>
                             <p className='editorial-notes-standard' id={'editorial-notes-' + props.rank}></p>
-                        </div>
+                        </div>}
                     </div>
                     <div className="recent-results">
                         <p className='label'>RECENT RESULTS:</p>

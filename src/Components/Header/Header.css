@@ -36,6 +36,7 @@
 .nav-list {
     display: flex;
     gap: 40px;
+    list-style-type: none;
 }
 
 a:-webkit-any-link {
