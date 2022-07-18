@@ -72,9 +72,9 @@ const App = () => {
     }
   }, [artistFilter, yearFilter, rankingFilterValue]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     filterAlbums();
-  }, [rankingFilterValue]);
+  }, [rankingFilterValue]); */
 
   useEffect(() => {
     if (allAlbums.length > 0) {
