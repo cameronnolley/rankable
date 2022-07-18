@@ -7,11 +7,14 @@ import axios from 'axios';
 import jsCookie from 'js-cookie';
 import uuid from 'uuid';
 import Header from '../Header/Header';
+import { RankingFilter } from '../RankingFilter/RankingFilter';
+import solveRanking from '../../util/solveRanking';
 
 const App = () => {
 
   let [artistFilter, setArtistFilter] = useState([]);
   let [yearFilter, setYearFilter] = useState([]);
+  let [rankingFilterValue, setRankingFilterValue] = useState(0);
   let [allAlbums, setAllAlbums] = useState([]);
   let [availableAlbums, setAvailableAlbums] = useState([]);
   let [loadedAlbums, setLoadedAlbums] = useState(false);
@@ -20,10 +23,15 @@ const App = () => {
   let [userData, setUserData] = useState({ _id: '', userId: '', results: [], seenPairs: [] });
   let [loadedUserData, setLoadedUserData] = useState(false);
   let [artistParams, setArtistParams] = useState('');
+  let [resultsGlobal, setResultsGlobal] = useState([]);
+  let [resultsUser, setResultsUser] = useState([]);
+  let [rankingGlobal, setRankingGlobal] = useState([]);
+  let [rankingUser, setRankingUser] = useState([]);
 
   useEffect(() => {
     getUserId();
     fetchAlbums();
+    fetchResults();
     setArtistParams(splitArtistParams());
   }, []) 
 
@@ -32,6 +40,18 @@ const App = () => {
       getUserData();
     }
   }, [userId]);
+
+  useEffect(() => {
+    if (resultsGlobal.length > 0) {
+        setRankingGlobal(solveRanking(resultsGlobal));
+    }
+  }, [resultsGlobal]);
+
+  useEffect(() => {
+    if (resultsUser.length > 0) {
+        setRankingUser(solveRanking(resultsUser));
+    }
+  }, [resultsUser]);
 
   useEffect(() => {
       filterAlbums();
@@ -50,12 +70,17 @@ const App = () => {
         var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
         window.history.pushState(null, '', newRelativePathQuery);
     }
-  }, [artistFilter, yearFilter]);
+  }, [artistFilter, yearFilter, rankingFilterValue]);
+
+  useEffect(() => {
+    filterAlbums();
+  }, [rankingFilterValue]);
 
   useEffect(() => {
     if (allAlbums.length > 0) {
       setLoadedAlbums(true);
       setArtistFilter(artistParams);
+      setRankingFilterValue(allAlbums.length);
     }
   }, [allAlbums])
 
@@ -96,13 +121,24 @@ const App = () => {
         if (response.data !== null) {
         setUserData(response.data);
         setLoadedUserData(true);
-        console.log(userData);
+        setResultsUser(response.data.results);
         } else {
           setLoadedUserData(true);
         }
       })
     }
   }
+
+  const fetchResults = () => {
+    axios.get('https://data.mongodb-api.com/app/rankabl-bwhkm/endpoint/getResults', {
+    })
+    .then(response => {
+        setResultsGlobal(response.data);
+    })
+    .catch(err => {
+        console.log(err);
+     });
+}
 
   const splitArtistParams = () => {
     let artistParams = searchParams.get('artist');
@@ -120,7 +156,6 @@ const App = () => {
       setAvailableAlbums(allAlbums);
     } else {
       let filteredAlbums = allAlbums.map(album => album);
-      console.log(filteredAlbums);
       if (artistFilter.length > 0) {
         allAlbums.forEach(album => {
             if (Array.isArray(album.attributes.artistName)) {
@@ -143,7 +178,12 @@ const App = () => {
         var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
         window.history.pushState(null, '', newRelativePathQuery);
       }
-      console.log(filteredAlbums);
+      if (rankingGlobal.length > 0 ) {
+        const rankingFilterAlbums = rankingGlobal.map(album => album.albumId).slice(0, rankingFilterValue);
+        console.log(rankingFilterAlbums);
+        filteredAlbums = filteredAlbums.filter(album => rankingFilterAlbums.includes(album.id));
+        console.log(filteredAlbums);
+      }
       setAvailableAlbums(filteredAlbums);   
     }
   }
@@ -157,6 +197,10 @@ const App = () => {
     setYearFilter(selectedList);
   }
 
+  const filterRanking = (value) => {
+    setRankingFilterValue(value);
+  }
+
   return (
     <div>
     <Header headerParams={searchParams}/>
@@ -164,6 +208,7 @@ const App = () => {
         <div className='filters'>
           <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} albums={allAlbums} queryParams={artistFilter} yearFilter={yearFilter}/>
           <YearFilter onChange={filterYear} albums={allAlbums} artistFilter={artistFilter} />
+          <RankingFilter albums={allAlbums} filterRanking={filterRanking}/>
         </div>
         <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums} filters={filtersEnabled} userId={userId} seenPairs={userData.seenPairs} loadedUserData={loadedUserData}/>
       </div>

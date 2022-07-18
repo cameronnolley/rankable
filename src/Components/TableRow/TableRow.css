@@ -242,6 +242,7 @@ html i {
 .recent-results-albums::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: var(--shadow-hover);
+    box-shadow: 0 0 1px rgba(255,255,255,.5);
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
 
@@ -321,6 +322,7 @@ html i {
 .other-albums::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: var(--shadow-hover);
+    box-shadow: 0 0 1px rgba(255,255,255,.5);
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
 

@@ -4,6 +4,7 @@ import './TypeSelect.css';
 import { ExpandMoreRounded } from "@mui/icons-material";
 import { ThemeProvider } from "@mui/system";
 import theme from '../MuiTheme/Theme';
+import { type } from "@testing-library/user-event/dist/type";
 
 const TypeSelect = (props) => {
     let [selectedValues, setSelectedValues] = useState([]);
@@ -33,12 +34,14 @@ const TypeSelect = (props) => {
             if (!options.some(type => type.label === album.type)) {
                 options.push({
                     label: album.type,
-                    value: album.type.toLowerCase()
+                    value: album.type.toLowerCase,
+                    count: albums.filter(albumA => albumA.type === album.type).length
                 });
             }
 
         });
-        return options;
+        const sortedOptions = options.sort((a, b) => b.count - a.count);
+        return sortedOptions;
     }
 
     const filterTypes = () => {

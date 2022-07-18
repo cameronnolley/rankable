@@ -68,12 +68,16 @@ const Carousal = ({children}) => {
 export const YearFilter = (props) => {
     let [selectedList, setSelectedList] = useState([]);
     let [isOpen, setIsOpen] = useState(false);
+    let [count, setCount] = useState(0);
     let [aughts, setAughts] = useState(['2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009']);
     let [teens, setTeens] = useState(['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019']);
     let [twenties, setTwenties] = useState(['2020', '2021', '2022']);
     
     useEffect(() => {
-        document.getElementById('calendar').classList.toggle('display');
+        if (count > 0) {
+            document.getElementById('calendar').classList.toggle('display');
+            console.log('filter display toggled');
+        }
     }, [isOpen]);
 
     let calendarRef= useRef();
@@ -257,6 +261,7 @@ export const YearFilter = (props) => {
     }
 
     function toggleCalendar() {
+        setCount(1);
         setIsOpen(!isOpen);
     }
 
@@ -294,10 +299,6 @@ export const YearFilter = (props) => {
             console.log(filteredAlbums);
         }
 
-        if (aughts.every(year => document.getElementById(year).disabled) || aughts.length === 0) {
-            document.getElementById('select-all-aughts').disabled = 'true';
-        }
-
         const albumYears = filteredAlbums.map(album => album.attributes.releaseDate.split('-')[0]);
         const uniqueYears = [...new Set(albumYears)];
         const yearsNotInData = years.filter(year => !uniqueYears.includes(year));
@@ -313,13 +314,22 @@ export const YearFilter = (props) => {
         setTwenties(twentiesFiltered);
 
         if (aughts.every(year => document.getElementById(year).disabled) || aughts.length === 0) {
-            document.getElementById('select-all-aughts').disabled = 'true';
+            document.getElementById('select-all-aughts').disabled = true;
+        }
+        if (twenties.some(year => document.getElementById(year).disabled === false) || twenties.length === 0) {
+            document.getElementById('select-all-aughts').disabled = false;
         }
         if (teens.every(year => document.getElementById(year).disabled) || teens.length === 0) {
-            document.getElementById('select-all-teens').disabled = 'true';
+            document.getElementById('select-all-teens').disabled = true;
+        }
+        if (twenties.some(year => document.getElementById(year).disabled === false) || twenties.length === 0) {
+            document.getElementById('select-all-teens').disabled = false;
         }
         if (twenties.every(year => document.getElementById(year).disabled) || twenties.length === 0) {
-            document.getElementById('select-all-twenties').disabled = 'true';
+            document.getElementById('select-all-twenties').disabled = true;
+        }
+        if (twenties.some(year => document.getElementById(year).disabled === false) || twenties.length === 0) {
+            document.getElementById('select-all-twenties').disabled = false;
         }
 
         if (document.getElementById('select-all-aughts').classList.contains('year-selected')) {
@@ -347,7 +357,7 @@ export const YearFilter = (props) => {
                     {renderSelectedList()}
                 </div>
             </div>
-            <div className='calendar-wrapper' id='calendar'>
+            <div className='calendar-wrapper display' id='calendar'>
                 <Carousal>
                     <CarousalItem>
                         <div className='years-wrapper'>

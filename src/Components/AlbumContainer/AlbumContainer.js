@@ -74,9 +74,6 @@ const AlbumContainer = (props) => {
                 }
             }
         }
-        console.log(pairs);
-        console.log(votedPairs);
-        console.log(seenPairs);
         const finalTry = pairs.filter(pair => !votedPairs.includes(pair))
         return finalTry;  
     }

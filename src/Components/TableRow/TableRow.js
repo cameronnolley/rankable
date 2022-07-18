@@ -51,6 +51,7 @@ const TableRow = (props) => {
             }, 300);
             document.getElementById(`more ${props.rank}`).innerHTML = 'Less';
             document.getElementById(`chevron ${props.rank}`).style.transform = 'rotate(180deg)';
+            document.getElementById(`chevron ${props.rank}`).style.visibility = 'visible';
             document.getElementById(`more ${props.rank}`).style.visibility = 'visible';
             props.isExpanded(props.rank);
         } else {
@@ -58,6 +59,7 @@ const TableRow = (props) => {
             document.getElementById(`more ${props.rank}`).innerHTML = 'More';
             document.getElementById(`chevron ${props.rank}`).style.transform = 'rotate(0deg)';
             document.getElementById(`more ${props.rank}`).style.visibility = '';
+            document.getElementById(`chevron ${props.rank}`).style.visibility = '';
             props.isExpanded('')
         }  
     }
@@ -131,7 +133,6 @@ const TableRow = (props) => {
             });
         }
         const sortedAlbums = rankings.sort((a, b) => a.ranking - b.ranking);
-        console.log(sortedAlbums);
         return sortedAlbums;
     }
 
@@ -148,13 +149,13 @@ const TableRow = (props) => {
     };
 
     const getRecentResults = () => {
-        let reveresedArray = [];
+        let results = [];
         if (props.selectedRanking === 'global') {
-            reveresedArray = props.resultsGlobal.reverse();
+            results = props.resultsGlobal
         } else {
-            reveresedArray = props.resultsUser.reverse();
+            results = props.resultsUser
         }
-        const filteredResults = reveresedArray.filter(result => result.album1.id === props.album.id || result.album2.id === props.album.id);
+        const filteredResults = results.filter(result => result.album1.id === props.album.id || result.album2.id === props.album.id);
         let recentResults = [];
         filteredResults.map(result => {
             if (result.album1.id === props.album.id) {
@@ -169,7 +170,7 @@ const TableRow = (props) => {
                 });
             }
         });
-        return recentResults;
+        return recentResults.reverse().slice(0, 20);
     }
 
     const renderRecentResults = () => {
@@ -185,7 +186,7 @@ const TableRow = (props) => {
     }
 
     const getArtistArtworkUrl = (artistInput) => { 
-        if (props.artists) {
+        if (props.artists.length > 0 && props.album && getAllArtistAlbums(artistInput).length > 0) {
             return props.artists.find(artist => artist.attributes.name === artistInput).attributes.artwork.url.replace('{w}', '300').replace('{h}', '300');
         }
     }
@@ -262,9 +263,9 @@ const TableRow = (props) => {
                                     <p>{`Average album rank: `}</p>
                                 </div>
                                 <div className='artist-stats-values'>
-                                    <p>{`#${getAllArtistAlbums(props.album.attributes.artistName)[0].ranking}`}</p>
-                                    <p>{`#${getAllArtistAlbums(props.album.attributes.artistName)[getAllArtistAlbums(props.album.attributes.artistName).length - 1].ranking}`}</p>
-                                    <p>{`#${(getAllArtistAlbums(props.album.attributes.artistName).reduce((a, b) => a + b.ranking, 0 ) / getAllArtistAlbums(props.album.attributes.artistName).length).toFixed(1)}`}</p>
+                                    <p>{getAllArtistAlbums(props.album.attributes.artistName).length > 0 && `#${getAllArtistAlbums(props.album.attributes.artistName)[0].ranking}`}</p>
+                                    <p>{getAllArtistAlbums(props.album.attributes.artistName).length > 0 && `#${getAllArtistAlbums(props.album.attributes.artistName)[getAllArtistAlbums(props.album.attributes.artistName).length - 1].ranking}`}</p>
+                                    <p>{getAllArtistAlbums(props.album.attributes.artistName).length > 0 && `#${(getAllArtistAlbums(props.album.attributes.artistName).reduce((a, b) => a + b.ranking, 0 ) / getAllArtistAlbums(props.album.attributes.artistName).length).toFixed(1)}`}</p>
                                 </div>
                             </div>
                         </div>
@@ -289,9 +290,9 @@ const TableRow = (props) => {
                                                     <p>{`Average album rank: `}</p>
                                                 </div>
                                                 <div className='artist-stats-values'>
-                                                    <p>{`#${getAllArtistAlbums(artist)[0].ranking}`}</p>
-                                                    <p>{`#${getAllArtistAlbums(artist)[getAllArtistAlbums(artist).length - 1].ranking}`}</p>
-                                                    <p>{`#${(getAllArtistAlbums(artist).reduce((a, b) => a + b.ranking, 0 ) / getAllArtistAlbums(artist).length).toFixed(1)}`}</p>
+                                                    <p>{getAllArtistAlbums(artist).length > 0 && `#${getAllArtistAlbums(artist)[0].ranking}`}</p>
+                                                    <p>{getAllArtistAlbums(artist).length > 0 && `#${getAllArtistAlbums(artist)[getAllArtistAlbums(artist).length - 1].ranking}`}</p>
+                                                    <p>{getAllArtistAlbums(artist).length > 0 && `#${(getAllArtistAlbums(artist).reduce((a, b) => a + b.ranking, 0 ) / getAllArtistAlbums(artist).length).toFixed(1)}`}</p>
                                                 </div>
                                             </div>
                                         </div>

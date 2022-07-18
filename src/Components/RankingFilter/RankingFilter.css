@@ -1,0 +1,203 @@
+.ranking-filter-container {
+    min-width: 120px;
+    max-width: 300px;
+    min-height: 38px;
+    border-radius: 20px;
+    transition: all 0.5s;
+    color: #CFCFCF;
+    background-color: #362F40;
+    background: none;
+    border: 1px solid #B1A5FA;
+    margin-bottom: 8px;
+    align-content: center;
+    align-items: center;
+    position: relative;
+    transition: all 0.5s;
+    cursor: pointer;
+}   
+
+.ranking-filter-container:hover {
+    background-color: #4F476F;
+}
+
+.ranking-slider {
+    height: auto;
+    width: 300px;
+    background-color: #362F40;
+    z-index: 2;
+    border-radius: 20px;
+    box-shadow:  4px 4px 7px #17141b,
+                -4px -4px 7px #2b263390;
+    border: 1px solid #897ECC00;
+    padding: 32px 40px 32px 40px;
+    display: block;
+    position: absolute;
+
+}
+
+.decade-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.next-prev-button {
+    width: 32px;
+    height: 32px;
+    margin-left: 24px;
+    margin-right: 24px;
+    font-size: 18px;
+    background-color: #4B4259;
+    border-radius: 10px;
+    color: #CFCFCF;
+    text-align: center;
+    border: 0;
+    cursor: pointer;
+}
+
+.decade-wrapper h4 {
+    color: #CFCFCF;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.years-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 16px;
+    width: 300px;
+    gap: 8px
+}
+
+
+.hover {
+    border: 1px solid #675F9A;
+    border-radius: 20px;
+}
+
+.chip-ranking {
+    align-items: center;
+    display: inline-flex;
+    font-size: 13px;
+    line-height: 19px;
+    margin-right: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background-color: #897ECC;
+    color: #FFFFFF;
+    align-self: center;
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+
+.placeholder {
+    font-size: 16px;
+    font-weight: 400;
+    color: #CFCFCF;
+    height: 100%;
+    vertical-align: middle;
+    position: relative;
+    align-self: center;
+    margin-left: 9px;
+    margin-top: 9px;
+    margin-right: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.placeholder-text {
+    font-size: 16px;
+    font-weight: 400;
+    color: #CFCFCF;
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+#ranking-filter-icon {
+    margin-top: -2px;
+}
+
+#decade {
+    color: #CFCFCF;
+    font-weight: 600;
+}
+
+.year:disabled {
+    color: #CFCFCF50;
+    background: none;
+    border: none;
+    cursor:auto;
+}
+
+.select-all:disabled {
+    color: #CFCFCF50;
+    background: none;
+    border: none;
+    cursor: auto;
+}
+
+.chip-wrapper {
+    padding-left: 8px;
+    gap: 8px;
+    padding-bottom: 6px;
+    padding-right: 2px;
+}
+
+.display {
+    display: none;
+}
+
+.slider-text {
+    font-size: 14px;
+    color: #cfcfcf;
+    margin-block-start: 0;
+}
+
+.MuiSlider-root {
+    margin-bottom: 40px !important;
+    margin-top: 16px;
+}
+
+.MuiRadio-colorSecondary {
+    color: #CFCFCF75;
+}
+
+.MuiFormControlLabel-label {
+    font-size: 14px !important;
+}
+
+#radio-personal {
+    color: #CFCFCF;
+}
+
+.MuiRadio-root {
+    color: #CFCFCF !important;
+}
+
+.Mui-checked {
+    color: #8673FA !important;
+}
+
+.mark {
+    color: #cfcfcf;
+}
+
+.MuiSlider-markLabel {
+    color: #CFCFCF70 !important;
+}
+
+.MuiSlider-markLabelActive {
+    color: #CFCFCF !important;
+}
+
+.chip-container {
+    display: flex;
+    align-items: center;
+}
+
+#ranking-filter-icon-chip {
+    margin-top: 7px;
+    margin-right: 8px;
+}

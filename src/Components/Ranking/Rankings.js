@@ -66,7 +66,16 @@ const Rankings = () => {
         if (selectedRanking === 'global') {
             setCurrentRanking(rankingGlobal);
         }
-        if (rankingGlobal) {
+        if (rankingGlobal.length > 0) {
+           setIsLoading(false);
+        }
+    }, [rankingGlobal]);
+
+    useEffect(() => {
+        if (selectedRanking === 'personal') {
+            setCurrentRanking(rankingUser);
+        }
+        if (rankingUser.length > 0) {
            setIsLoading(false);
         }
     }, [rankingGlobal]);
@@ -81,6 +90,9 @@ const Rankings = () => {
 
     useEffect(() => {
         filterRankings(); 
+        if (rowExpanded !== '') {
+            closeRow(rowExpanded);
+        }
         if (artistFilter.length === 0) {
             searchParams.delete('artist');
             var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
@@ -113,6 +125,12 @@ const Rankings = () => {
             filterRankings();
         }
     }, [rankingGlobal, albums]);
+
+    useEffect(() => {
+        if (rankingUser) {
+            filterRankings();
+        }
+    }, [rankingUser, albums]);
 
     useEffect(() => {
         if (prevRow !== '' && rowExpanded !== '') {
@@ -224,7 +242,9 @@ const Rankings = () => {
         }
         let yearFilterShare = yearFilter.map(year => year)
         let yearFilterLast = yearFilterShare.pop();
-        const sharedText = `My top ranked ${artistFilter.length > 1 ? `${artistFilterShare.join(', ') + ' & ' + artistFilterLast + ' '}` : artistFilter.length > 0 ? `${artistFilter[0]} ` : ''}${typeFilter.length > 0 ? `${type}s` : `albums`} of ${document.getElementById('select-all-twenties').classList.contains('year-selected') ? `the 2020's` : document.getElementById('select-all-teens').classList.contains('year-selected') ? `the 2010's` : document.getElementById('select-all-aughts').classList.contains('year-selected') ? `the 2000's` : yearFilter.length > 1 ? `${yearFilterShare.join(', ') + ' & ' + yearFilterLast}` : yearFilter.length > 0 ? `${yearFilter[0]}` : `all time`}: \n${currentRanking.map((result, index) => `${index + 1}. ${albums.find(album => album.id === result.albumId).attributes.name} ${albums.find(album => album.id === result.albumId).attributes.emoji !== undefined ? albums.find(album => album.id === result.albumId).attributes.emoji : '' }`).join('\n')}`;
+        let shareRanking = [];
+        artistFilter.length === 1 ? shareRanking = currentRanking : shareRanking = currentRanking.slice(0, 10)
+        const sharedText = `My top ranked ${artistFilter.length > 1 ? `${artistFilterShare.join(', ') + ' & ' + artistFilterLast + ' '}` : artistFilter.length > 0 ? `${artistFilter[0]} ` : ''}${typeFilter.length > 0 ? `${type}s` : `albums`} of ${document.getElementById('select-all-twenties').classList.contains('year-selected') ? `the 2020's` : document.getElementById('select-all-teens').classList.contains('year-selected') ? `the 2010's` : document.getElementById('select-all-aughts').classList.contains('year-selected') ? `the 2000's` : yearFilter.length > 1 ? `${yearFilterShare.join(', ') + ' & ' + yearFilterLast}` : yearFilter.length > 0 ? `${yearFilter[0]}` : `all time`}: \n\n${shareRanking.map((result, index) => `${index + 1}. ${albums.find(album => album.id === result.albumId).attributes.name} ${albums.find(album => album.id === result.albumId).attributes.emoji !== undefined ? albums.find(album => album.id === result.albumId).attributes.emoji : '' }`).join('\n')}`;
         navigator.clipboard.writeText(sharedText);
     }
 
@@ -290,6 +310,7 @@ const Rankings = () => {
         document.getElementById(`more ${id}`).innerHTML = 'More';
         document.getElementById(`chevron ${id}`).style.transform = 'rotate(0deg)';
         document.getElementById(`more ${id}`).style.visibility = '';
+        document.getElementById(`chevron ${id}`).style.visibility = '';
     }
 
     const renderTable = () => {

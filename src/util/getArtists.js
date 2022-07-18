@@ -8,7 +8,8 @@ function getArtists(array) {
                  if (!exists) {
                     results.push({
                         name: artistName,
-                        id: results.length + 1})
+                        id: results.length + 1,
+                        count: array.filter(album => album.attributes.artistName === artistName).length})
                 }
             }
         } else {
@@ -17,11 +18,13 @@ function getArtists(array) {
             if (!exists) {
             results.push({
                 name: artistName,
-                id: results.length + 1})
+                id: results.length + 1,
+                count: array.filter(album => album.attributes.artistName === artistName).length})
             }
         }
     };
-    return results;
+    let sortedResults = results.sort((a, b) => b.count - a.count);
+    return sortedResults;
 }
 
 export default getArtists;

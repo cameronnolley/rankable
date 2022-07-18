@@ -10,7 +10,11 @@ const theme = createTheme({
             main: "#8673FA",
             contrastText: "#fff"
         }
-    }
+    },
+
+    mark: {
+        color: "red"
+      }
 });
 
 export default theme;
