@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import Album from "../Album/Album";
 import './AlbumContainer.css';
 import { generatePairs } from "../../util/generatePairs";
-import { results } from "../../results";
-import { idIndex } from "../../idIndex.js";
 import axios from "axios";
 import { arrayEquals } from "../../util/generatePairs";
 
