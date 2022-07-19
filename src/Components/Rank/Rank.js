@@ -207,7 +207,7 @@ const App = () => {
     <div>
       <Header headerParams={searchParams}/>
       <div className="container">
-        <div className="App">
+        <div className="Rank">
           <div className='filters'>
             <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} albums={allAlbums} queryParams={artistFilter} yearFilter={yearFilter}/>
             <YearFilter onChange={filterYear} albums={allAlbums} artistFilter={artistFilter} />

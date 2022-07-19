@@ -5,7 +5,7 @@
     justify-content: center;
   }
   
-  .App {
+  .Rank {
     display: grid;
     grid-template-rows: auto;
     grid-template-columns: 1fr;
@@ -28,7 +28,7 @@
 
 @media screen and (max-width: 500px) {
   
-  .App {
+  .Rank {
     display: grid;
     grid-template-rows: auto;
     grid-template-columns: 400px;
