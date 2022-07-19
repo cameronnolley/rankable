@@ -130,9 +130,9 @@ export const RankingFilter = (props) => {
         }
     }
 
-    const sliderValueChange = (event) => {
-        setSliderValue(event.target.value);
-        props.filterRanking(event.target.value);
+    const sliderValueChange = (event, newValue) => {
+        setSliderValue(newValue);
+        props.filterRanking(newValue);
     }
     
 
@@ -146,8 +146,13 @@ export const RankingFilter = (props) => {
                 </div>
             </div>
             <div className='ranking-slider display' id='ranking-slider'>
-                <p className='slider-text'>Only show albums currently ranked in the top:</p>
                 <ThemeProvider theme={theme}>
+                    <FormControl>
+                        <RadioGroup row defaultValue="global" color='primary'>
+                            <FormControlLabel value="global" control={<Radio color='secondary' size='small'/>} label="Global" sx={{color: '#cfcfcf', marginRight: '24px'}}/>
+                            <FormControlLabel value="personal" control={<Radio color='secondary' size='small' id='radio-personal' />} label="Personal" sx={{color: '#cfcfcf'}}/>
+                        </RadioGroup>
+                    </FormControl>
                     <Slider 
                     color="secondary"
                     marks={sliderMarks}
@@ -155,13 +160,7 @@ export const RankingFilter = (props) => {
                     defaultValue={48}
                     max={props.albums.length} 
                     onChange={sliderValueChange}/>
-                    <FormControl>
-                        <FormLabel component="legend" sx={{color: '#cfcfcf', fontSize: '14px'}} >Ranking:</FormLabel>
-                        <RadioGroup row defaultValue="global" color='primary'>
-                            <FormControlLabel value="global" control={<Radio color='secondary' size='small'/>} label="Global" sx={{color: '#cfcfcf', marginRight: '24px'}}/>
-                            <FormControlLabel value="personal" control={<Radio color='secondary' size='small' id='radio-personal' />} label="Personal" sx={{color: '#cfcfcf'}}/>
-                        </RadioGroup>
-                    </FormControl>
+                    
                 </ThemeProvider>
             </div>           
         </div>

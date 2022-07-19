@@ -1,9 +1,50 @@
-.App {
-  display: grid;
-  grid-template-rows: auto;
-  justify-content: center;
-  align-items: center;
-  justify-items: center;
-  margin-top: 80px;
-  overflow:visible;
+@media screen and (min-width: 500px) {
+  .container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .App {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-items: center;
+    margin-top: 80px;
+    overflow:visible;
+    width: 850px;
+  }
+
+  .filters {
+    grid-column: span 3;
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+
+}
+
+@media screen and (max-width: 500px) {
+  
+  .App {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 400px;
+    row-gap: 16px;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+    margin-top: 16px;
+  }
+
+  .filters {
+    grid-column: span 3;
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+
 }

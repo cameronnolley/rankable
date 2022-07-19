@@ -1,58 +1,125 @@
-.header {
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    padding: 16px 80px 0px 80px;
-    position: sticky;
-    top: 0;
-    background-color: #211D27;
-    z-index: 1;
+@media screen and (min-width: 800px) { 
+
+    .header {
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        padding: 16px 80px 0px 80px;
+        position: sticky;
+        top: 0;
+        background-color: #211D27;
+        z-index: 1;
+    }
+
+    .header-logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .brand {
+        font-family: Sora;
+        color: #FFFFFF;
+        font-weight: 700;
+        font-size: 24px;
+        margin-block-start: 0;
+        margin-block-end: 0;
+    }
+
+    .logo {
+        width: 32px;
+        height: 32px;
+        color: #FFFFFF;
+        filter: brightness(2);
+        -webkit-filter: brightness(2);
+    }
+
+    .nav-list {
+        display: flex;
+        gap: 40px;
+        list-style-type: none;
+    }
+
+    a:-webkit-any-link {
+        color: #FFFFFF;
+        text-decoration: none;
+        font-family: Sora;
+        font-size: 14px;
+        font-weight: 600;
+        margin-block-end: 8px;
+        margin-bottom: 4px;
+    }
+
+    .nav-item {
+        padding-bottom: 4px;
+    }
+
+    .active {
+        border-bottom: #A596FF 4px solid;
+    }
+
 }
 
-.header-logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+@media screen and (max-width: 800px) { 
 
-.brand {
-    font-family: Sora;
-    color: #FFFFFF;
-    font-weight: 700;
-    font-size: 24px;
-    margin-block-start: 0;
-    margin-block-end: 0;
-}
+    .header {
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        padding: 16px 40px 0px 40px;
+        position: sticky;
+        top: 0;
+        background-color: #211D27;
+        z-index: 1;
+    }
 
-.logo {
-    width: 32px;
-    height: 32px;
-    color: #FFFFFF;
-    filter: brightness(2);
-    -webkit-filter: brightness(2);
-}
+    .header-logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-.nav-list {
-    display: flex;
-    gap: 40px;
-    list-style-type: none;
-}
+    .brand {
+        font-family: Sora;
+        color: #FFFFFF;
+        font-weight: 700;
+        font-size: 24px;
+        margin-block-start: 0;
+        margin-block-end: 0;
+    }
 
-a:-webkit-any-link {
-    color: #FFFFFF;
-    text-decoration: none;
-    font-family: Sora;
-    font-size: 14px;
-    font-weight: 600;
-    margin-block-end: 8px;
-    margin-bottom: 4px;
-}
+    .logo {
+        width: 32px;
+        height: 32px;
+        color: #FFFFFF;
+        filter: brightness(2);
+        -webkit-filter: brightness(2);
+    }
 
-.nav-item {
-    padding-bottom: 4px;
-}
+    .nav-list {
+        display: flex;
+        gap: 40px;
+        list-style-type: none;
+    }
 
-.active {
-    border-bottom: #A596FF 4px solid;
+    a:-webkit-any-link {
+        color: #FFFFFF;
+        text-decoration: none;
+        font-family: Sora;
+        font-size: 14px;
+        font-weight: 600;
+        margin-block-end: 8px;
+        margin-bottom: 4px;
+    }
+
+    .nav-item {
+        padding-bottom: 4px;
+    }
+
+    .active {
+        border-bottom: #A596FF 4px solid;
+    }
+
 }

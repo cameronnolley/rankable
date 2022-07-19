@@ -54,27 +54,28 @@ const App = () => {
   }, [resultsUser]);
 
   useEffect(() => {
-      filterAlbums();
-      if (artistFilter.length > 0 || yearFilter.length > 0) {
-        setFiltersEnabled(true);
-      } else {
-        setFiltersEnabled(false);
-      }
-      if (artistFilter.length === 0) {
-        searchParams.delete('artist');
-        var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
-        window.history.pushState(null, '', newRelativePathQuery);
-      }
-      if (yearFilter.length === 0) {
-        searchParams.delete('years');
-        var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
-        window.history.pushState(null, '', newRelativePathQuery);
+    filterAlbums();
+    if (artistFilter.length > 0 || yearFilter.length > 0) {
+      setFiltersEnabled(true);
+    } else {
+      setFiltersEnabled(false);
     }
+    if (artistFilter.length === 0) {
+      searchParams.delete('artist');
+      var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+      window.history.pushState(null, '', newRelativePathQuery);
+    }
+    if (yearFilter.length === 0) {
+      searchParams.delete('years');
+      var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+      window.history.pushState(null, '', newRelativePathQuery);
+    }
+      
   }, [artistFilter, yearFilter, rankingFilterValue]);
 
-  /* useEffect(() => {
+  useEffect(() => {
     filterAlbums();
-  }, [rankingFilterValue]); */
+  }, [rankingFilterValue]);
 
   useEffect(() => {
     if (allAlbums.length > 0) {
@@ -152,7 +153,8 @@ const App = () => {
   }
 
   const filterAlbums = () => {
-    if (artistFilter.length === 0 && yearFilter.length === 0) {
+    console.log(rankingFilterValue);
+    if (artistFilter.length === 0 && yearFilter.length === 0 && rankingFilterValue === allAlbums.length) {
       setAvailableAlbums(allAlbums);
     } else {
       let filteredAlbums = allAlbums.map(album => album);
@@ -178,7 +180,7 @@ const App = () => {
         var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
         window.history.pushState(null, '', newRelativePathQuery);
       }
-      if (rankingGlobal.length > 0 ) {
+      if (rankingGlobal.length > 0 && rankingFilterValue < allAlbums.length) {
         const rankingFilterAlbums = rankingGlobal.map(album => album.albumId).slice(0, rankingFilterValue);
         console.log(rankingFilterAlbums);
         filteredAlbums = filteredAlbums.filter(album => rankingFilterAlbums.includes(album.id));
@@ -203,14 +205,16 @@ const App = () => {
 
   return (
     <div>
-    <Header headerParams={searchParams}/>
-      <div className="App">
-        <div className='filters'>
-          <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} albums={allAlbums} queryParams={artistFilter} yearFilter={yearFilter}/>
-          <YearFilter onChange={filterYear} albums={allAlbums} artistFilter={artistFilter} />
-          <RankingFilter albums={allAlbums} filterRanking={filterRanking}/>
+      <Header headerParams={searchParams}/>
+      <div className="container">
+        <div className="App">
+          <div className='filters'>
+            <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} albums={allAlbums} queryParams={artistFilter} yearFilter={yearFilter}/>
+            <YearFilter onChange={filterYear} albums={allAlbums} artistFilter={artistFilter} />
+            <RankingFilter albums={allAlbums} filterRanking={filterRanking}/>
+          </div>
+          <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums} filters={filtersEnabled} userId={userId} seenPairs={userData.seenPairs} loadedUserData={loadedUserData}/>
         </div>
-        <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums} filters={filtersEnabled} userId={userId} seenPairs={userData.seenPairs} loadedUserData={loadedUserData}/>
       </div>
     </div>
   );

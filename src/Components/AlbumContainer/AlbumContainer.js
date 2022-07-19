@@ -239,7 +239,9 @@ const AlbumContainer = (props) => {
     const filters = props.filters;
     let view;
     if (loading) {
-        view = <span className='loader' ></span>
+        view =  <div className="album-container">
+                    <span className='loader' ></span>
+                </div>
     } else if (albumPairs.length === 0) {
         if (filters) {
             view = <h1>No available pairs of albums. Widen filters and try again.</h1>
@@ -253,21 +255,22 @@ const AlbumContainer = (props) => {
             document.getElementById('skip-both') && document.getElementById('skip-both').setAttribute("disabled", "disabled");
         }
     } else {
-        view = <div className='albums'>
-                <Album className='album' id='album1' album={album1} onClick={handleClick} />
-                <Album className='album' id='album2' album={album2} onClick={handleClick} />
+        view =  <div className='album-container'>
+                    <Album className='album' id='album1' album={album1} onClick={handleClick} />
+                    <button className='skip skip-button' id="first" onClick={skip} >Skip</button>
+                    <button className='skip skip-button skip-both' id='skip-both' onClick={skipBoth} >Skip both</button>
+                    <Album className='album' id='album2' album={album2} onClick={handleClick} />
+                    <button className='skip skip-button' id="second" onClick={skip} >Skip</button>
+                    <p className='skip-error-message' id='skip-error-first' >No available albums</p>
+                    <p className='skip-error-both' id='skip-error-both' >No available albums</p>
+                    <p className='skip-error-message' id='skip-error-second' >No available albums</p>
                 </div>
+
     }
 
     return (
-        <div className='album-container'>
+        <div className='view-container'>
             {view}
-            <button className='skip skip-button' id="first" onClick={skip} >Skip</button>
-            <button className='skip skip-button skip-both' id='skip-both' onClick={skipBoth} >Skip both</button>
-            <button className='skip skip-button' id="second" onClick={skip} >Skip</button>
-            <p className='skip-error-message' id='skip-error-first' >No available albums</p>
-            <p className='skip-error-both' id='skip-error-both' >No available albums</p>
-            <p className='skip-error-message' id='skip-error-second' >No available albums</p>
         </div>
     )
 

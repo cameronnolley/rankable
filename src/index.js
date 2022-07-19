@@ -9,7 +9,7 @@ import Rankings from './Components/Ranking/Rankings';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <BrowserRouter>
+    <BrowserRouter basename="/'">
         <Routes>
             <Route path="/" element={<App />} />
                 <Route index element={<Rank />} />
