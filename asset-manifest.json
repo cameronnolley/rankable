@@ -1,7 +1,7 @@
 {
   "main.css": "/rankable/static/css/main.0baa4ef3.chunk.css",
-  "main.js": "/rankable/static/js/main.a4aad3a6.chunk.js",
-  "main.js.map": "/rankable/static/js/main.a4aad3a6.chunk.js.map",
+  "main.js": "/rankable/static/js/main.b4763ad2.chunk.js",
+  "main.js.map": "/rankable/static/js/main.b4763ad2.chunk.js.map",
   "static/js/1.90eed11a.chunk.js": "/rankable/static/js/1.90eed11a.chunk.js",
   "static/js/1.90eed11a.chunk.js.map": "/rankable/static/js/1.90eed11a.chunk.js.map",
   "static/js/2.243ea0d5.chunk.js": "/rankable/static/js/2.243ea0d5.chunk.js",
@@ -11,6 +11,6 @@
   "static/media/rankabl-logo.png": "/rankable/static/media/rankabl-logo.251c7ee4.png",
   "static/css/main.0baa4ef3.chunk.css.map": "/rankable/static/css/main.0baa4ef3.chunk.css.map",
   "index.html": "/rankable/index.html",
-  "precache-manifest.9c5a2a44b82fef2afd0653c7ad91ad82.js": "/rankable/precache-manifest.9c5a2a44b82fef2afd0653c7ad91ad82.js",
+  "precache-manifest.87cce5ff9253994af4536858e2499f4e.js": "/rankable/precache-manifest.87cce5ff9253994af4536858e2499f4e.js",
   "service-worker.js": "/rankable/service-worker.js"
 }
