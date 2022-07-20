@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "60512056698a18b7fc16",
-    "url": "/rankable/static/css/main.876a3317.chunk.css"
+    "revision": "fed7b7ffe27dfd3e714c",
+    "url": "/rankable/static/css/main.53bbd7cc.chunk.css"
   },
   {
-    "revision": "60512056698a18b7fc16",
-    "url": "/rankable/static/js/main.60512056.chunk.js"
+    "revision": "fed7b7ffe27dfd3e714c",
+    "url": "/rankable/static/js/main.fed7b7ff.chunk.js"
   },
   {
     "revision": "3a354c580f07f251fff3",
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/rankable/static/media/rankabl-logo.251c7ee4.png"
   },
   {
-    "revision": "3bff10e6e579536050d7b47ddf898235",
+    "revision": "a6cfe2ef40da6e1ccb6a46ee17ad59ce",
     "url": "/rankable/index.html"
   }
 ];
