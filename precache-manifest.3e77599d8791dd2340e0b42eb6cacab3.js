@@ -1,19 +1,19 @@
 self.__precacheManifest = [
   {
-    "revision": "38aff7243bd979b7b9f5",
-    "url": "/rankable/static/css/main.e8d15468.chunk.css"
+    "revision": "f8e4ff865675ebb50ddb",
+    "url": "/rankable/static/css/main.08afcaa6.chunk.css"
   },
   {
-    "revision": "38aff7243bd979b7b9f5",
-    "url": "/rankable/static/js/main.38aff724.chunk.js"
+    "revision": "f8e4ff865675ebb50ddb",
+    "url": "/rankable/static/js/main.f8e4ff86.chunk.js"
   },
   {
     "revision": "b52039d63cce126fc3b2",
     "url": "/rankable/static/js/1.b52039d6.chunk.js"
   },
   {
-    "revision": "7765af8af616e0a86c51",
-    "url": "/rankable/static/js/2.7765af8a.chunk.js"
+    "revision": "b5761e7eff993cf2e1ec",
+    "url": "/rankable/static/js/2.b5761e7e.chunk.js"
   },
   {
     "revision": "0161b57000a6f7c2d498",
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/rankable/static/media/rankabl-logo.251c7ee4.png"
   },
   {
-    "revision": "a1f4e1895e9c24d2251a81e8bfb39ddc",
+    "revision": "5b07049f2726b5705b87623da679982e",
     "url": "/rankable/index.html"
   }
 ];
