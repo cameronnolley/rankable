@@ -3,7 +3,7 @@ import './RankingFilter.css';
 import $ from 'jquery';
 import { ExpandMoreRounded } from "@mui/icons-material";
 import { ThemeProvider } from "@mui/system";
-import theme from '../MuiTheme/Theme';
+import { theme } from '../MuiTheme/Theme';
 import { Slider } from "@mui/material";
 import { RadioGroup } from "@mui/material";
 import {FormControl} from "@mui/material";
@@ -22,7 +22,7 @@ export const RankingFilter = (props) => {
     
     useEffect(() => {
         if (count > 0) {
-            document.getElementById('ranking-slider').classList.toggle('display');
+            document.getElementById(props.filterId).classList.toggle('display');
         }
     }, [isOpen]);
 
@@ -37,7 +37,7 @@ export const RankingFilter = (props) => {
     useEffect(() => {
         let handler = (event) => {
             if (!calendarRef.current.contains(event.target)) {
-                document.getElementById('ranking-slider').classList.add('display');
+                document.getElementById(props.filterId).classList.add('display');
             }
         };
 
@@ -71,7 +71,7 @@ export const RankingFilter = (props) => {
                         </img>
                     </span>
                     <ThemeProvider theme={theme}>
-                        <ExpandMoreRounded color="primary" baseClassName="icon" id="ranking-filter-icon-chip" onClick={toggleSlider}/>
+                        <ExpandMoreRounded color="primary" baseClassName="icon" id={`${props.id}-icon-chip`} onClick={toggleSlider}/>
                     </ThemeProvider>
                 </div>
             );
@@ -80,7 +80,7 @@ export const RankingFilter = (props) => {
                 <div className='placeholder' onClick={toggleSlider} >
                     <p className='placeholder-text'>Ranking</p>
                     <ThemeProvider theme={theme}>
-                        <ExpandMoreRounded color="primary" baseClassName="icon" id="ranking-filter-icon"/>
+                        <ExpandMoreRounded color="primary" baseClassName="icon" id={`${props.id}-icon`}/>
                     </ThemeProvider>
                 </div>
             )
@@ -139,13 +139,13 @@ export const RankingFilter = (props) => {
     const sliderMarks = [{value: 10, label: '10'}, {value: 20, label: '20'}, {value: props.albums.length, label: 'All'}];
 
     return (
-        <div ref={calendarRef} >
+        <div ref={calendarRef} id={props.id}>
             <div className='ranking-filter-container' id='ranking-filter-container' >
                 <div className='chip-wrapper' onClick={handleLabelClick}>
                     {renderSelectedList()}
                 </div>
             </div>
-            <div className='ranking-slider display' id='ranking-slider'>
+            <div className='ranking-slider display' id={props.filterId}>
                 <ThemeProvider theme={theme}>
                     <FormControl>
                         <RadioGroup row defaultValue="global" color='primary'>

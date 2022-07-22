@@ -9,6 +9,12 @@ import uuid from 'uuid';
 import Header from '../Header/Header';
 import { RankingFilter } from '../RankingFilter/RankingFilter';
 import solveRanking from '../../util/solveRanking';
+import { Button } from '@mui/material';
+import { FilterAltRounded } from '@mui/icons-material';
+import { ThemeProvider } from '@mui/system';
+import { theme, filterTheme } from '../MuiTheme/Theme';
+import { IconButton } from '@mui/material';
+import { CloseRounded } from '@mui/icons-material';
 
 const App = () => {
 
@@ -27,6 +33,7 @@ const App = () => {
   let [resultsUser, setResultsUser] = useState([]);
   let [rankingGlobal, setRankingGlobal] = useState([]);
   let [rankingUser, setRankingUser] = useState([]);
+  let [filterButtonColor, setFilterButtonColor] = useState('primary');
 
   useEffect(() => {
     getUserId();
@@ -55,7 +62,7 @@ const App = () => {
 
   useEffect(() => {
     filterAlbums();
-    if (artistFilter.length > 0 || yearFilter.length > 0) {
+    if (artistFilter.length > 0 || yearFilter.length > 0 || rankingFilterValue !== allAlbums.length) {
       setFiltersEnabled(true);
     } else {
       setFiltersEnabled(false);
@@ -84,6 +91,14 @@ const App = () => {
       setRankingFilterValue(allAlbums.length);
     }
   }, [allAlbums])
+
+  useEffect(() => {
+    if (filtersEnabled) {
+      setFilterButtonColor('secondary');
+    } else {
+      setFilterButtonColor('primary');
+    }
+  }, [filtersEnabled])
 
   let searchParams = new URLSearchParams(window.location.search);
 
@@ -203,17 +218,53 @@ const App = () => {
     setRankingFilterValue(value);
   }
 
+  const openFilterDrawer = () => {
+    document.getElementById('filter-drawer').style.top = '0';
+    document.getElementById('rank-page-container').style.overflow = 'hidden';
+  }
+
+  const closeFilterDrawer = () => {
+    document.getElementById('filter-drawer').style.top = '100%';
+    document.getElementById('rank-page-container').style.overflow = 'auto';
+  }
+
   return (
-    <div>
+    <div classNyarn run deployame="page-container" id="rank-page-container">
       <Header headerParams={searchParams}/>
       <div className="container">
         <div className="Rank">
           <div className='filters'>
             <ArtistFilter id='artist-filter' onSelect={filterArtist} onRemove={filterArtist} albums={allAlbums} queryParams={artistFilter} yearFilter={yearFilter}/>
-            <YearFilter onChange={filterYear} albums={allAlbums} artistFilter={artistFilter} />
-            <RankingFilter albums={allAlbums} filterRanking={filterRanking}/>
+            <YearFilter id='year-filter' filterId='calendar' onChange={filterYear} albums={allAlbums} artistFilter={artistFilter} />
+            <RankingFilter id='ranking-filter' filterId='ranking-slider' albums={allAlbums} filterRanking={filterRanking}/>
+            <ThemeProvider theme={filterTheme}>
+              <Button id='filter-button' onClick={openFilterDrawer} variant="outlined" color={filterButtonColor} size="small" sx={{ textTransform: "none", borderRadius: "15px" }}endIcon={<FilterAltRounded size="small" />}>
+                Filters
+              </Button>
+            </ThemeProvider>
           </div>
           <AlbumContainer albums={availableAlbums} albumsLoaded={loadedAlbums} filters={filtersEnabled} userId={userId} seenPairs={userData.seenPairs} loadedUserData={loadedUserData}/>
+        </div>
+      </div>
+      <div className="filter-drawer" id="filter-drawer">
+        <div className="filter-drawer-content">
+          <div className="filter-drawer-header">
+            <div></div>
+            <div className="filter-drawer-header-title">
+              Filters
+            </div>
+            <ThemeProvider theme={theme}>
+              <IconButton color='primary' size="large" onClick={closeFilterDrawer}>
+                <CloseRounded fontSize="inherit"/>
+              </IconButton>
+            </ThemeProvider>
+          </div>
+          <hr/>
+          <div className="filter-drawer-body">
+            <ArtistFilter id='artist-filter-drawer' onSelect={filterArtist} onRemove={filterArtist} albums={allAlbums} queryParams={artistFilter} yearFilter={yearFilter}/>
+            <YearFilter id='year-filter-drawer' filterId='calendar-drawer' onChange={filterYear} albums={allAlbums} artistFilter={artistFilter} />
+            <RankingFilter id='ranking-filter-drawer' filterId='ranking-slider-drawer' albums={allAlbums} filterRanking={filterRanking}/>
+          </div>
         </div>
       </div>
     </div>

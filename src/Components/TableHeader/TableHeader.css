@@ -1,36 +1,80 @@
-.table-header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-left: 48px;
-    margin-right: 48px;
-    color: #B5B5B5;
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 8px;
+@media screen and (min-width: 500px) {
+
+    .table-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-left: 48px;
+        margin-right: 48px;
+        color: #B5B5B5;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    #rank-label {
+        width: 160px;
+        display: flex;
+        justify-content: center;
+    }
+
+    #album-label {
+        flex-direction: row;
+        width: 480px;
+        align-items: center;
+        padding: 12px;
+    }
+
+    #release-label {
+        width: 200px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    #type-label {
+        width: 160px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
 }
 
-#rank-label {
-    width: 160px;
-    display: flex;
-    justify-content: center;
-}
+@media screen and (max-width: 500px) {
 
-#album-label {
-    flex-direction: row;
-    width: 480px;
-    align-items: center;
-    padding: 12px;
-}
+    .table-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-left: 16px;
+        margin-right: px;
+        color: #B5B5B5;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
 
-#release-label {
-    width: 200px;
-    padding-left: 16px;
-    padding-right: 16px;
-}
+    #rank-label {
+        margin-inline: 10.85px;
+        display: flex;
+        justify-content: center;
+    }
 
-#type-label {
-    width: 160px;
-    padding-left: 16px;
-    padding-right: 16px;
+    #album-label {
+        flex-direction: row;
+        width: 480px;
+        align-items: center;
+        padding: 12px;
+    }
+
+    #release-label {
+        width: 200px;
+        padding-left: 16px;
+        padding-right: 16px;
+        display: none;
+    }
+
+    #type-label {
+        width: 160px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
 }

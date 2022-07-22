@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import './TypeSelect.css';
 import { ExpandMoreRounded } from "@mui/icons-material";
 import { ThemeProvider } from "@mui/system";
-import theme from '../MuiTheme/Theme';
+import { theme } from '../MuiTheme/Theme';
 import { type } from "@testing-library/user-event/dist/type";
 
 const TypeSelect = (props) => {
@@ -70,7 +70,7 @@ const TypeSelect = (props) => {
 
 
     return (
-        <Multiselect id='type-select'
+        <Multiselect id={props.id}
             options={options}
             selectedValues={selectedValues}
             displayValue="label"

@@ -3,6 +3,7 @@ import './TableRow.css';
 import moment from "moment";
 import newShade from "../../util/newShade";
 import { Carousel, CarouselItem } from "./TableRowCarousel.js";
+import { MobileCarousel, MobileCarouselItem } from "./MobileTableRowCarousel.js";
 import { ExpandMoreRounded } from "@mui/icons-material";
 
 const TableRow = (props) => {
@@ -14,7 +15,7 @@ const TableRow = (props) => {
 
     useEffect(() => {
         if (props.album) {
-            if (props.album.attributes.editorialNotes) {
+            if (props.album.attributes.editorialNotes && document.getElementById('editorial-notes-' + props.rank) !== null) {
                 document.getElementById('editorial-notes-' + props.rank).innerHTML = props.album.attributes.editorialNotes.standard;
             }
             setStyle({
@@ -44,24 +45,34 @@ const TableRow = (props) => {
       }
 
     const expandTableRow = () => {
-        if (document.getElementById(`more ${props.rank}`).innerHTML === 'More') {
-            document.getElementById(`table-row-${props.rank}`).style.height = '481px';
+        if (window.screen.width > 500 && document.getElementById(`table-row-${props.rank}`).classList.contains('closed')) {
             setTimeout(() => {
                 document.getElementById(`table-row-${props.rank}`).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 300);
-            document.getElementById(`more ${props.rank}`).innerHTML = 'Less';
             document.getElementById(`chevron ${props.rank}`).style.transform = 'rotate(180deg)';
             document.getElementById(`chevron ${props.rank}`).style.visibility = 'visible';
             document.getElementById(`more ${props.rank}`).style.visibility = 'visible';
+            document.getElementById(`table-row-${props.rank}`).classList.remove('closed');
+            document.getElementById(`table-row-${props.rank}`).classList.add('open');
             props.isExpanded(props.rank);
-        } else {
-            document.getElementById(`table-row-${props.rank}`).style.height = '120px';
-            document.getElementById(`more ${props.rank}`).innerHTML = 'More';
+        } else if (window.screen.width > 500) {
             document.getElementById(`chevron ${props.rank}`).style.transform = 'rotate(0deg)';
             document.getElementById(`more ${props.rank}`).style.visibility = '';
             document.getElementById(`chevron ${props.rank}`).style.visibility = '';
+            document.getElementById(`table-row-${props.rank}`).classList.remove('open');
+            document.getElementById(`table-row-${props.rank}`).classList.add('closed');
             props.isExpanded('')
-        }  
+        }  else if (window.screen.width <= 500 && document.getElementById(`table-row-${props.rank}`).classList.contains('closed')) {
+            document.getElementById(`chevron ${props.rank}`).style.transform = 'rotate(180deg)';
+            document.getElementById(`table-row-${props.rank}`).classList.remove('closed');
+            document.getElementById(`table-row-${props.rank}`).classList.add('open');
+            props.isExpanded(props.rank)
+        } else if (window.screen.width <= 500) {
+            document.getElementById(`chevron ${props.rank}`).style.transform = 'rotate(0deg)';
+            document.getElementById(`table-row-${props.rank}`).classList.remove('open');
+            document.getElementById(`table-row-${props.rank}`).classList.add('closed');
+            props.isExpanded('')
+        }
     }
 
     const getOtherAlbums = (artistInput) => {
@@ -202,7 +213,7 @@ const TableRow = (props) => {
 
     if (props.album) {
         return (
-            <div className="table-row" id={`table-row-${props.rank}`} style={style}>
+            <div className="table-row closed" id={`table-row-${props.rank}`} style={style} onClick={window.screen.width < 500 && expandTableRow}>
                 <div className="row-default">
                     <div className="table-cell" id="rank-cell">
                         <div className='rank-container'>
@@ -226,88 +237,176 @@ const TableRow = (props) => {
                         <p>{props.album && formatDate(props.album.attributes.releaseDate)}</p>
                     </div>
                     <div className="table-cell" id="more-cell">
-                        <button className='more' id={`more-button-${props.rank}`} onClick={expandTableRow}><p className='button-text' id={`more ${props.rank}`}>More</p><ExpandMoreRounded size='small' id={`chevron ${props.rank}`}></ExpandMoreRounded></button>
+                        <button className='more' id={`more-button-${props.rank}`} onClick={expandTableRow}><p className='button-text' id={`more ${props.rank}`}></p><ExpandMoreRounded size='small' id={`chevron ${props.rank}`}></ExpandMoreRounded></button>
                     </div>
                 </div>
                 <div className="row-expanded" id={`row-expanded-${props.rank}`}>
-                    <div className='album-info-expanded'>
-                        <div className='album-facts'>
-                                <p className="label">PROJECT TYPE:</p>
-                                <p>{props.album && props.album.type}</p>
-                                <p className="label">GENRE:</p>
-                                <p>{props.album && props.album.attributes.genreNames[0]}</p>
-                                <p className="label">TRACKs:</p>
-                                <p>{props.album && props.album.attributes.trackCount}</p>
+                    { window.screen.width > 500 ?
+                    <div className='expanded-row-content'>
+                        <div className='album-info-expanded'>
+                            <div className='album-facts'>
+                                    <p className="label">PROJECT TYPE:</p>
+                                    <p>{props.album && props.album.type}</p>
+                                    <p className="label">GENRE:</p>
+                                    <p>{props.album && props.album.attributes.genreNames[0]}</p>
+                                    <p className="label">TRACKs:</p>
+                                    <p>{props.album && props.album.attributes.trackCount}</p>
+                            </div>
+                            {props.album.attributes.editorialNotes && <div className='editorial-notes'>
+                                <p id='editorial-label'>EDITORIAL NOTES:</p>
+                                <p className='editorial-notes-standard' id={'editorial-notes-' + props.rank}></p>
+                            </div>}
                         </div>
-                        {props.album.attributes.editorialNotes && <div className='editorial-notes'>
-                            <p id='editorial-label'>EDITORIAL NOTES:</p>
-                            <p className='editorial-notes-standard' id={'editorial-notes-' + props.rank}></p>
-                        </div>}
-                    </div>
-                    <div className="recent-results">
-                        <p className='label'>RECENT RESULTS:</p>
-                        <div className='recent-results-albums'>
-                            {renderRecentResults()}
+                        <div className="recent-results">
+                            <p className='label'>RECENT RESULTS:</p>
+                            <div className='recent-results-albums'>
+                                {renderRecentResults()}
+                            </div>
                         </div>
-                    </div>
-                    <vl/>
-                    { !Array.isArray(props.album.attributes.artistName) ?
-                    <div className="artist">
-                        <div className="artist-info">
-                            <img src={getArtistArtworkUrl(props.album.attributes.artistName)} alt="artist artwork" className="artist-artwork"/>
-                            <p className='artist-name'>{props.album.attributes.artistName}</p>
-                            <div className='artist-stats'>
-                                <div className='artist-stats-labels'>
-                                    <p>{`Highest album rank: `}</p>
-                                    <p>{`Lowest album rank: `}</p>
-                                    <p>{`Average album rank: `}</p>
+                        <div className='vl'></div>
+                        { !Array.isArray(props.album.attributes.artistName) ?
+                        <div className="artist">
+                            <div className="artist-info">
+                                <div className="artist-image-name">
+                                    <img src={getArtistArtworkUrl(props.album.attributes.artistName)} alt="artist artwork" className="artist-artwork"/>
+                                    <p className='artist-name'>{props.album.attributes.artistName}</p>
                                 </div>
-                                <div className='artist-stats-values'>
-                                    <p>{getAllArtistAlbums(props.album.attributes.artistName).length > 0 && `#${getAllArtistAlbums(props.album.attributes.artistName)[0].ranking}`}</p>
-                                    <p>{getAllArtistAlbums(props.album.attributes.artistName).length > 0 && `#${getAllArtistAlbums(props.album.attributes.artistName)[getAllArtistAlbums(props.album.attributes.artistName).length - 1].ranking}`}</p>
-                                    <p>{getAllArtistAlbums(props.album.attributes.artistName).length > 0 && `#${(getAllArtistAlbums(props.album.attributes.artistName).reduce((a, b) => a + b.ranking, 0 ) / getAllArtistAlbums(props.album.attributes.artistName).length).toFixed(1)}`}</p>
+                                <div className='artist-stats'>
+                                    <div className='artist-stats-labels'>
+                                        <p>{`Highest album rank: `}</p>
+                                        <p>{`Lowest album rank: `}</p>
+                                        <p>{`Average album rank: `}</p>
+                                    </div>
+                                    <div className='artist-stats-values'>
+                                        <p>{getAllArtistAlbums(props.album.attributes.artistName).length > 0 && `#${getAllArtistAlbums(props.album.attributes.artistName)[0].ranking}`}</p>
+                                        <p>{getAllArtistAlbums(props.album.attributes.artistName).length > 0 && `#${getAllArtistAlbums(props.album.attributes.artistName)[getAllArtistAlbums(props.album.attributes.artistName).length - 1].ranking}`}</p>
+                                        <p>{getAllArtistAlbums(props.album.attributes.artistName).length > 0 && `#${(getAllArtistAlbums(props.album.attributes.artistName).reduce((a, b) => a + b.ranking, 0 ) / getAllArtistAlbums(props.album.attributes.artistName).length).toFixed(1)}`}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="other-albums-container">
+                                <p className='label'>OTHER ALBUMS:</p>
+                                <div className="other-albums">
+                                    {renderOtherAlbums(props.album.attributes.artistName)}
                                 </div>
                             </div>
                         </div>
-                        <div className="other-albums-container">
-                            <p className='label'>OTHER ALBUMS:</p>
-                            <div className="other-albums">
-                                {renderOtherAlbums(props.album.attributes.artistName)}
-                            </div>
-                        </div>
-                    </div>
-                    : <Carousel>
-                            {props.album.attributes.artistName.map((artist, index) => {
-                                return <CarouselItem index={index}>
-                                    <div className="artist">
-                                        <div className="artist-info">
-                                            <img src={getArtistArtworkUrl(artist)} alt="artist artwork" className="artist-artwork"/>
-                                            <p className='artist-name'>{artist}</p>
-                                            <div className='artist-stats'>
-                                                <div className='artist-stats-labels'>
-                                                    <p>{`Highest album rank: `}</p>
-                                                    <p>{`Lowest album rank: `}</p>
-                                                    <p>{`Average album rank: `}</p>
+                        : <Carousel>
+                                {props.album.attributes.artistName.map((artist, index) => {
+                                    return <CarouselItem index={index}>
+                                        <div className="artist">
+                                            <div className="artist-info">
+                                                <img src={getArtistArtworkUrl(artist)} alt="artist artwork" className="artist-artwork"/>
+                                                <p className='artist-name'>{artist}</p>
+                                                <div className='artist-stats'>
+                                                    <div className='artist-stats-labels'>
+                                                        <p>{`Highest album rank: `}</p>
+                                                        <p>{`Lowest album rank: `}</p>
+                                                        <p>{`Average album rank: `}</p>
+                                                    </div>
+                                                    <div className='artist-stats-values'>
+                                                        <p>{getAllArtistAlbums(artist).length > 0 && `#${getAllArtistAlbums(artist)[0].ranking}`}</p>
+                                                        <p>{getAllArtistAlbums(artist).length > 0 && `#${getAllArtistAlbums(artist)[getAllArtistAlbums(artist).length - 1].ranking}`}</p>
+                                                        <p>{getAllArtistAlbums(artist).length > 0 && `#${(getAllArtistAlbums(artist).reduce((a, b) => a + b.ranking, 0 ) / getAllArtistAlbums(artist).length).toFixed(1)}`}</p>
+                                                    </div>
                                                 </div>
-                                                <div className='artist-stats-values'>
-                                                    <p>{getAllArtistAlbums(artist).length > 0 && `#${getAllArtistAlbums(artist)[0].ranking}`}</p>
-                                                    <p>{getAllArtistAlbums(artist).length > 0 && `#${getAllArtistAlbums(artist)[getAllArtistAlbums(artist).length - 1].ranking}`}</p>
-                                                    <p>{getAllArtistAlbums(artist).length > 0 && `#${(getAllArtistAlbums(artist).reduce((a, b) => a + b.ranking, 0 ) / getAllArtistAlbums(artist).length).toFixed(1)}`}</p>
+                                            </div>
+                                            <div className="other-albums-container">
+                                                <p className='label'>OTHER ALBUMS:</p>
+                                                <div className="other-albums">
+                                                    {renderOtherAlbums(artist)}
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="other-albums-container">
-                                            <p className='label'>OTHER ALBUMS:</p>
-                                            <div className="other-albums">
-                                                {renderOtherAlbums(artist)}
+                                    </CarouselItem> }
+                                )}
+                        </Carousel> }
+                    </div> :
+                    <div className='expanded-row-content'>
+                        <MobileCarousel>
+                            <MobileCarouselItem>
+                                <div className='album-carousel'>
+                                    <div className='album-info-expanded'>
+                                        <div className='album-facts'>
+                                                <p className="label">PROJECT TYPE:</p>
+                                                <p>{props.album && props.album.type}</p>
+                                                <p className="label">GENRE:</p>
+                                                <p>{props.album && props.album.attributes.genreNames[0]}</p>
+                                                <p className="label">TRACKs:</p>
+                                                <p>{props.album && props.album.attributes.trackCount}</p>
+                                                <p className ="label">RELEASE DATE:</p>
+                                                <p>{props.album && formatDate(props.album.attributes.releaseDate)}</p>
+                                        </div>
+                                    </div>
+                                    <div className="recent-results">
+                                        <p className='label'>RECENT RESULTS:</p>
+                                        <div className='recent-results-albums'>
+                                            {renderRecentResults()}
+                                        </div>
+                                    </div>
+                                </div>
+                            </MobileCarouselItem>
+                            { !Array.isArray(props.album.attributes.artistName) ?
+                            <MobileCarouselItem>
+                                <div className="artist">
+                                    <div className="artist-info">
+                                        <div className="artist-image-name">
+                                            <img src={getArtistArtworkUrl(props.album.attributes.artistName)} alt="artist artwork" className="artist-artwork"/>
+                                            <p className='artist-name'>{props.album.attributes.artistName}</p>
+                                        </div>
+                                        <div className='artist-stats'>
+                                            <div className='artist-stats-labels'>
+                                                <p>{`Highest album rank: `}</p>
+                                                <p>{`Lowest album rank: `}</p>
+                                                <p>{`Average album rank: `}</p>
+                                            </div>
+                                            <div className='artist-stats-values'>
+                                                <p>{getAllArtistAlbums(props.album.attributes.artistName).length > 0 && `#${getAllArtistAlbums(props.album.attributes.artistName)[0].ranking}`}</p>
+                                                <p>{getAllArtistAlbums(props.album.attributes.artistName).length > 0 && `#${getAllArtistAlbums(props.album.attributes.artistName)[getAllArtistAlbums(props.album.attributes.artistName).length - 1].ranking}`}</p>
+                                                <p>{getAllArtistAlbums(props.album.attributes.artistName).length > 0 && `#${(getAllArtistAlbums(props.album.attributes.artistName).reduce((a, b) => a + b.ranking, 0 ) / getAllArtistAlbums(props.album.attributes.artistName).length).toFixed(1)}`}</p>
                                             </div>
                                         </div>
                                     </div>
-                                </CarouselItem> }
-                            )}
-                    </Carousel> }
-                </div>
-                <div className='expanded-row-bg' id={`expanded-row-bg-${props.rank}`}>
+                                    <div className="other-albums-container">
+                                        <p className='label'>OTHER ALBUMS:</p>
+                                        <div className="other-albums">
+                                            {renderOtherAlbums(props.album.attributes.artistName)}
+                                        </div>
+                                    </div>
+                                </div>
+                            </MobileCarouselItem>
+                            : props.album.attributes.artistName.map((artist, index) => {
+                                    return <MobileCarouselItem index={index}>
+                                        <div className="artist">
+                                            <div className="artist-info">
+                                                <div className="artist-image-name">
+                                                    <img src={getArtistArtworkUrl(artist)} alt="artist artwork" className="artist-artwork"/>
+                                                    <p className='artist-name'>{artist}</p>
+                                                </div>
+                                                <div className='artist-stats'>
+                                                    <div className='artist-stats-labels'>
+                                                        <p>{`Highest album rank: `}</p>
+                                                        <p>{`Lowest album rank: `}</p>
+                                                        <p>{`Average album rank: `}</p>
+                                                    </div>
+                                                    <div className='artist-stats-values'>
+                                                        <p>{getAllArtistAlbums(artist).length > 0 && `#${getAllArtistAlbums(artist)[0].ranking}`}</p>
+                                                        <p>{getAllArtistAlbums(artist).length > 0 && `#${getAllArtistAlbums(artist)[getAllArtistAlbums(artist).length - 1].ranking}`}</p>
+                                                        <p>{getAllArtistAlbums(artist).length > 0 && `#${(getAllArtistAlbums(artist).reduce((a, b) => a + b.ranking, 0 ) / getAllArtistAlbums(artist).length).toFixed(1)}`}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="other-albums-container">
+                                                <p className='label'>OTHER ALBUMS:</p>
+                                                <div className="other-albums">
+                                                    {renderOtherAlbums(artist)}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </MobileCarouselItem> }
+                                )}
+                        </MobileCarousel>
+                    </div> }
                 </div>
             </div>
         );

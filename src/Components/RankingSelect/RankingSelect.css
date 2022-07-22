@@ -37,7 +37,7 @@
 
 .multiSelectContainer li:hover {
     color: #CFCFCF;
-    background-color: #897ECC50;
+    background: #897ECC50 !important;
 }
 
 #ranking-select .optionContainer {
@@ -47,6 +47,11 @@
     margin-top: 4px;
 }
 
+#ranking-select .option:hover {
+    font-size: 14px;
+    color: #CFCFCF;
+    background-color: #897ECC50 !important;
+}
 
 
 

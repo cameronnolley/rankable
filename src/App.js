@@ -5,14 +5,9 @@ import { Outlet, Link } from "react-router-dom";
 
 function App() {
     return (
-        <div className="App">
-            <Routes>
-                <Route path="/" element={<App />}>
-                    <Route index element={<Rank />} />
-                    <Route path="rankings" element={<Rankings />} />
-                </Route>
-            </Routes>
-        </div>
+        <>
+            <Outlet />
+        </>
     )
 }
 

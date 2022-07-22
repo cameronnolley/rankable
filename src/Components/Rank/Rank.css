@@ -24,27 +24,228 @@
     gap: 16px;
   }
 
+  .MuiButton-root {
+    display: none !important;
+  }
+
+  .filter-drawer {
+    display: none;
+  }
+
 }
 
 @media screen and (max-width: 500px) {
+
+  :root {
+    --screen-height: -webkit-fill-available
+  } 
   
   .Rank {
     display: grid;
-    grid-template-rows: auto;
+    height: calc(100% - 16px);
+    grid-template-rows: 30px 1fr;
     grid-template-columns: 400px;
-    row-gap: 16px;
+    row-gap: 24px;
     justify-content: center;
     align-items: center;
     justify-items: center;
-    margin-top: 16px;
+    padding-top: 16px;
+    overflow-x: hidden;
   }
 
   .filters {
-    grid-column: span 3;
+    grid-column: span 1;
+    justify-self: end;
     display: flex;
-    width: 100%;
-    justify-content: flex-start;
+    justify-content: flex-end;
     gap: 16px;
+  }
+
+  #artist-filter {
+    display: none;
+  }
+
+  #year-filter {
+    display: none;
+  }
+
+  #ranking-filter {
+    display: none;
+  }
+
+  .container {
+    box-sizing: border-box;
+    max-height: calc(100% - 16px);
+    overflow-x: hidden;
+  }
+
+  #filter-button {
+    margin-right: 24px !important;
+  }
+
+  #rank-page-container {
+    height: -webkit-fill-available;
+    max-height: 97vh;
+  }
+
+  .filter-drawer {
+    position: fixed;
+    top: 100%;
+    bottom: 0;
+    width: 100%;
+    height: -webkit-fill-available;
+    background-color: #211D27;
+    border-radius: 20px 20px 0 0;
+    transition: all 0.3s ease-out;
+    z-index: 1000;
+  }
+
+  .filter-drawer-content {
+    padding: 40px 24px 0px 24px;
+    height: 100%;
+  }
+
+  .filter-drawer-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+
+  .filter-drawer-header-title {
+    justify-self: center;
+    margin-left: 40px;
+    font-size: 20px;
+    color: #CFCFCF;
+    font-weight: 600;
+  }
+
+  .filter-drawer-body {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: baseline;
+    align-items: stretch;
+    width: 100%;
+    height: -webkit-fill-available;
+    overflow: auto;
+    gap: 24px;
+  }
+
+  #artist-filter-drawer .searchWrapper {
+    min-height: 40px !important;
+    height: 48px;
+    min-width: 108px;
+    border: 1px solid #B1A5FA;
+    border-radius: 24px !important;
+    max-width: 100%;
+    align-content: center;
+    padding-left: 12px !important;
+    align-items: center;
+    transition: all 0.5s;
+    margin-bottom: 8px;
+  }
+  
+  #artist-filter-drawer .optionContainer {
+    font-size: 16px;
+    max-height: 184px;
+  }
+
+  #artist-filter-drawer .icon_down_dir {
+    right: 24px;
+  }
+
+  #artist-filter-drawer_input {
+    margin-top: 0px;
+  }
+
+  #artist-filter-drawer .chip {
+    border-radius: 20px !important;
+    background-color: #897ECC !important;
+    margin-bottom: 2px !important;
+    color: #FFFFFF !important;
+  }
+
+  #artist-filter-drawer .option:hover {
+    background-color: #897ECC50 !important;
+    color: #CFCFCF !important;
+}
+
+  #year-filter-drawer {
+    width: 100%;
+  }
+
+  #year-filter-drawer .year-filter-container {
+    max-width: 100%;
+    height: 48px;
+    border-radius: 24px;
+  }
+
+  #year-filter-drawer .calendar-wrapper {
+    width: calc(100% - 48px);
+    padding-right: 0px;
+    position: absolute;
+    left: 24px;
+    right: 24px;
+  }
+
+  #year-filter-drawer .carousal {
+    width: 100%;
+  }
+
+  #year-filter-drawer .chip-wrapper {
+    padding-bottom: 0px;
+    padding-top: 5px;
+    padding-left: 12px;
+  }
+
+  #year-filter-drawer-container {
+    align-items: center;
+  }
+
+  #year-filter-drawer .MuiSvgIcon-root {
+    margin-right: 8px !important;
+  }
+
+  #ranking-filter-drawer .ranking-filter-container {
+    max-width: 100%;
+    height: 48px;
+    border-radius: 24px;
+  }
+
+  #ranking-filter-drawer .ranking-slider {
+    width: calc(100% - 106px);
+    padding-right: 32px;
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    padding-left: 24px;
+  }
+
+  #ranking-filter-drawer .chip-wrapper {
+    padding-bottom: 0px;
+    padding-top: 5px;
+    padding-left: 12px;
+  }
+
+  #ranking-filter-drawer .chip-container {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  #ranking-filter-drawer-icon {
+    margin-right: 8px !important;
+    margin-top: -1px;
+  }
+
+  #ranking-filter-drawer-icon-chip {
+    margin-top: 7px;
+    margin-right: 16px !important;
+  }
+
+  hr {
+    width: 100%;
+    border-color: #CFCFCF50;
   }
 
 }

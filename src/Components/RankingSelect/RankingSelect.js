@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import './RankingSelect.css';
 import { ExpandMoreRounded } from "@mui/icons-material";
 import { ThemeProvider } from "@mui/system";
-import theme from '../MuiTheme/Theme';
+import { theme } from '../MuiTheme/Theme';
 
 const RankingSelect = (props) => {
     let [selectedValues, setSelectedValues] = useState([{ label: "Global", value: "global" }]);

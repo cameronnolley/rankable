@@ -243,9 +243,9 @@ const AlbumContainer = (props) => {
     } else if (albumPairs.length === 0) {
         if (filters) {
             view = <h1>No available pairs of albums. Widen filters and try again.</h1>
-            document.getElementById('first').setAttribute("disabled", "disabled");
-            document.getElementById('second').setAttribute("disabled", "disabled");
-            document.getElementById('skip-both').setAttribute("disabled", "disabled");
+            document.getElementById('first') && document.getElementById('first').setAttribute("disabled", "disabled");
+            document.getElementById('second') && document.getElementById('second').setAttribute("disabled", "disabled");
+            document.getElementById('skip-both') && document.getElementById('skip-both').setAttribute("disabled", "disabled");
         } else {
             view = <h1>No available pairs of albums.</h1>
             document.getElementById('first') && document.getElementById('first').setAttribute("disabled", "disabled");
@@ -255,10 +255,10 @@ const AlbumContainer = (props) => {
     } else {
         view =  <div className='album-container'>
                     <Album className='album' id='album1' album={album1} onClick={handleClick} />
-                    <button className='skip skip-button' id="first" onClick={skip} >Skip</button>
-                    <button className='skip skip-button skip-both' id='skip-both' onClick={skipBoth} >Skip both</button>
+                    <button className='skip skip-button' id="first" onClick={skip} ></button>
+                    <button className='skip skip-button skip-both' id='skip-both' onClick={skipBoth} ></button>
                     <Album className='album' id='album2' album={album2} onClick={handleClick} />
-                    <button className='skip skip-button' id="second" onClick={skip} >Skip</button>
+                    <button className='skip skip-button' id="second" onClick={skip} ></button>
                     <p className='skip-error-message' id='skip-error-first' >No available albums</p>
                     <p className='skip-error-both' id='skip-error-both' >No available albums</p>
                     <p className='skip-error-message' id='skip-error-second' >No available albums</p>

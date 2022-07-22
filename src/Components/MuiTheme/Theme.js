@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material";
 
-const theme = createTheme({
+export const theme = createTheme({
     palette: {
         primary: {
             main: "#CFCFCF",
@@ -17,4 +17,19 @@ const theme = createTheme({
       }
 });
 
-export default theme;
+export const filterTheme = createTheme({
+    palette: {
+        primary: {
+            main: "#CFCFCF",
+            contrastText: "#fff"
+        },
+        secondary: {
+            main: "#B1A5FA",
+            contrastText: "#fff"
+        }
+    },
+
+    mark: {
+        color: "red"
+      }
+});

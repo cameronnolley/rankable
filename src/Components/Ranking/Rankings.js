@@ -10,10 +10,10 @@ import solveRanking from "../../util/solveRanking";
 import jsCookie from "js-cookie";
 import uuid from "uuid";
 import TypeSelect from "../TypeSelect/TypeSelect";
-import { ShareOutlined } from "@mui/icons-material";
+import { ShareOutlined, FilterAltRounded } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import { ThemeProvider } from "@mui/system";
-import theme from '../MuiTheme/Theme';
+import { theme, filterTheme } from '../MuiTheme/Theme';
 import Header from "../Header/Header";
 
 const Rankings = () => {
@@ -32,6 +32,7 @@ const Rankings = () => {
     let [artistFilter, setArtistFilter] = useState([]);
     let [yearFilter, setYearFilter] = useState([]);
     let [typeFilter, setTypeFilter] = useState([]);
+    let [filterButtonColor, setFilterButtonColor] = useState('primary');
 
     useEffect(() => {
         getUserId();
@@ -306,11 +307,17 @@ const Rankings = () => {
     };
 
     const closeRow = (id) => {
-        document.getElementById(`table-row-${id}`).style.height = '120px';
-        document.getElementById(`more ${id}`).innerHTML = 'More';
-        document.getElementById(`chevron ${id}`).style.transform = 'rotate(0deg)';
-        document.getElementById(`more ${id}`).style.visibility = '';
-        document.getElementById(`chevron ${id}`).style.visibility = '';
+        if (window.screen.width > 500) {
+            document.getElementById(`table-row-${id}`).classList.remove('open');
+            document.getElementById(`table-row-${id}`).classList.add('closed');
+            document.getElementById(`chevron ${id}`).style.transform = 'rotate(0deg)';
+            document.getElementById(`more ${id}`).style.visibility = '';
+            document.getElementById(`chevron ${id}`).style.visibility = '';
+        } else {
+            document.getElementById(`table-row-${id}`).classList.remove('open');
+            document.getElementById(`table-row-${id}`).classList.add('closed');
+            document.getElementById(`chevron ${id}`).style.transform = 'rotate(0deg)';
+        }
     }
 
     const renderTable = () => {
@@ -340,13 +347,18 @@ const Rankings = () => {
             <Header artistFilter={artistFilter} yearFilter={yearFilter}/>
             <div className='filters-rankings'>
                 <RankingSelect onSelect={changeRanking} queryParams={selectedRanking}/>
-                <ArtistFilter albums={albums} onSelect={filterArtist} onRemove={filterArtist} queryParams={artistFilter} yearFilter={yearFilter} typeFilter={typeFilter} />
-                <YearFilter onChange={filterYear} queryParams={yearFilter} albums={albums} artistFilter={artistFilter} typeFilter={typeFilter} />
-                <TypeSelect onSelect={filterType} onRemove={filterType} queryParams={typeFilter} albums={albums} artistFilter={artistFilter} yearFilter={yearFilter} />
+                <ArtistFilter id='artist-filter' albums={albums} onSelect={filterArtist} onRemove={filterArtist} queryParams={artistFilter} yearFilter={yearFilter} typeFilter={typeFilter} />
+                <YearFilter id='year-filter' filterId='calendar' onChange={filterYear} queryParams={yearFilter} albums={albums} artistFilter={artistFilter} typeFilter={typeFilter} />
+                <TypeSelect id='type-select' onSelect={filterType} onRemove={filterType} queryParams={typeFilter} albums={albums} artistFilter={artistFilter} yearFilter={yearFilter} />
+                <ThemeProvider theme={filterTheme}>
+                    <Button id='filter-button-rankings' variant="outlined" color={filterButtonColor} size="small" sx={{ textTransform: "none", borderRadius: "15px", height: '30.75px' }}endIcon={<FilterAltRounded size="small" />}>
+                        Filters
+                    </Button>
+                </ThemeProvider>
                 <div className='share' >
                     {selectedRanking === 'personal' ? 
                     <ThemeProvider theme={theme}>
-                        <Button variant="contained" onClick ={shareRanking} color='secondary' sx={{ borderRadius: '20px', height: '40px', padding: '0px 32px 0px 32px', textTransform: 'none', fontSize: '16px', fontFamily: 'Helvetica', color: '#FFFFFF' }} endIcon={<ShareOutlined size='small'/>} >
+                        <Button id="share" variant="contained" onClick ={shareRanking} color='secondary' sx={{ borderRadius: '20px', height: '40px', padding: '0px 32px 0px 32px', textTransform: 'none', fontSize: '16px', fontFamily: 'Helvetica', color: '#FFFFFF' }} endIcon={<ShareOutlined size='small'/>} >
                             Share
                         </Button> 
                     </ThemeProvider>

@@ -4,7 +4,7 @@ import './ArtistFilter.css'
 import getArtists from "../../util/getArtists";
 import { SearchRounded } from "@mui/icons-material";
 import { ThemeProvider } from "@mui/system";
-import theme from '../MuiTheme/Theme';
+import { theme } from '../MuiTheme/Theme';
 
 const ArtistFilter = (props) => {
     let [options, setOptions] = useState([]);
@@ -43,7 +43,7 @@ const ArtistFilter = (props) => {
 
 
     return (
-        <Multiselect id='artist-filter'
+        <Multiselect id={props.id}
         options={options} // Options to display in the dropdown
         selectedValues={selectedValues} // Preselected value to persist in dropdown
         onSelect={props.onSelect} // Function will trigger on select event

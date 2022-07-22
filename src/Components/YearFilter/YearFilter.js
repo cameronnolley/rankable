@@ -3,7 +3,7 @@ import './YearFilter.css';
 import $ from 'jquery';
 import { ExpandMoreRounded } from "@mui/icons-material";
 import { ThemeProvider } from "@mui/system";
-import theme from '../MuiTheme/Theme';
+import { theme } from '../MuiTheme/Theme';
 
 const CarousalItem = ({children, width}) => {
     return (
@@ -75,7 +75,7 @@ export const YearFilter = (props) => {
     
     useEffect(() => {
         if (count > 0) {
-            document.getElementById('calendar').classList.toggle('display');
+            document.getElementById(props.filterId).classList.toggle('display');
             console.log('filter display toggled');
         }
     }, [isOpen]);
@@ -85,7 +85,7 @@ export const YearFilter = (props) => {
     useEffect(() => {
         let handler = (event) => {
             if (!calendarRef.current.contains(event.target)) {
-                document.getElementById('calendar').classList.add('display');
+                document.getElementById(props.filterId).classList.add('display');
             }
         };
 
@@ -351,13 +351,13 @@ export const YearFilter = (props) => {
 
 
     return (
-        <div ref={calendarRef} >
-            <div className='year-filter-container' id='year-filter-container' >
+        <div ref={calendarRef} id={props.id}>
+            <div className='year-filter-container' id={`${props.id}-container`} >
                 <div className='chip-wrapper' onClick={handleLabelClick}>
                     {renderSelectedList()}
                 </div>
             </div>
-            <div className='calendar-wrapper display' id='calendar'>
+            <div className='calendar-wrapper display' id={props.filterId}>
                 <Carousal>
                     <CarousalItem>
                         <div className='years-wrapper'>

@@ -39,6 +39,18 @@
         cursor:default;
     }
 
+    .skip-both:before {
+        content: "Skip both";
+    }
+
+    #first:before {
+        content: "Skip"
+    }
+
+    #second:before {
+        content: "Skip"
+    }
+
     .loader {
         width: 48px;
         height: 48px;
@@ -156,10 +168,15 @@
         padding-left: 30px;
         padding-right: 30px;
         margin-bottom: 8px;
+        
     }
 
     .skip-both {
         min-width: 139px;
+    }
+
+    .skip-both:before {
+        content: "Skip both"
     }
 
     .skip:hover:enabled {
@@ -172,6 +189,14 @@
         border-color: darkgrey;
         color: darkgrey;
         cursor:default;
+    }
+
+    #first:before {
+        content: "Skip"
+    }
+
+    #second:before {
+        content: "Skip"
     }
 
     .loader {
@@ -265,9 +290,9 @@
     
     .album-container {
         display: grid;
-        grid-template-rows: 300px 24px 300px;
-        grid-template-columns: 240px 136px;
-        align-content: end;
+        height: 100%;
+        grid-template-rows: calc(50% - 32px) 32px calc(50% - 32px) 32px auto;
+        grid-template-columns: 1fr;
         align-items: center;
         justify-items: center;
         column-gap: 24px;
@@ -285,10 +310,13 @@
         height: 40px;
         border: 1px solid #B1A5FA;
         border-radius: 20px;
-        font-size: 18px;
+        font-size: 1rem;
         transition: all 0.5s;
-        padding-left: 24px;
-        padding-right: 24px;
+        padding-left: 30px;
+        padding-right: 30px;
+        grid-row-start: 5;
+        grid-column-start: 1;
+        white-space: nowrap;
     }
 
     .skip:hover:enabled {
@@ -303,12 +331,31 @@
         cursor:default;
     }
 
+    .skip-both:before {
+        content: "Skip"
+    }
+
+    #first {
+        justify-self: baseline;
+        display: none;
+    }
+
+    #first:before {
+        content: "Skip top"
+    }
+
     #skip-both {
-        grid-column-start: 2;
+        grid-column-start: 1;
     }
 
     #second {
-        grid-row-start: 3;
+        grid-row-start: 5;
+        justify-self: end;
+        display: none;
+    }
+
+    #second:before {
+        content: "Skip lower"
     }
 
     .loader {
@@ -398,5 +445,6 @@
     .view-container {
         display: flex;
         justify-content: center;
+        height: calc(97vh - 140px);
     }
 }
